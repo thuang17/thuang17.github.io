@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Explorer — Trevor Huang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #FAFAF8;
+      --bg-sub:  #F0EEE8;
+      --bg-foot: #E8E6DE;
+      --fg:      #1C1917;
+      --fg-2:    #57534E;
+      --fg-3:    #A8A29E;
+      --border:  #E7E5E4;
+      --accent:  #7C3AED;
+      --f-display: 'Montserrat', sans-serif;
+      --f-body:    'Nunito Sans', sans-serif;
+      --f-mono:    'JetBrains Mono', monospace;
+    }
+    [data-theme="dark"] {
+      --bg:      #1C1917;
+      --bg-sub:  #292524;
+      --bg-foot: #292524;
+      --fg:      #F5F5F4;
+      --fg-2:    #A8A29E;
+      --fg-3:    #57534E;
+      --border:  #44403C;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--f-body); background: var(--bg); color: var(--fg);
+      line-height: 1.75; transition: background .3s, color .3s;
+    }
+
+    /* NAV */
+    nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto;
+      padding: 0 48px; height: 56px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-back {
+      display: flex; align-items: center; gap: 5px;
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-2); text-decoration: none; transition: color .2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    .sep { color: var(--fg-3); font-family: var(--f-mono); font-size: 12px; }
+    .nav-crumb { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+    .lang-link { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; transition: color .2s; }
+    .lang-link:hover { color: var(--accent); }
+    .theme-btn { background: none; border: none; cursor: pointer; color: var(--fg-2); padding: 4px; display: flex; align-items: center; transition: color .2s; }
+    .theme-btn:hover { color: var(--accent); }
+    #icon-sun { display: none; }
+    [data-theme="dark"] #icon-moon { display: none; }
+    [data-theme="dark"] #icon-sun  { display: block; }
+
+    /* HERO — text-only, no photo */
+    .hero {
+      background: var(--bg-sub);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 48px 72px;
+    }
+    .hero-wrap { max-width: 720px; margin: 0 auto; }
+    .hero-label {
+      font-family: var(--f-mono); font-size: 11px;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 14px;
+    }
+    .hero-title {
+      font-family: var(--f-display); font-weight: 800;
+      font-size: clamp(36px, 6vw, 54px);
+      color: var(--fg); line-height: 1.05; margin-bottom: 20px;
+    }
+    .hero-desc {
+      font-size: 17px; color: var(--fg-2); max-width: 560px; line-height: 1.7;
+    }
+
+    /* ARTICLE */
+    .article { max-width: 720px; margin: 0 auto; padding: 60px 48px 96px; }
+
+    /* TIMELINE ENTRY */
+    .tl-entry {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 0 28px;
+      margin-bottom: 56px;
+    }
+    .tl-left {
+      padding-top: 4px;
+      text-align: right;
+    }
+    .tl-year {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--accent); font-weight: 400;
+      line-height: 1.4;
+    }
+    .tl-line {
+      width: 1px; background: var(--border);
+      margin: 10px auto 0; height: calc(100% - 10px);
+    }
+    .tl-right {}
+    .ch-label {
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); letter-spacing: .08em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .ch-title {
+      font-family: var(--f-display); font-size: 20px;
+      font-weight: 700; color: var(--fg); margin-bottom: 16px;
+    }
+    .tl-right p {
+      color: var(--fg-2); font-size: 16px;
+      margin-bottom: 14px; font-weight: 400;
+    }
+    .tl-right p:last-of-type { margin-bottom: 0; }
+
+    /* PULL QUOTE */
+    .pull {
+      border-left: 3px solid var(--accent);
+      background: var(--bg-sub); border-radius: 0 8px 8px 0;
+      padding: 14px 20px; margin: 24px 0;
+    }
+    .pull p {
+      color: var(--fg) !important; font-size: 17px !important;
+      font-style: italic; font-weight: 500 !important; margin: 0 !important;
+    }
+
+    /* TOOL CHIPS */
+    .tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+    .tool-chip {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--accent); background: var(--bg-sub);
+      border: 1px solid var(--border);
+      padding: 4px 12px; border-radius: 20px;
+    }
+
+    /* DIVIDER */
+    hr { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+
+    /* TAGS */
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 32px; }
+    .tag {
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); background: var(--bg-sub);
+      border: 1px solid var(--border);
+      padding: 3px 10px; border-radius: 4px;
+    }
+
+    /* NEXT STORY */
+    .next-story {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 32px;
+      background: var(--bg-sub); border: 1px solid var(--border);
+      border-radius: 12px; text-decoration: none; color: var(--fg);
+      margin-top: 56px;
+      transition: border-color .2s, background .2s;
+    }
+    .next-story:hover { border-color: var(--accent); background: var(--bg-foot); }
+    .next-label {
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); letter-spacing: .08em;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .next-title { font-family: var(--f-display); font-size: 18px; font-weight: 700; }
+    .next-arrow { color: var(--accent); flex-shrink: 0; }
+
+    /* FOOTER */
+    footer { background: var(--bg-foot); border-top: 1px solid var(--border); padding: 32px 48px; }
+    .footer-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .footer-copy { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); }
+    .footer-back { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; transition: color .2s; }
+    .footer-back:hover { color: var(--accent); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
+    .vis { opacity: 1; transform: none; }
+
+    @media (max-width: 680px) {
+      .nav-inner { padding: 0 20px; }
+      .hero { padding: 52px 20px 48px; }
+      .article { padding: 36px 20px 72px; }
+      .tl-entry { grid-template-columns: 56px 1fr; gap: 0 16px; }
+      footer { padding: 24px 20px; }
+      .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Trevor Huang
+    </a>
+    <span class="sep">/</span>
+    <span class="nav-crumb">AI Explorer</span>
+    <div class="nav-right">
+      <a href="zh-ai.html" class="lang-link">中文</a>
+      <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-wrap">
+    <p class="hero-label">Outside the office</p>
+    <h1 class="hero-title">AI Explorer</h1>
+    <p class="hero-desc">No engineering background. Started with ChatGPT as a workaround just to get past mainland China's restrictions. Now building things I couldn't have imagined two years ago.</p>
+  </div>
+</header>
+
+<main>
+  <article class="article">
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">2022–<br>2023</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">How it started</p>
+        <h2 class="ch-title">Getting past the wall</h2>
+        <p>First heard about ChatGPT and needed a workaround just to register — IP blocks, account restrictions, the full mainland China experience. Got help from some CS classmates who knew their way around it.</p>
+        <p>Once I had access, I used it mostly like a smarter search engine. Helped with some essays, answered questions, gave me information faster than Baidu. Useful, but not something I thought much about beyond that.</p>
+        <div class="tools">
+          <span class="tool-chip">ChatGPT</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">Late<br>2025</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">Things got serious</p>
+        <h2 class="ch-title">NotebookLM changes something</h2>
+        <p>During my Decathlon internship, I accidentally ended up with a free year of Gemini Pro. Started using it for work — drafting, summarizing, translating between Chinese and English quickly.</p>
+        <p>Then I found NotebookLM. The concept: you feed it any materials — PDFs, documents, YouTube links — and it only works within what you give it. No hallucinations from the broader internet, just your sources. For research, for writing reports, for making sense of information you've collected — it clicked immediately.</p>
+        <p>This was the first time AI felt like a system rather than a feature.</p>
+        <div class="tools">
+          <span class="tool-chip">Gemini Pro</span>
+          <span class="tool-chip">NotebookLM</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull reveal">
+      <p>"This was the first time AI felt like a system rather than a feature."</p>
+    </div>
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">2025–<br>2026</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">Learning to communicate</p>
+        <h2 class="ch-title">Prompt training</h2>
+        <p>When I started my master's at Sydney, I started using ChatGPT more deliberately — not just for outputs, but to understand how to ask better. What makes a good prompt. What context actually changes the result. How to get from a vague idea to something useful.</p>
+        <p>This is the part most people skip. I found it worth spending time on.</p>
+        <div class="tools">
+          <span class="tool-chip">ChatGPT</span>
+          <span class="tool-chip">Prompt Engineering</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">April<br>2026</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">Discovering Claude</p>
+        <h2 class="ch-title">From chat tool to something else</h2>
+        <p>I'd heard about Claude Code being popular for developers, but assumed it wasn't for me — I don't write code. Started using Claude as a regular chat assistant, same as everything else.</p>
+        <p>Then I started exploring Projects — long-running conversations with custom context. Then Claude Code, which I'd been avoiding. Somewhere in there I realized the thing I'd been worried about (not being technical enough) wasn't actually the barrier I thought it was.</p>
+        <div class="tools">
+          <span class="tool-chip">Claude</span>
+          <span class="tool-chip">Claude Code</span>
+          <span class="tool-chip">Obsidian</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">First<br>build</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">Vibe coding</p>
+        <h2 class="ch-title">I made a product</h2>
+        <p>My first project: a personal budget tracker. I wanted to build an app. Claude talked me into a web version instead — simpler stack, deployable immediately, works on any device.</p>
+        <p>I bought an Alibaba Cloud domain. Deployed it. The interface was rough. I didn't care at all.</p>
+        <p>Before this, I'd seen the full product development process from the inside at Decathlon: BRD, PRD, dev sprints, testing, UAT, stakeholder sign-off. A whole team, months of work. Here I'd done something complete — from idea to deployed product — in a weekend, on my own, without any of that formal structure.</p>
+        <p>That was the moment something changed in how I thought about what I was capable of building.</p>
+        <div class="tools">
+          <span class="tool-chip">Vibe Coding</span>
+          <span class="tool-chip">Alibaba Cloud</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull reveal">
+      <p>"I'm not a coder. Probably won't become one. But 'I can't build things' is no longer how I think."</p>
+    </div>
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">Now</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">What's next</p>
+        <h2 class="ch-title">Personal website. Knowledge base. What comes after.</h2>
+        <p>This website is the second thing I've built. Using Claude Code, same principle — describe what you want, iterate, deploy. It takes longer than I expected. It also produces something real.</p>
+        <p>I'm also building a personal knowledge base in Obsidian — a place to actually keep the ideas and observations that have been disappearing for years. I've had a lot of thoughts that seemed worth holding onto and then didn't. That's not a habit I want to continue.</p>
+        <p>I don't have a specific product I'm trying to build. I have a direction: understand these tools deeply enough that when I have an idea worth executing, the technical side isn't the thing that stops it.</p>
+        <div class="tools">
+          <span class="tool-chip">Claude Code</span>
+          <span class="tool-chip">Obsidian</span>
+          <span class="tool-chip">Vibe Coding</span>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="tags reveal">
+      <span class="tag">Claude Code</span>
+      <span class="tag">Vibe Coding</span>
+      <span class="tag">NotebookLM</span>
+      <span class="tag">Obsidian</span>
+      <span class="tag">Gemini Pro</span>
+      <span class="tag">Prompt Engineering</span>
+    </div>
+
+    <a href="darts.html" class="next-story reveal">
+      <div>
+        <p class="next-label">Other story</p>
+        <p class="next-title">Darts</p>
+      </div>
+      <svg class="next-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+
+  </article>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">Trevor Huang · Personal Website</span>
+    <a href="index.html" class="footer-back">← Back to home</a>
+  </div>
+</footer>
+
+<script>
+  (function(){ const t = localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme = t; })();
+  function toggleTheme(){
+    const el = document.documentElement;
+    const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+    el.dataset.theme = next; localStorage.setItem('theme', next);
+  }
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); } });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

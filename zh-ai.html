@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 探索 — 黄拓文</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #FAFAF8;
+      --bg-sub:  #F0EEE8;
+      --bg-foot: #E8E6DE;
+      --fg:      #1C1917;
+      --fg-2:    #57534E;
+      --fg-3:    #A8A29E;
+      --border:  #E7E5E4;
+      --accent:  #7C3AED;
+      --f-display: 'Montserrat', 'Noto Sans SC', sans-serif;
+      --f-body:    'Nunito Sans', 'Noto Sans SC', sans-serif;
+      --f-mono:    'JetBrains Mono', monospace;
+    }
+    [data-theme="dark"] {
+      --bg:      #1C1917;
+      --bg-sub:  #292524;
+      --bg-foot: #292524;
+      --fg:      #F5F5F4;
+      --fg-2:    #A8A29E;
+      --fg-3:    #57534E;
+      --border:  #44403C;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--f-body); background: var(--bg); color: var(--fg); line-height: 1.8; transition: background .3s, color .3s; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; height: 56px; display: flex; align-items: center; gap: 8px; }
+    .nav-back { display: flex; align-items: center; gap: 5px; font-family: var(--f-mono); font-size: 12px; color: var(--fg-2); text-decoration: none; transition: color .2s; }
+    .nav-back:hover { color: var(--accent); }
+    .sep { color: var(--fg-3); font-family: var(--f-mono); font-size: 12px; }
+    .nav-crumb { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+    .lang-link { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; transition: color .2s; }
+    .lang-link:hover { color: var(--accent); }
+    .theme-btn { background: none; border: none; cursor: pointer; color: var(--fg-2); padding: 4px; display: flex; align-items: center; transition: color .2s; }
+    .theme-btn:hover { color: var(--accent); }
+    #icon-sun { display: none; }
+    [data-theme="dark"] #icon-moon { display: none; }
+    [data-theme="dark"] #icon-sun  { display: block; }
+
+    .hero { background: var(--bg-sub); border-bottom: 1px solid var(--border); padding: 80px 48px 72px; }
+    .hero-wrap { max-width: 720px; margin: 0 auto; }
+    .hero-label { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    .hero-title { font-family: 'Noto Sans SC', sans-serif; font-weight: 800; font-size: clamp(32px, 5vw, 50px); color: var(--fg); line-height: 1.1; margin-bottom: 20px; }
+    .hero-desc { font-size: 17px; color: var(--fg-2); max-width: 560px; line-height: 1.75; font-family: 'Noto Sans SC', sans-serif; }
+
+    .article { max-width: 720px; margin: 0 auto; padding: 60px 48px 96px; }
+
+    .tl-entry { display: grid; grid-template-columns: 72px 1fr; gap: 0 28px; margin-bottom: 56px; }
+    .tl-left { padding-top: 4px; text-align: right; }
+    .tl-year { font-family: var(--f-mono); font-size: 12px; color: var(--accent); font-weight: 400; line-height: 1.4; }
+    .tl-line { width: 1px; background: var(--border); margin: 10px auto 0; height: calc(100% - 10px); }
+    .ch-label { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+    .ch-title { font-family: 'Noto Sans SC', sans-serif; font-size: 20px; font-weight: 700; color: var(--fg); margin-bottom: 16px; }
+    .tl-right p { color: var(--fg-2); font-size: 16px; margin-bottom: 14px; font-weight: 400; font-family: 'Noto Sans SC', sans-serif; }
+    .tl-right p:last-of-type { margin-bottom: 0; }
+
+    .pull { border-left: 3px solid var(--accent); background: var(--bg-sub); border-radius: 0 8px 8px 0; padding: 14px 20px; margin: 24px 0; }
+    .pull p { color: var(--fg) !important; font-size: 17px !important; font-weight: 500 !important; margin: 0 !important; font-family: 'Noto Sans SC', sans-serif !important; }
+
+    .tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+    .tool-chip { font-family: var(--f-mono); font-size: 12px; color: var(--accent); background: var(--bg-sub); border: 1px solid var(--border); padding: 4px 12px; border-radius: 20px; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 32px; }
+    .tag { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); background: var(--bg-sub); border: 1px solid var(--border); padding: 3px 10px; border-radius: 4px; }
+
+    .next-story { display: flex; align-items: center; justify-content: space-between; padding: 28px 32px; background: var(--bg-sub); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--fg); margin-top: 56px; transition: border-color .2s, background .2s; }
+    .next-story:hover { border-color: var(--accent); background: var(--bg-foot); }
+    .next-label { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+    .next-title { font-family: 'Noto Sans SC', sans-serif; font-size: 18px; font-weight: 700; }
+    .next-arrow { color: var(--accent); flex-shrink: 0; }
+
+    footer { background: var(--bg-foot); border-top: 1px solid var(--border); padding: 32px 48px; }
+    .footer-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .footer-copy { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); }
+    .footer-back { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; transition: color .2s; }
+    .footer-back:hover { color: var(--accent); }
+
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
+    .vis { opacity: 1; transform: none; }
+
+    @media (max-width: 680px) {
+      .nav-inner { padding: 0 20px; }
+      .hero { padding: 52px 20px 48px; }
+      .article { padding: 36px 20px 72px; }
+      .tl-entry { grid-template-columns: 52px 1fr; gap: 0 16px; }
+      footer { padding: 24px 20px; }
+      .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="zh.html" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      黄拓文
+    </a>
+    <span class="sep">/</span>
+    <span class="nav-crumb">AI 探索</span>
+    <div class="nav-right">
+      <a href="ai.html" class="lang-link">EN</a>
+      <button class="theme-btn" onclick="toggleTheme()" aria-label="切换主题">
+        <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-wrap">
+    <p class="hero-label">工作之外</p>
+    <h1 class="hero-title">AI 探索</h1>
+    <p class="hero-desc">没有技术背景。最开始用 ChatGPT 是靠绕过封锁才注册上的。现在在用 Claude Code 做两年前根本想不到自己能做的东西。</p>
+  </div>
+</header>
+
+<main>
+  <article class="article">
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">2022–<br>2023</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">怎么开始的</p>
+        <h2 class="ch-title">翻过那道墙</h2>
+        <p>第一次知道 ChatGPT，注册就是个问题——IP 封锁，账号限制，国内的那套全碰上了。靠计算机系的同学帮忙，各种办法绕过去的。</p>
+        <p>注册上之后用得也简单，主要就是当升级版的搜索引擎。帮忙写过论文，回答问题，速度比百度快。有用，但也没觉得有多特别。</p>
+        <div class="tools">
+          <span class="tool-chip">ChatGPT</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">2025<br>年底</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">认真起来了</p>
+        <h2 class="ch-title">NotebookLM 让我觉得不一样了</h2>
+        <p>迪卡侬实习那段时间，意外白嫖了一年 Gemini Pro。开始用在工作上——起草文件、总结资料、中英文快速互译。</p>
+        <p>然后发现了 NotebookLM。逻辑很直接：你把自己的资料喂进去——PDF、文档、YouTube 链接都行——它只在你给的范围内作答，不会乱引用互联网上的东西。拿来做研究、写报告、整理信息，一下子觉得特别好用。</p>
+        <p>那是第一次我觉得 AI 是一个系统，而不只是一个功能。</p>
+        <div class="tools">
+          <span class="tool-chip">Gemini Pro</span>
+          <span class="tool-chip">NotebookLM</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull reveal">
+      <p>那是第一次我觉得 AI 是一个系统，而不只是一个功能。</p>
+    </div>
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">2025–<br>2026</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">学怎么沟通</p>
+        <h2 class="ch-title">训练 Prompt</h2>
+        <p>去悉尼读研之后开始更刻意地用 ChatGPT——不只是要输出结果，而是去搞懂怎么问才有用。好的 Prompt 是什么样的，加什么上下文会让结果变好，怎么从一个模糊的想法走到真正有用的东西。</p>
+        <p>这部分大多数人会跳过。我觉得值得花时间。</p>
+        <div class="tools">
+          <span class="tool-chip">ChatGPT</span>
+          <span class="tool-chip">Prompt 工程</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">2026<br>年4月</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">发现 Claude</p>
+        <h2 class="ch-title">从聊天工具到别的什么</h2>
+        <p>之前就听说 Claude Code 在开发者里很火，但觉得跟我没关系——我不写代码。最开始用 Claude 也就是普通的聊天助手，跟其他的没什么区别。</p>
+        <p>然后开始摸 Projects——有持久上下文的长期对话。再到 Claude Code，一直在回避，后来还是用了。用了之后发现我之前担心的那些（技术门槛太高），其实根本不是我以为的那道坎。</p>
+        <div class="tools">
+          <span class="tool-chip">Claude</span>
+          <span class="tool-chip">Claude Code</span>
+          <span class="tool-chip">Obsidian</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">第一个<br>作品</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">Vibe Coding</p>
+        <h2 class="ch-title">我居然做了个产品</h2>
+        <p>第一个项目：个人记账工具。本来想做 App，被 Claude 劝成了网页版——技术栈更简单，直接部署，手机电脑都能用。</p>
+        <p>买了阿里云域名，部署上去了。界面很糙，我完全不在意。</p>
+        <p>在迪卡侬的时候，我近距离见过完整的产品研发流程：BRD、PRD、开发迭代、测试、UAT、各方签字。一整个团队，好几个月。这次我一个人从想法到上线，一个周末搞完，没有那些正式流程，但完整。</p>
+        <p>就是那一刻，我对自己能做什么的认知变了。</p>
+        <div class="tools">
+          <span class="tool-chip">Vibe Coding</span>
+          <span class="tool-chip">阿里云</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull reveal">
+      <p>不懂代码，大概也不会专门去学。但「我没法自己做东西」这个念头，已经不在了。</p>
+    </div>
+
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <p class="tl-year">现在</p>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-right">
+        <p class="ch-label">接下来</p>
+        <h2 class="ch-title">个人网站、知识库，以及再往后</h2>
+        <p>这个网站是第二个作品。用 Claude Code，同样的方式——描述想要什么，不断迭代，部署上线。比预期慢，但做出来的是真的东西。</p>
+        <p>我也在用 Obsidian 搭个人知识库——把多年来那些没有被好好留下来的想法和观察放进去。我有不少觉得值得记的想法，后来都消散了。这个习惯我不想继续了。</p>
+        <p>我没有一个现在就想做出来的具体产品。我有一个方向：把这些工具理解得足够深，等到我真的有一个值得去做的想法的时候，技术这边不是拦住它的理由。</p>
+        <div class="tools">
+          <span class="tool-chip">Claude Code</span>
+          <span class="tool-chip">Obsidian</span>
+          <span class="tool-chip">Vibe Coding</span>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="tags reveal">
+      <span class="tag">Claude Code</span>
+      <span class="tag">Vibe Coding</span>
+      <span class="tag">NotebookLM</span>
+      <span class="tag">Obsidian</span>
+      <span class="tag">Gemini Pro</span>
+      <span class="tag">Prompt 工程</span>
+    </div>
+
+    <a href="zh-darts.html" class="next-story reveal">
+      <div>
+        <p class="next-label">另一个故事</p>
+        <p class="next-title">飞镖</p>
+      </div>
+      <svg class="next-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+
+  </article>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">黄拓文 · 个人网站</span>
+    <a href="zh.html" class="footer-back">← 返回主页</a>
+  </div>
+</footer>
+
+<script>
+  (function(){ const t = localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme = t; })();
+  function toggleTheme(){
+    const el = document.documentElement;
+    const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+    el.dataset.theme = next; localStorage.setItem('theme', next);
+  }
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); } });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
