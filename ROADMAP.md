@@ -16,7 +16,7 @@
 - [x] 卡通头像（AI 抠图透明背景）
 - [x] 社交图标（Email / LinkedIn / Instagram / X / 小红书）
 - [x] CLAUDE.md + ROADMAP.md（项目文档）
-- [ ] GitHub 建仓 + GitHub Pages 部署
+- [x] GitHub 建仓 + GitHub Pages 部署 → https://thuang17.github.io
 
 ---
 
