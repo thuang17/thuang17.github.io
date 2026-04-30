@@ -1,17 +1,19 @@
 # Case Studies
 
-## Mandatory Structure
+## Content Checklist (Not a Template)
 
-Every case study must follow this order:
+Section names should describe actual content, not abstract labels (Tania Rascia style).
+But every case study must cover these six dimensions — in whatever order and naming makes sense:
 
 1. **Context** — What was the situation? What constraints existed?
 2. **Problem** — What needed to be solved? Why did it matter?
 3. **Strategy** — What approach was chosen and why? What alternatives were rejected?
-4. **Execution** — What was actually done, step by step? What decisions were made mid-way?
-5. **Result** — What happened? Use specific numbers.
-6. **Reflection** — What would be done differently? What was learned?
+4. **Execution** — What was actually done? What decisions were made mid-way?
+5. **Result** — What happened? Specific numbers required.
+6. **Reflection** — What would be done differently? Be honest.
 
-This replaces resume-style bullet points.
+Example: instead of a section called "Strategy", use "Audience Targeting Approach" or "How We Prioritized".
+The goal is that a reader learns how Trevor thinks — not that they see a standard template.
 
 ---
 
