@@ -45,7 +45,7 @@
       background: var(--bg); border-bottom: 1px solid var(--border);
     }
     .nav-inner {
-      max-width: 1080px; margin: 0 auto;
+      max-width: 1160px; margin: 0 auto;
       padding: 0 48px; height: 56px;
       display: flex; align-items: center; gap: 8px;
     }
@@ -83,13 +83,13 @@
     }
     .hero-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,.25) 0%, rgba(0,0,0,.4) 50%, var(--bg) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,.2) 0%, rgba(0,0,0,.45) 55%, var(--bg) 100%);
     }
     .hero-content {
       position: absolute; bottom: 0; left: 0; right: 0;
       padding: 0 48px 52px;
     }
-    .hero-wrap { max-width: 720px; margin: 0 auto; }
+    .hero-content-inner { max-width: 1160px; margin: 0 auto; }
     .hero-label {
       font-family: var(--f-mono); font-size: 11px;
       letter-spacing: .1em; text-transform: uppercase;
@@ -101,11 +101,24 @@
       color: #fff; line-height: 1.05;
     }
 
+    /* MAIN TWO-COLUMN LAYOUT */
+    .main-layout {
+      max-width: 1160px; margin: 0 auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 0 60px;
+      align-items: start;
+    }
+
     /* ARTICLE */
-    .article { max-width: 720px; margin: 0 auto; padding: 56px 48px 96px; }
+    .article { padding: 52px 0 96px; max-width: 680px; }
 
     /* CHAPTERS */
-    .chapter { margin-bottom: 52px; }
+    .chapter {
+      margin-bottom: 52px;
+      scroll-margin-top: 80px;
+    }
     .ch-label {
       font-family: var(--f-mono); font-size: 11px;
       color: var(--accent); letter-spacing: .1em;
@@ -114,9 +127,10 @@
     .ch-title {
       font-family: var(--f-display); font-size: 20px;
       font-weight: 700; color: var(--fg); margin-bottom: 18px;
+      padding-bottom: 10px; border-bottom: 1px solid var(--border);
     }
     .chapter p {
-      color: var(--fg-2); font-size: 16px;
+      color: var(--fg-2); font-size: 15.5px;
       margin-bottom: 14px; font-weight: 400;
     }
     .chapter p:last-of-type { margin-bottom: 0; }
@@ -129,17 +143,17 @@
       padding: 14px 20px; margin: 24px 0;
     }
     .pull p {
-      color: var(--fg) !important; font-size: 17px !important;
+      color: var(--fg) !important; font-size: 16px !important;
       font-style: italic; font-weight: 500 !important; margin: 0 !important;
     }
 
     /* PHOTOS */
     .photo-wide {
-      width: calc(100% + 96px); margin: 32px -48px;
-      overflow: hidden; cursor: pointer;
+      width: 100%; margin: 28px 0;
+      overflow: hidden; border-radius: 8px; cursor: pointer;
     }
     .photo-wide img {
-      width: 100%; max-height: 460px;
+      width: 100%; max-height: 420px;
       object-fit: cover; display: block;
       transition: transform .5s ease;
     }
@@ -147,7 +161,7 @@
 
     .photo-block {
       width: 100%; margin: 28px 0;
-      border-radius: 12px; overflow: hidden; cursor: pointer;
+      border-radius: 10px; overflow: hidden; cursor: pointer;
     }
     .photo-block img {
       width: 100%; height: auto; display: block;
@@ -160,7 +174,7 @@
       gap: 10px; margin: 28px 0;
     }
     .photo-grid-2 img {
-      width: 100%; height: 210px; object-fit: cover;
+      width: 100%; height: 200px; object-fit: cover;
       border-radius: 8px; display: block;
       transition: transform .3s ease; cursor: pointer;
     }
@@ -169,8 +183,7 @@
     .photo-strip {
       display: flex; gap: 10px;
       overflow-x: auto; padding-bottom: 8px;
-      margin: 28px -48px;
-      padding-left: 48px; padding-right: 48px;
+      margin: 28px 0;
       scrollbar-width: thin;
       scrollbar-color: var(--border) transparent;
     }
@@ -178,7 +191,7 @@
     .photo-strip::-webkit-scrollbar-track { background: transparent; }
     .photo-strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
     .photo-strip img {
-      height: 260px; width: auto; flex-shrink: 0;
+      height: 240px; width: auto; flex-shrink: 0;
       border-radius: 10px; display: block;
       transition: transform .3s ease; cursor: pointer;
     }
@@ -186,7 +199,7 @@
 
     .caption {
       font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); margin-top: 6px; margin-bottom: 24px;
+      color: var(--fg-3); margin-top: -16px; margin-bottom: 28px;
     }
 
     hr { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
@@ -203,31 +216,52 @@
     /* NEXT STORY */
     .next-story {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 28px 32px;
+      padding: 24px 28px;
       background: var(--bg-sub); border: 1px solid var(--border);
       border-radius: 12px; text-decoration: none; color: var(--fg);
       margin-top: 56px;
-      transition: border-color .2s, background .2s;
+      transition: border-color .2s;
     }
-    .next-story:hover { border-color: var(--accent); background: var(--bg-foot); }
+    .next-story:hover { border-color: var(--accent); }
     .next-label {
       font-family: var(--f-mono); font-size: 11px;
       color: var(--fg-3); letter-spacing: .08em;
       text-transform: uppercase; margin-bottom: 4px;
     }
-    .next-title {
-      font-family: var(--f-display); font-size: 18px;
-      font-weight: 700;
-    }
+    .next-title { font-family: var(--f-display); font-size: 17px; font-weight: 700; }
     .next-arrow { color: var(--accent); flex-shrink: 0; }
+
+    /* STICKY TOC */
+    .toc-wrap {
+      padding: 52px 0 0;
+      position: sticky;
+      top: 72px;
+    }
+    .toc-label {
+      font-family: var(--f-mono); font-size: 10px;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--fg-3); margin-bottom: 12px;
+    }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 2px; }
+    .toc-list a {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-3); text-decoration: none;
+      display: block; padding: 4px 8px;
+      border-left: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+      line-height: 1.4;
+    }
+    .toc-list a:hover { color: var(--fg-2); border-left-color: var(--border); }
+    .toc-list a.active { color: var(--accent); border-left-color: var(--accent); }
 
     /* FOOTER */
     footer {
       background: var(--bg-foot); border-top: 1px solid var(--border);
-      padding: 32px 48px;
+      padding: 28px 48px;
     }
     .footer-inner {
-      max-width: 1080px; margin: 0 auto;
+      max-width: 1160px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
     }
     .footer-copy { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); }
@@ -253,20 +287,21 @@
     }
 
     /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
     .vis { opacity: 1; transform: none; }
 
-    @media (max-width: 680px) {
+    @media (max-width: 860px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .toc-wrap { display: none; }
       .nav-inner { padding: 0 20px; }
-      .hero { height: 360px; }
       .hero-content { padding: 0 20px 36px; }
-      .article { padding: 36px 20px 72px; }
-      .photo-wide { width: calc(100% + 40px); margin: 24px -20px; }
-      .photo-strip { margin: 24px -20px; padding-left: 20px; padding-right: 20px; }
-      .photo-grid-2 { grid-template-columns: 1fr 1fr; }
-      .photo-grid-2 img { height: 150px; }
+      .main-layout { padding: 0 20px; }
       footer { padding: 24px 20px; }
       .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .hero { height: 360px; }
+      .photo-grid-2 img { height: 150px; }
     }
   </style>
 </head>
@@ -294,17 +329,17 @@
   <img src="darts/微信图片_20260429164622_417_10.jpg" alt="Trevor throwing a dart" loading="eager">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-wrap">
+    <div class="hero-content-inner">
       <p class="hero-label">Outside the office</p>
       <h1 class="hero-title">Darts</h1>
     </div>
   </div>
 </div>
 
-<main>
+<div class="main-layout">
   <article class="article">
 
-    <div class="chapter reveal">
+    <div class="chapter reveal" id="lottery">
       <p class="ch-label">01 · How it started</p>
       <h2 class="ch-title">The lottery</h2>
       <p>I ended up here by accident. In my first year at SUIBE, I tried to sign up for archery as my PE elective. Didn't get it. Got darts instead.</p>
@@ -316,7 +351,7 @@
     </div>
     <p class="caption reveal">SUIBE Darts Association · Founded 2018</p>
 
-    <div class="chapter reveal">
+    <div class="chapter reveal" id="practice">
       <p class="ch-label">02 · Getting serious</p>
       <h2 class="ch-title">Deliberate practice</h2>
       <p>I started staying after sessions to practice alone. Watched professional players — studied their stance, their grip, their follow-through. Then went back to the board and tried to fix one thing at a time.</p>
@@ -327,7 +362,7 @@
       <p>"Every throw is repeatable. Every inconsistency is yours to own."</p>
     </div>
 
-    <div class="chapter reveal">
+    <div class="chapter reveal" id="president">
       <p class="ch-label">03 · Taking over</p>
       <h2 class="ch-title">An organization in name only</h2>
       <p>The SUIBE Darts Association had been nationally ranked in 2019. Then COVID hit, the club went quiet for two years, and by the time things reopened the structure had mostly dissolved.</p>
@@ -340,7 +375,7 @@
     </div>
     <p class="caption reveal">New recruitment campaign after the restructure</p>
 
-    <div class="chapter reveal">
+    <div class="chapter reveal" id="building">
       <p class="ch-label">04 · Building</p>
       <h2 class="ch-title">From 50 to 100, and a real team</h2>
       <p>Within two years the club grew from about 50 to nearly 100 members. We rebuilt the school team from scratch — proper selection, regular training sessions, a real lineup at competitions.</p>
@@ -365,7 +400,7 @@
     </div>
     <p class="caption reveal">End-of-semester gathering · close to 100 members by this point</p>
 
-    <div class="chapter reveal">
+    <div class="chapter reveal" id="competition">
       <p class="ch-label">05 · Competition</p>
       <h2 class="ch-title">The Shanghai University League</h2>
       <p>The competition I remember most is the Shanghai University Darts League, hosted at ECUPL. Multiple schools, proper format, individual and team events.</p>
@@ -383,7 +418,7 @@
     </div>
     <p class="caption reveal">上海市高校飞镖交流赛 · Shanghai University Darts Exchange</p>
 
-    <div class="chapter reveal">
+    <div class="chapter reveal" id="beyond">
       <p class="ch-label">06 · Beyond campus</p>
       <h2 class="ch-title">The real players — and the noodles</h2>
       <p>Dartslive is a global network of ranked darts machines with organized tournaments. I registered a card and started competing in their Shanghai events.</p>
@@ -420,7 +455,7 @@
 
     <hr>
 
-    <div class="chapter reveal">
+    <div class="chapter reveal" id="handoff">
       <p class="ch-label">07 · Passing it on</p>
       <h2 class="ch-title">Finding the next president</h2>
       <p>Before I left, I needed to find a successor. I wanted someone who genuinely cared about the game, not just the title.</p>
@@ -441,15 +476,28 @@
         <p class="next-label">Next story</p>
         <p class="next-title">AI Explorer</p>
       </div>
-      <svg class="next-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      <svg class="next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </a>
 
   </article>
-</main>
+
+  <aside class="toc-wrap">
+    <p class="toc-label">Chapters</p>
+    <ul class="toc-list">
+      <li><a href="#lottery">The lottery</a></li>
+      <li><a href="#practice">Deliberate practice</a></li>
+      <li><a href="#president">Taking over</a></li>
+      <li><a href="#building">50 → 100</a></li>
+      <li><a href="#competition">Shanghai Uni League</a></li>
+      <li><a href="#beyond">Beyond campus</a></li>
+      <li><a href="#handoff">Passing it on</a></li>
+    </ul>
+  </aside>
+</div>
 
 <footer>
   <div class="footer-inner">
-    <span class="footer-copy">Trevor Huang · Personal Website</span>
+    <span class="footer-copy">© 2026 Trevor Huang</span>
     <a href="index.html" class="footer-back">← Back to home</a>
   </div>
 </footer>
@@ -466,10 +514,28 @@
     const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
     el.dataset.theme = next; localStorage.setItem('theme', next);
   }
+
+  // Scroll reveal
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); } });
   }, { threshold: 0.06 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Active TOC
+  const chapters = document.querySelectorAll('.chapter');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  const tocObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  chapters.forEach(s => tocObs.observe(s));
+
+  // Lightbox
   function openLightbox(src){
     document.getElementById('lightbox-img').src = src;
     document.getElementById('lightbox').classList.add('open');
