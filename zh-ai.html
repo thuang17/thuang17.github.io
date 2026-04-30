@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI 探索 — 黄拓文</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})()</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -29,13 +30,22 @@
       --fg-2:    #A8A29E;
       --fg-3:    #57534E;
       --border:  #44403C;
+      --accent:  #A78BFA;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: var(--f-body); background: var(--bg); color: var(--fg); line-height: 1.8; transition: background .3s, color .3s; }
+    body {
+      font-family: var(--f-body); background: var(--bg); color: var(--fg);
+      line-height: 1.8; transition: background .3s, color .3s;
+    }
 
+    /* NAV */
     nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); }
-    .nav-inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; height: 56px; display: flex; align-items: center; gap: 8px; }
+    .nav-inner {
+      max-width: 1160px; margin: 0 auto;
+      padding: 0 48px; height: 56px;
+      display: flex; align-items: center; gap: 8px;
+    }
     .nav-back { display: flex; align-items: center; gap: 5px; font-family: var(--f-mono); font-size: 12px; color: var(--fg-2); text-decoration: none; transition: color .2s; }
     .nav-back:hover { color: var(--accent); }
     .sep { color: var(--fg-3); font-family: var(--f-mono); font-size: 12px; }
@@ -49,56 +59,95 @@
     [data-theme="dark"] #icon-moon { display: none; }
     [data-theme="dark"] #icon-sun  { display: block; }
 
-    .hero { background: var(--bg-sub); border-bottom: 1px solid var(--border); padding: 80px 48px 72px; }
-    .hero-wrap { max-width: 720px; margin: 0 auto; }
-    .hero-label { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-    .hero-title { font-family: 'Noto Sans SC', sans-serif; font-weight: 800; font-size: clamp(32px, 5vw, 50px); color: var(--fg); line-height: 1.1; margin-bottom: 20px; }
-    .hero-desc { font-size: 17px; color: var(--fg-2); max-width: 560px; line-height: 1.75; font-family: 'Noto Sans SC', sans-serif; }
+    /* PAGE HEADER */
+    .page-header { border-bottom: 1px solid var(--border); padding: 52px 48px 44px; }
+    .page-header-inner { max-width: 1160px; margin: 0 auto; }
+    .header-label { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    .header-title { font-family: 'Noto Sans SC', sans-serif; font-weight: 800; font-size: clamp(32px, 5vw, 48px); color: var(--fg); line-height: 1.1; margin-bottom: 18px; }
+    .header-desc { font-size: 16px; color: var(--fg-2); max-width: 560px; line-height: 1.75; font-family: 'Noto Sans SC', sans-serif; }
 
-    .article { max-width: 720px; margin: 0 auto; padding: 60px 48px 96px; }
+    /* MAIN TWO-COLUMN LAYOUT */
+    .main-layout {
+      max-width: 1160px; margin: 0 auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 0 60px;
+      align-items: start;
+    }
 
-    .tl-entry { display: grid; grid-template-columns: 72px 1fr; gap: 0 28px; margin-bottom: 56px; }
-    .tl-left { padding-top: 4px; text-align: right; }
-    .tl-year { font-family: var(--f-mono); font-size: 12px; color: var(--accent); font-weight: 400; line-height: 1.4; }
+    /* ARTICLE */
+    .article { padding: 52px 0 96px; max-width: 680px; }
+
+    /* TIMELINE ENTRIES */
+    .tl-entry {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 0 24px;
+      margin-bottom: 52px;
+      scroll-margin-top: 80px;
+    }
+    .tl-left { padding-top: 2px; }
+    .tl-year { font-family: var(--f-mono); font-size: 11px; color: var(--accent); font-weight: 400; line-height: 1.4; text-align: right; }
     .tl-line { width: 1px; background: var(--border); margin: 10px auto 0; height: calc(100% - 10px); }
     .ch-label { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
-    .ch-title { font-family: 'Noto Sans SC', sans-serif; font-size: 20px; font-weight: 700; color: var(--fg); margin-bottom: 16px; }
-    .tl-right p { color: var(--fg-2); font-size: 16px; margin-bottom: 14px; font-weight: 400; font-family: 'Noto Sans SC', sans-serif; }
+    .ch-title { font-family: 'Noto Sans SC', sans-serif; font-size: 20px; font-weight: 700; color: var(--fg); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .tl-right p { color: var(--fg-2); font-size: 15.5px; margin-bottom: 14px; font-weight: 400; font-family: 'Noto Sans SC', sans-serif; }
     .tl-right p:last-of-type { margin-bottom: 0; }
 
-    .pull { border-left: 3px solid var(--accent); background: var(--bg-sub); border-radius: 0 8px 8px 0; padding: 14px 20px; margin: 24px 0; }
-    .pull p { color: var(--fg) !important; font-size: 17px !important; font-weight: 500 !important; margin: 0 !important; font-family: 'Noto Sans SC', sans-serif !important; }
+    /* PULL QUOTE */
+    .pull { border-left: 3px solid var(--accent); background: var(--bg-sub); border-radius: 0 8px 8px 0; padding: 14px 20px; margin: 0 0 52px 96px; }
+    .pull p { color: var(--fg) !important; font-size: 16px !important; font-weight: 500 !important; margin: 0 !important; font-family: 'Noto Sans SC', sans-serif !important; }
 
-    .tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
-    .tool-chip { font-family: var(--f-mono); font-size: 12px; color: var(--accent); background: var(--bg-sub); border: 1px solid var(--border); padding: 4px 12px; border-radius: 20px; }
+    /* TOOL CHIPS */
+    .tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tool-chip { font-family: var(--f-mono); font-size: 11px; color: var(--accent); background: var(--bg-sub); border: 1px solid var(--border); padding: 3px 10px; border-radius: 20px; }
 
     hr { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
 
+    /* TAGS */
     .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 32px; }
     .tag { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); background: var(--bg-sub); border: 1px solid var(--border); padding: 3px 10px; border-radius: 4px; }
 
-    .next-story { display: flex; align-items: center; justify-content: space-between; padding: 28px 32px; background: var(--bg-sub); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--fg); margin-top: 56px; transition: border-color .2s, background .2s; }
-    .next-story:hover { border-color: var(--accent); background: var(--bg-foot); }
+    /* NEXT STORY */
+    .next-story { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px; background: var(--bg-sub); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--fg); margin-top: 56px; transition: border-color .2s; }
+    .next-story:hover { border-color: var(--accent); }
     .next-label { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
-    .next-title { font-family: 'Noto Sans SC', sans-serif; font-size: 18px; font-weight: 700; }
+    .next-title { font-family: 'Noto Sans SC', sans-serif; font-size: 17px; font-weight: 700; }
     .next-arrow { color: var(--accent); flex-shrink: 0; }
 
-    footer { background: var(--bg-foot); border-top: 1px solid var(--border); padding: 32px 48px; }
-    .footer-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    /* STICKY TOC */
+    .toc-wrap { padding: 52px 0 0; position: sticky; top: 72px; }
+    .toc-label { font-family: var(--f-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 12px; }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 2px; }
+    .toc-list a { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: var(--fg-3); text-decoration: none; display: block; padding: 4px 8px; border-left: 2px solid transparent; transition: color .15s, border-color .15s; line-height: 1.5; }
+    .toc-list a:hover { color: var(--fg-2); border-left-color: var(--border); }
+    .toc-list a.active { color: var(--accent); border-left-color: var(--accent); }
+
+    /* FOOTER */
+    footer { background: var(--bg-foot); border-top: 1px solid var(--border); padding: 28px 48px; }
+    .footer-inner { max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
     .footer-copy { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); }
     .footer-back { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; transition: color .2s; }
     .footer-back:hover { color: var(--accent); }
 
-    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
     .vis { opacity: 1; transform: none; }
 
-    @media (max-width: 680px) {
+    @media (max-width: 860px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .toc-wrap { display: none; }
       .nav-inner { padding: 0 20px; }
-      .hero { padding: 52px 20px 48px; }
-      .article { padding: 36px 20px 72px; }
-      .tl-entry { grid-template-columns: 52px 1fr; gap: 0 16px; }
+      .page-header { padding: 36px 20px 32px; }
+      .main-layout { padding: 0 20px; }
       footer { padding: 24px 20px; }
       .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+      .pull { margin-left: 0; }
+    }
+    @media (max-width: 480px) {
+      .tl-entry { grid-template-columns: 48px 1fr; gap: 0 16px; }
     }
   </style>
 </head>
@@ -122,18 +171,18 @@
   </div>
 </nav>
 
-<header class="hero">
-  <div class="hero-wrap">
-    <p class="hero-label">工作之外</p>
-    <h1 class="hero-title">AI 探索</h1>
-    <p class="hero-desc">没有技术背景。最开始用 ChatGPT 是靠绕过封锁才注册上的。现在在用 Claude Code 做两年前根本想不到自己能做的东西。</p>
+<header class="page-header">
+  <div class="page-header-inner">
+    <p class="header-label">工作之外</p>
+    <h1 class="header-title">AI 探索</h1>
+    <p class="header-desc">没有技术背景。最开始用 ChatGPT 是靠绕过封锁才注册上的。现在在用 Claude Code 做两年前根本想不到自己能做的东西。</p>
   </div>
 </header>
 
-<main>
+<div class="main-layout">
   <article class="article">
 
-    <div class="tl-entry reveal">
+    <div class="tl-entry reveal" id="start">
       <div class="tl-left">
         <p class="tl-year">2022–<br>2023</p>
         <div class="tl-line"></div>
@@ -149,7 +198,7 @@
       </div>
     </div>
 
-    <div class="tl-entry reveal">
+    <div class="tl-entry reveal" id="notebooklm">
       <div class="tl-left">
         <p class="tl-year">2025<br>年底</p>
         <div class="tl-line"></div>
@@ -171,7 +220,7 @@
       <p>那是第一次我觉得 AI 是一个系统，而不只是一个功能。</p>
     </div>
 
-    <div class="tl-entry reveal">
+    <div class="tl-entry reveal" id="prompts">
       <div class="tl-left">
         <p class="tl-year">2025–<br>2026</p>
         <div class="tl-line"></div>
@@ -188,7 +237,7 @@
       </div>
     </div>
 
-    <div class="tl-entry reveal">
+    <div class="tl-entry reveal" id="claude">
       <div class="tl-left">
         <p class="tl-year">2026<br>年4月</p>
         <div class="tl-line"></div>
@@ -206,7 +255,7 @@
       </div>
     </div>
 
-    <div class="tl-entry reveal">
+    <div class="tl-entry reveal" id="build">
       <div class="tl-left">
         <p class="tl-year">第一个<br>作品</p>
         <div class="tl-line"></div>
@@ -229,7 +278,7 @@
       <p>不懂代码，大概也不会专门去学。但「我没法自己做东西」这个念头，已经不在了。</p>
     </div>
 
-    <div class="tl-entry reveal">
+    <div class="tl-entry reveal" id="now">
       <div class="tl-left">
         <p class="tl-year">现在</p>
         <div class="tl-line"></div>
@@ -264,30 +313,57 @@
         <p class="next-label">另一个故事</p>
         <p class="next-title">飞镖</p>
       </div>
-      <svg class="next-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      <svg class="next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </a>
 
   </article>
-</main>
+
+  <aside class="toc-wrap">
+    <p class="toc-label">时间线</p>
+    <ul class="toc-list">
+      <li><a href="#start">翻过那道墙</a></li>
+      <li><a href="#notebooklm">NotebookLM</a></li>
+      <li><a href="#prompts">训练 Prompt</a></li>
+      <li><a href="#claude">发现 Claude</a></li>
+      <li><a href="#build">第一个作品</a></li>
+      <li><a href="#now">现在</a></li>
+    </ul>
+  </aside>
+</div>
 
 <footer>
   <div class="footer-inner">
-    <span class="footer-copy">黄拓文 · 个人网站</span>
+    <span class="footer-copy">© 2026 黄拓文</span>
     <a href="zh.html" class="footer-back">← 返回主页</a>
   </div>
 </footer>
 
 <script>
-  (function(){ const t = localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme = t; })();
   function toggleTheme(){
     const el = document.documentElement;
     const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
     el.dataset.theme = next; localStorage.setItem('theme', next);
   }
+
+  // Scroll reveal
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); } });
   }, { threshold: 0.06 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Active TOC
+  const tlEntries = document.querySelectorAll('.tl-entry');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  const tocObs = new IntersectionObserver(entries_ => {
+    entries_.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  tlEntries.forEach(s => tocObs.observe(s));
 </script>
 </body>
 </html>

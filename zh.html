@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,500;6..12,600&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <script>(function(){var t=localStorage.getItem('theme')||(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.dataset.theme=t;})()</script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
@@ -206,6 +207,16 @@
       transition:color var(--t),background var(--t);
     }
     .soc:hover{color:var(--fg);background:var(--border)}
+    .xhs-mark{
+      position:relative;width:18px;height:18px;border:1.7px solid currentColor;
+      border-radius:4px;background:none;-webkit-mask:none;mask:none;
+    }
+    .xhs-mark::before{
+      content:"";position:absolute;left:50%;top:50%;width:14px;height:6px;
+      transform:translate(-50%,-50%);background:currentColor;
+      -webkit-mask:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAM4AAABKCAYAAADzPmsKAAAC7ElEQVR4nO3d6W7qQAyGYRxx/7fsSpXa0hZCZvX2PtL5dUrI4i8eQjKIqt4wRc+OlFsdmmn/3J3vPLc7LnNR4L3jtg+tDWnsDA6QBsEZxzCtoN2fcRBvmCuG66eGJyE9ew+CM4Zu4+8YyIJjqn+XzVAN2ejDv57XXvp/gtOPbpPrGGnL3xEcZKcrlklw+tBtYrk8BLuK4KAKnbkwgrMH3SZZeAhOO24dAsFBOTphGUJw2nBRAJ8IDtBxIiQ419Ft8tDO130fT+5VW3+AxPGNlrOCLYbrN+UzS+sL7knOqqvXe+TgZH3q1QuxuNLJUA3oQHDe23k2o9sEQXCAwsHJcKbOsA1lZAnOqiEYt9fgqcrB8YRuEwzBAToQnNcYpuElgmM/fGKYFhDBAQyCk/1suXr7su+/tB7vVWNM728mS680wfsMTWTI3dF2onYbveXUFCQ+4wDPnc4GSnBsRO02FemzABGccVmHLjg5zpmCE+UsHmU98R+Trk/qFnSboqoHB2jFrxUMijo/AyYgOEAHgtOHblPb0O/jUAgoi46zD1fgEvm6V42Daj85YZQOLlbTzk40XO90HHgmC5c7tGyC04bOnIv0vpDg+BBlmJaR9LwoW3AoQGyRLTgrh1+rhmmEPSCCA3QGh2/B7bAfg6LjXEeR41dwshWEBFl2tv1eCrPctBfw49/zvU7x4LT8jiJnyh/si6KO4gVN4WM4OBQRsKjjEC4g8VDtSsg5CWBacCim1zM5nk6Jaqx3vbxuT6rL0ZlCNbItuuH9dxY0d45MGqq5fOKukzhc7/JF50j3KOJe8DdivBdulP1Yev8dQYvL8zPyZzLt19KOIgdbgmwL3WacWAendUID70XZggLGGfH8Pc7sIFoH29OVtOxk9RscyYoTWO2zxr12HMsAWlwUoNvEqKHvZR4OV5iuBY9+1aW3jmMdGi5B49IxPBw9VVm1wBimrTNj9COeHp32GhKZXMxet3OEWK/AYpe27wOUSGy/jxItHgAAAABJRU5ErkJggg==") center/contain no-repeat;
+      mask:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAM4AAABKCAYAAADzPmsKAAAC7ElEQVR4nO3d6W7qQAyGYRxx/7fsSpXa0hZCZvX2PtL5dUrI4i8eQjKIqt4wRc+OlFsdmmn/3J3vPLc7LnNR4L3jtg+tDWnsDA6QBsEZxzCtoN2fcRBvmCuG66eGJyE9ew+CM4Zu4+8YyIJjqn+XzVAN2ejDv57XXvp/gtOPbpPrGGnL3xEcZKcrlklw+tBtYrk8BLuK4KAKnbkwgrMH3SZZeAhOO24dAsFBOTphGUJw2nBRAJ8IDtBxIiQ419Ft8tDO130fT+5VW3+AxPGNlrOCLYbrN+UzS+sL7knOqqvXe+TgZH3q1QuxuNLJUA3oQHDe23k2o9sEQXCAwsHJcKbOsA1lZAnOqiEYt9fgqcrB8YRuEwzBAToQnNcYpuElgmM/fGKYFhDBAQyCk/1suXr7su+/tB7vVWNM728mS680wfsMTWTI3dF2onYbveXUFCQ+4wDPnc4GSnBsRO02FemzABGccVmHLjg5zpmCE+UsHmU98R+Trk/qFnSboqoHB2jFrxUMijo/AyYgOEAHgtOHblPb0O/jUAgoi46zD1fgEvm6V42Daj85YZQOLlbTzk40XO90HHgmC5c7tGyC04bOnIv0vpDg+BBlmJaR9LwoW3AoQGyRLTgrh1+rhmmEPSCCA3QGh2/B7bAfg6LjXEeR41dwshWEBFl2tv1eCrPctBfw49/zvU7x4LT8jiJnyh/si6KO4gVN4WM4OBQRsKjjEC4g8VDtSsg5CWBacCim1zM5nk6Jaqx3vbxuT6rL0ZlCNbItuuH9dxY0d45MGqq5fOKukzhc7/JF50j3KOJe8DdivBdulP1Yev8dQYvL8zPyZzLt19KOIgdbgmwL3WacWAendUID70XZggLGGfH8Pc7sIFoH29OVtOxk9RscyYoTWO2zxr12HMsAWlwUoNvEqKHvZR4OV5iuBY9+1aW3jmMdGi5B49IxPBw9VVm1wBimrTNj9COeHp32GhKZXMxet3OEWK/AYpe27wOUSGy/jxItHgAAAABJRU5ErkJggg==") center/contain no-repeat;
+    }
     .foot-bot{display:flex;justify-content:space-between;
               flex-wrap:wrap;gap:8px}
     .foot-copy{font-family:var(--f-mono);font-size:11px;color:var(--fg-3)}
@@ -535,19 +546,13 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
           <a class="soc" href="https://www.xiaohongshu.com/user/profile/6150a3e2000000001f03501f" target="_blank" rel="noopener" title="小红书" aria-label="小红书">
-            <svg width="17" height="17" viewBox="0 0 20 20" fill="none">
-              <rect width="20" height="20" rx="5" fill="#FF2442"/>
-              <path d="M10 4.5 L10 14 Q10 15.5 8.5 15" stroke="white" stroke-width="1.9" stroke-linecap="round" fill="none"/>
-              <path d="M7.5 7.5 L5 13.5" stroke="white" stroke-width="1.9" stroke-linecap="round"/>
-              <path d="M12.5 7.5 L15 13.5" stroke="white" stroke-width="1.9" stroke-linecap="round"/>
-            </svg>
+            <span class="xhs-mark" aria-hidden="true"></span>
           </a>
         </div>
       </div>
 
       <div class="foot-bot">
         <span class="foot-copy">© 2026 黄拓文 · Trevor Huang</span>
-        <span class="foot-copy">悉尼 · 中国</span>
       </div>
 
     </div>
