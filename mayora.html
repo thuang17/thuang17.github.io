@@ -317,6 +317,14 @@
     });
   }, { rootMargin: '-20% 0px -70% 0px' });
   sections.forEach(s => tocObs.observe(s));
+
+  // Fallback: activate last TOC item when scrolled to bottom
+  window.addEventListener('scroll', () => {
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      if (tocLinks.length) tocLinks[tocLinks.length - 1].classList.add('active');
+    }
+  }, { passive: true });
 </script>
 </body>
 </html>
