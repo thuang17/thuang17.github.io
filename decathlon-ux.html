@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decathlon UX Research — Trevor Huang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #FAFAF8;
+      --bg-sub:  #F0EEE8;
+      --bg-foot: #E8E6DE;
+      --fg:      #1C1917;
+      --fg-2:    #57534E;
+      --fg-3:    #A8A29E;
+      --border:  #E7E5E4;
+      --accent:  #7C3AED;
+      --f-display: 'Montserrat', sans-serif;
+      --f-body:    'Nunito Sans', sans-serif;
+      --f-mono:    'JetBrains Mono', monospace;
+    }
+    [data-theme="dark"] {
+      --bg:      #1C1917;
+      --bg-sub:  #292524;
+      --bg-foot: #292524;
+      --fg:      #F5F5F4;
+      --fg-2:    #A8A29E;
+      --fg-3:    #57534E;
+      --border:  #44403C;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--f-body); background: var(--bg); color: var(--fg);
+      line-height: 1.75; transition: background .3s, color .3s;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1160px; margin: 0 auto;
+      padding: 0 48px; height: 56px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-back {
+      display: flex; align-items: center; gap: 5px;
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-2); text-decoration: none; transition: color .2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    .sep { color: var(--fg-3); font-size: 12px; font-family: var(--f-mono); }
+    .nav-crumb { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+    .theme-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--fg-2); padding: 4px; display: flex; align-items: center; transition: color .2s;
+    }
+    .theme-btn:hover { color: var(--accent); }
+    #icon-sun { display: none; }
+    [data-theme="dark"] #icon-moon { display: none; }
+    [data-theme="dark"] #icon-sun  { display: block; }
+
+    /* PAGE HEADER */
+    .page-header {
+      border-bottom: 1px solid var(--border);
+      padding: 52px 48px 44px;
+    }
+    .page-header-inner { max-width: 1160px; margin: 0 auto; }
+    .back-to-projects {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); text-decoration: none; letter-spacing: .06em;
+      text-transform: uppercase; margin-bottom: 24px;
+      transition: color .2s;
+    }
+    .back-to-projects:hover { color: var(--accent); }
+    .page-header h1 {
+      font-family: var(--f-display); font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800; color: var(--fg); line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 24px;
+      font-family: var(--f-mono); font-size: 12px; color: var(--fg-3);
+    }
+    .meta-item strong { color: var(--fg-2); font-weight: 400; }
+    .meta-item span { color: var(--fg-3); }
+
+    /* MAIN LAYOUT */
+    .main-layout {
+      max-width: 1160px; margin: 0 auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 0 60px;
+      align-items: start;
+    }
+
+    /* ARTICLE */
+    .article {
+      padding: 48px 0 96px;
+      max-width: 680px;
+    }
+
+    /* SECTIONS */
+    .cs-section {
+      margin-bottom: 56px;
+      scroll-margin-top: 80px;
+    }
+    .cs-section h2 {
+      font-family: var(--f-display); font-size: 18px; font-weight: 700;
+      color: var(--fg); margin-bottom: 16px;
+      padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    }
+    .cs-section h3 {
+      font-family: var(--f-display); font-size: 14px; font-weight: 700;
+      color: var(--fg); margin: 24px 0 10px;
+      text-transform: uppercase; letter-spacing: .05em;
+    }
+    .cs-section p {
+      color: var(--fg-2); font-size: 15.5px;
+      margin-bottom: 14px; font-weight: 400;
+    }
+    .cs-section p:last-child { margin-bottom: 0; }
+    .cs-section ul, .cs-section ol {
+      color: var(--fg-2); font-size: 15.5px;
+      padding-left: 20px; margin-bottom: 14px;
+    }
+    .cs-section li { margin-bottom: 6px; }
+    .cs-section li:last-child { margin-bottom: 0; }
+
+    /* CALLOUT BOXES */
+    .callout {
+      background: var(--bg-sub); border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px; margin: 20px 0;
+    }
+    .callout-label {
+      font-family: var(--f-mono); font-size: 10px;
+      color: var(--accent); letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .callout p {
+      color: var(--fg); font-size: 14.5px !important;
+      margin: 0 !important; font-weight: 500;
+    }
+
+    /* DATA HIGHLIGHT */
+    .data-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin: 20px 0;
+    }
+    .data-card {
+      background: var(--bg-sub); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 16px;
+    }
+    .data-card .num {
+      font-family: var(--f-display); font-size: 22px; font-weight: 800;
+      color: var(--accent); line-height: 1;
+    }
+    .data-card .label {
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); margin-top: 4px; line-height: 1.4;
+    }
+
+    /* QUADRANT GRID */
+    .quadrant-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+    .quadrant-cell {
+      background: var(--bg);
+      padding: 16px;
+    }
+    .quadrant-cell:nth-child(1) { background: #f3f0ff; }
+    [data-theme="dark"] .quadrant-cell:nth-child(1) { background: #2e1065; }
+    .quadrant-label {
+      font-family: var(--f-mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--fg-3); margin-bottom: 8px;
+    }
+    .quadrant-cell:nth-child(1) .quadrant-label { color: var(--accent); }
+    .quadrant-title {
+      font-family: var(--f-display); font-size: 13px; font-weight: 700;
+      color: var(--fg); margin-bottom: 8px;
+    }
+    .quadrant-items {
+      font-size: 13px; color: var(--fg-2);
+      list-style: none; padding: 0;
+    }
+    .quadrant-items li { margin-bottom: 3px; }
+    .quadrant-items li::before { content: "·  "; color: var(--fg-3); }
+
+    /* PAIN POINT LIST */
+    .pp-list {
+      list-style: none; padding: 0; margin: 16px 0;
+    }
+    .pp-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+    }
+    .pp-item:last-child { border-bottom: none; }
+    .pp-num {
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); min-width: 24px; margin-top: 2px;
+    }
+    .pp-text { font-size: 14.5px; color: var(--fg-2); }
+    .pp-text strong { color: var(--fg); font-weight: 600; }
+
+    /* INLINE CODE */
+    code {
+      font-family: var(--f-mono); font-size: 13px;
+      background: var(--bg-sub); border: 1px solid var(--border);
+      padding: 1px 6px; border-radius: 3px;
+      color: var(--accent);
+    }
+
+    /* HORIZONTAL RULE */
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    /* STICKY TOC */
+    .toc-wrap {
+      padding: 48px 0 0;
+      position: sticky;
+      top: 72px;
+    }
+    .toc-label {
+      font-family: var(--f-mono); font-size: 10px;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--fg-3); margin-bottom: 12px;
+    }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 2px; }
+    .toc-list a {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-3); text-decoration: none;
+      display: block; padding: 4px 8px;
+      border-left: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+      line-height: 1.4;
+    }
+    .toc-list a:hover { color: var(--fg-2); border-left-color: var(--border); }
+    .toc-list a.active { color: var(--accent); border-left-color: var(--accent); }
+
+    /* NEXT PAGE */
+    .next-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 28px;
+      background: var(--bg-sub); border: 1px solid var(--border);
+      border-radius: 12px; text-decoration: none; color: var(--fg);
+      margin-top: 56px;
+      transition: border-color .2s;
+    }
+    .next-link:hover { border-color: var(--accent); }
+    .next-meta { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+    .next-title { font-family: var(--f-display); font-size: 17px; font-weight: 700; }
+    .next-arrow { color: var(--accent); }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg-foot); border-top: 1px solid var(--border);
+      padding: 28px 48px;
+    }
+    .footer-inner {
+      max-width: 1160px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); }
+    .footer-back {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-3); text-decoration: none; transition: color .2s;
+    }
+    .footer-back:hover { color: var(--accent); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+    .vis { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .toc-wrap { display: none; }
+      .nav-inner { padding: 0 20px; }
+      .page-header { padding: 36px 20px 32px; }
+      .main-layout { padding: 0 20px; }
+      footer { padding: 24px 20px; }
+      .footer-inner { flex-direction: column; gap: 10px; text-align: center; }
+      .data-row { grid-template-columns: 1fr 1fr; }
+      .quadrant-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .data-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Trevor Huang
+    </a>
+    <span class="sep">/</span>
+    <span class="nav-crumb">Decathlon UX Research</span>
+    <div class="nav-right">
+      <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="page-header-inner">
+    <a href="index.html#projects" class="back-to-projects">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Projects
+    </a>
+    <h1>WeChat Mini Program<br>UX Research</h1>
+    <div class="meta-row">
+      <div class="meta-item"><strong>Company</strong> <span>Decathlon (迪卡侬)</span></div>
+      <div class="meta-item"><strong>Role</strong> <span>Project Initiator</span></div>
+      <div class="meta-item"><strong>Period</strong> <span>Jan – Feb 2026</span></div>
+      <div class="meta-item"><strong>Channel</strong> <span>WeChat Mini Program</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="main-layout">
+  <article class="article">
+
+    <!-- CONTEXT -->
+    <section class="cs-section reveal" id="context">
+      <h2>Context</h2>
+      <p>This wasn't an assigned task. My mentor gave me open-ended space to find problems independently, and I started noticing friction points in Decathlon's WeChat Mini Program while using it as a normal customer. The more I looked, the more I found.</p>
+      <p>I proposed running a structured benchmarking exercise — mapping Decathlon's full purchase and returns experience against JD 1P, JD 3P, Tmall, and several sports brand Mini Programs. The goal: identify concrete, prioritizable UX gaps that could be turned into a formal project proposal.</p>
+      <div class="callout">
+        <div class="callout-label">One constraint worth naming</div>
+        <p>No internal user behavior data was available — no heatmaps, no conversion funnel. I flagged this to my mentor. His judgment: the pain points were obvious enough from competitive observation to proceed without it. I'd push harder for the data next time.</p>
+      </div>
+    </section>
+
+    <!-- RESEARCH METHOD -->
+    <section class="cs-section reveal" id="research">
+      <h2>Research Method</h2>
+      <p>Full-funnel competitive benchmarking across four reference platforms, covering every touchpoint from product discovery through after-sales:</p>
+      <ul>
+        <li><strong>JD 1P</strong> — JD's own-branded store, highest operational standard</li>
+        <li><strong>JD 3P</strong> — Third-party merchants on JD, more analogous to Decathlon's setup</li>
+        <li><strong>Tmall flagship stores</strong> — Benchmark for Mini Program experience quality</li>
+        <li><strong>Sports / outdoor brand Mini Programs</strong> — Direct category competitors</li>
+      </ul>
+      <p>For each platform, I went through the complete user journey: product detail page (PDP), logistics tracking, and after-sales / returns flow. Every gap was documented with screenshots and written analysis.</p>
+      <p>Total pain points identified: 16, spanning both the forward purchase flow and reverse returns flow.</p>
+
+      <div class="data-row">
+        <div class="data-card">
+          <div class="num">16</div>
+          <div class="label">Pain points identified<br>(forward + reverse flow)</div>
+        </div>
+        <div class="data-card">
+          <div class="num">4</div>
+          <div class="label">Reference platforms<br>benchmarked</div>
+        </div>
+        <div class="data-card">
+          <div class="num">2</div>
+          <div class="label">Alignment meetings<br>with Project Manager</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIORITIZATION FRAMEWORK -->
+    <section class="cs-section reveal" id="framework">
+      <h2>Prioritization Framework</h2>
+      <p>Not all 16 pain points deserved equal attention. I built a customized Value-Effort Matrix with dual-dimension weighted scoring to sort them:</p>
+      <ul>
+        <li><strong>Consumer need intensity</strong> (0–5): How much does this pain point actually affect the user's experience and purchasing decision?</li>
+        <li><strong>Business value</strong> (0–5): What is the commercial impact — conversion lift, return rate reduction, brand perception?</li>
+      </ul>
+      <p>The weighted total score determined quadrant placement. I held two alignment meetings with the team's dedicated Project Manager to validate that the quadrant placements reflected operational reality, not just my own assessment.</p>
+
+      <div class="quadrant-grid">
+        <div class="quadrant-cell">
+          <div class="quadrant-label">High value, low effort — Do now</div>
+          <div class="quadrant-title">Sprint backlog</div>
+          <ul class="quadrant-items">
+            <li>SKU naming standardization</li>
+            <li>Logistics ETA display</li>
+            <li>After-sales entry point visibility</li>
+          </ul>
+        </div>
+        <div class="quadrant-cell">
+          <div class="quadrant-label">High value, high effort — Plan</div>
+          <div class="quadrant-title">Roadmap items</div>
+          <ul class="quadrant-items">
+            <li>Self-service returns with courier pickup</li>
+            <li>Price difference auto-refund</li>
+          </ul>
+        </div>
+        <div class="quadrant-cell">
+          <div class="quadrant-label">Low value, low effort — Fill gaps</div>
+          <div class="quadrant-title">Quick wins</div>
+          <ul class="quadrant-items">
+            <li>UI polish items</li>
+            <li>Copy standardization</li>
+          </ul>
+        </div>
+        <div class="quadrant-cell">
+          <div class="quadrant-label">Low value, high effort — Deprioritize</div>
+          <div class="quadrant-title">Backlog / defer</div>
+          <ul class="quadrant-items">
+            <li>Feature parity with native apps</li>
+            <li>Complex personalization</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEY DECISION -->
+    <section class="cs-section reveal" id="decision">
+      <h2>Key Decision: Courier Pickup Deprioritized</h2>
+      <p>This was the most contentious prioritization call. My mentor initially wanted to push self-service return with courier pickup into the sprint — it's a visible, customer-facing feature that signals Decathlon takes returns seriously.</p>
+      <p>I argued against it with two reasons:</p>
+      <ol>
+        <li><strong>Implementation cost:</strong> Courier pickup requires reverse logistics API integration and new courier partnership agreements. The short-term development cost is high relative to the immediate ROI.</li>
+        <li><strong>Business impact:</strong> Reducing friction in the returns flow would likely spike return rates in the short term, increasing reverse logistics costs before the infrastructure is ready to absorb that volume efficiently.</li>
+      </ol>
+      <p>My recommendation: necessary long-term, wrong timing. Keep in the roadmap at low priority. My mentor agreed.</p>
+
+      <div class="callout">
+        <div class="callout-label">How I framed the argument</div>
+        <p>I didn't tell my mentor he was wrong. I showed the cost analysis and the likely return-rate impact, then asked: "Does the short-term ROI justify this ahead of the quick wins?" The math answered the question.</p>
+      </div>
+    </section>
+
+    <!-- STANDOUT PAIN POINTS -->
+    <section class="cs-section reveal" id="painpoints">
+      <h2>Standout Pain Points</h2>
+      <p>A few examples that illustrate the kind of gaps being flagged:</p>
+
+      <ul class="pp-list">
+        <li class="pp-item">
+          <span class="pp-num">01</span>
+          <span class="pp-text"><strong>SKU naming inconsistency.</strong> Product names in the Mini Program didn't match how products appeared in off-platform seeding content (Xiaohongshu, Douyin). Users who arrived from off-platform couldn't find the product they'd seen. Dual impact: conversion and brand consistency.</span>
+        </li>
+        <li class="pp-item">
+          <span class="pp-num">02</span>
+          <span class="pp-text"><strong>No logistics ETA display.</strong> After placing an order, users had no visibility into when to expect delivery. JD shows estimated arrival at the product page and order confirmation level. Low development cost, high UX impact — this went into the sprint.</span>
+        </li>
+        <li class="pp-item">
+          <span class="pp-num">03</span>
+          <span class="pp-text"><strong>After-sales entry point buried.</strong> Users trying to initiate a return or file a complaint couldn't find the entry point without significant searching. Competitor platforms surface this at the order level. Creates customer service volume for issues that should be self-serviceable.</span>
+        </li>
+        <li class="pp-item">
+          <span class="pp-num">04</span>
+          <span class="pp-text"><strong>No self-service courier pickup for returns.</strong> JD 1P offers this natively. Deprioritized for now, but a meaningful gap relative to category expectations — especially for sports equipment returns where items are heavy or awkward to carry.</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- OUTPUT -->
+    <section class="cs-section reveal" id="output">
+      <h2>Output</h2>
+      <p>The project produced two deliverables:</p>
+      <ul>
+        <li><strong>Prioritized requirements document</strong> — 16 pain points mapped into the Value-Effort quadrants, with each high-priority item detailed enough to be scoped for a sprint. High-priority items pushed directly into development; lower-priority items documented in the backlog.</li>
+        <li><strong>BRD: delivery radius expansion</strong> — A separate but related document proposing to expand the Mini Program's delivery radius from 3km to 10km, with projected annual GMV uplift of ¥6M+.</li>
+      </ul>
+      <p>Both documents were aligned with my mentor and the team's PM before being submitted for formal project approval.</p>
+
+      <div class="callout">
+        <div class="callout-label">What I'd do differently</div>
+        <p>I used competitive benchmarking as a proxy for user research because internal behavioral data wasn't available. It worked well enough to get the project approved — but the ideal validation would include heatmap data and conversion funnel analysis to test whether my prioritization matches where users are actually dropping off. Next time, I'd push harder for that data before finalizing the matrix.</p>
+      </div>
+
+      <hr>
+      <a href="decathlon.html" class="next-link">
+        <div>
+          <div class="next-meta">Full company story</div>
+          <div class="next-title">Decathlon — E-commerce PM Intern</div>
+        </div>
+        <span class="next-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+    </section>
+
+  </article>
+
+  <aside class="toc-wrap">
+    <p class="toc-label">On this page</p>
+    <ul class="toc-list">
+      <li><a href="#context">Context</a></li>
+      <li><a href="#research">Research Method</a></li>
+      <li><a href="#framework">Prioritization Framework</a></li>
+      <li><a href="#decision">Key Decision</a></li>
+      <li><a href="#painpoints">Standout Pain Points</a></li>
+      <li><a href="#output">Output</a></li>
+    </ul>
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">© 2026 Trevor Huang</span>
+    <a href="index.html" class="footer-back">← Back to home</a>
+  </div>
+</footer>
+
+<script>
+  // Theme
+  const root = document.documentElement;
+  const saved = localStorage.getItem('theme') || 'light';
+  root.setAttribute('data-theme', saved);
+  function toggleTheme() {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  }
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  // Active TOC
+  const sections = document.querySelectorAll('.cs-section');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  const tocObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => tocObs.observe(s));
+</script>
+
+</body>
+</html>

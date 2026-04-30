@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CNY Campaign — Trevor Huang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #FAFAF8;
+      --bg-sub:  #F0EEE8;
+      --bg-foot: #E8E6DE;
+      --fg:      #1C1917;
+      --fg-2:    #57534E;
+      --fg-3:    #A8A29E;
+      --border:  #E7E5E4;
+      --accent:  #7C3AED;
+      --f-display: 'Montserrat', sans-serif;
+      --f-body:    'Nunito Sans', sans-serif;
+      --f-mono:    'JetBrains Mono', monospace;
+    }
+    [data-theme="dark"] {
+      --bg:      #1C1917;
+      --bg-sub:  #292524;
+      --bg-foot: #292524;
+      --fg:      #F5F5F4;
+      --fg-2:    #A8A29E;
+      --fg-3:    #57534E;
+      --border:  #44403C;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--f-body); background: var(--bg); color: var(--fg);
+      line-height: 1.75; transition: background .3s, color .3s;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1160px; margin: 0 auto;
+      padding: 0 48px; height: 56px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-back {
+      display: flex; align-items: center; gap: 5px;
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-2); text-decoration: none; transition: color .2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    .sep { color: var(--fg-3); font-size: 12px; font-family: var(--f-mono); }
+    .nav-crumb { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+    .theme-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--fg-2); padding: 4px; display: flex; align-items: center; transition: color .2s;
+    }
+    .theme-btn:hover { color: var(--accent); }
+    #icon-sun { display: none; }
+    [data-theme="dark"] #icon-moon { display: none; }
+    [data-theme="dark"] #icon-sun  { display: block; }
+
+    /* PAGE HEADER */
+    .page-header {
+      border-bottom: 1px solid var(--border);
+      padding: 52px 48px 44px;
+    }
+    .page-header-inner { max-width: 1160px; margin: 0 auto; }
+    .back-to-projects {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); text-decoration: none; letter-spacing: .06em;
+      text-transform: uppercase; margin-bottom: 24px;
+      transition: color .2s;
+    }
+    .back-to-projects:hover { color: var(--accent); }
+    .page-header h1 {
+      font-family: var(--f-display); font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800; color: var(--fg); line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 24px;
+      font-family: var(--f-mono); font-size: 12px; color: var(--fg-3);
+    }
+    .meta-item strong { color: var(--fg-2); font-weight: 400; }
+    .meta-item span { color: var(--fg-3); }
+
+    /* MAIN LAYOUT: content + sidebar */
+    .main-layout {
+      max-width: 1160px; margin: 0 auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 0 60px;
+      align-items: start;
+    }
+
+    /* ARTICLE CONTENT */
+    .article {
+      padding: 48px 0 96px;
+      max-width: 680px;
+    }
+
+    /* SECTIONS */
+    .cs-section {
+      margin-bottom: 56px;
+      scroll-margin-top: 80px;
+    }
+    .cs-section h2 {
+      font-family: var(--f-display); font-size: 18px; font-weight: 700;
+      color: var(--fg); margin-bottom: 16px;
+      padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    }
+    .cs-section h3 {
+      font-family: var(--f-display); font-size: 14px; font-weight: 700;
+      color: var(--fg); margin: 24px 0 10px;
+      text-transform: uppercase; letter-spacing: .05em;
+    }
+    .cs-section p {
+      color: var(--fg-2); font-size: 15.5px;
+      margin-bottom: 14px; font-weight: 400;
+    }
+    .cs-section p:last-child { margin-bottom: 0; }
+    .cs-section ul, .cs-section ol {
+      color: var(--fg-2); font-size: 15.5px;
+      padding-left: 20px; margin-bottom: 14px;
+    }
+    .cs-section li { margin-bottom: 6px; }
+    .cs-section li:last-child { margin-bottom: 0; }
+
+    /* CALLOUT BOXES */
+    .callout {
+      background: var(--bg-sub); border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px; margin: 20px 0;
+    }
+    .callout-label {
+      font-family: var(--f-mono); font-size: 10px;
+      color: var(--accent); letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .callout p {
+      color: var(--fg); font-size: 14.5px !important;
+      margin: 0 !important; font-weight: 500;
+    }
+
+    /* DATA HIGHLIGHT */
+    .data-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin: 20px 0;
+    }
+    .data-card {
+      background: var(--bg-sub); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 16px;
+    }
+    .data-card .num {
+      font-family: var(--f-display); font-size: 22px; font-weight: 800;
+      color: var(--accent); line-height: 1;
+    }
+    .data-card .label {
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); margin-top: 4px; line-height: 1.4;
+    }
+
+    /* AUDIENCE TABLE */
+    .audience-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    .audience-table th {
+      font-family: var(--f-mono); font-size: 10px; font-weight: 400;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--fg-3); background: var(--bg-sub);
+      padding: 8px 12px; border: 1px solid var(--border);
+      text-align: left;
+    }
+    .audience-table td {
+      padding: 10px 12px; border: 1px solid var(--border);
+      color: var(--fg-2); vertical-align: top; line-height: 1.5;
+    }
+    .tag {
+      display: inline-block; font-family: var(--f-mono); font-size: 10px;
+      padding: 2px 7px; border-radius: 3px; font-weight: 500;
+      white-space: nowrap;
+    }
+    .tag-kept   { color: #16a34a; background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .tag-cut    { color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; }
+    .tag-test   { color: #ca8a04; background: #fefce8; border: 1px solid #fef08a; }
+
+    /* PHASE BLOCK */
+    .phase-block {
+      border: 1px solid var(--border); border-radius: 8px;
+      overflow: hidden; margin: 20px 0;
+    }
+    .phase-header {
+      background: var(--bg-sub); padding: 10px 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .phase-badge {
+      font-family: var(--f-mono); font-size: 10px;
+      background: var(--accent); color: #fff;
+      padding: 2px 7px; border-radius: 3px;
+      letter-spacing: .05em; text-transform: uppercase;
+    }
+    .phase-title {
+      font-family: var(--f-display); font-size: 13px; font-weight: 700;
+      color: var(--fg);
+    }
+    .phase-date {
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); margin-left: auto;
+    }
+    .phase-body { padding: 14px 16px; }
+    .phase-body ul {
+      color: var(--fg-2); font-size: 14.5px;
+      padding-left: 18px; margin: 0;
+    }
+    .phase-body li { margin-bottom: 5px; }
+    .phase-body li:last-child { margin-bottom: 0; }
+
+    /* INLINE CODE */
+    code {
+      font-family: var(--f-mono); font-size: 13px;
+      background: var(--bg-sub); border: 1px solid var(--border);
+      padding: 1px 6px; border-radius: 3px;
+      color: var(--accent);
+    }
+
+    /* HORIZONTAL RULE */
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    /* STICKY TOC */
+    .toc-wrap {
+      padding: 48px 0 0;
+      position: sticky;
+      top: 72px;
+    }
+    .toc-label {
+      font-family: var(--f-mono); font-size: 10px;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--fg-3); margin-bottom: 12px;
+    }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 2px; }
+    .toc-list a {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-3); text-decoration: none;
+      display: block; padding: 4px 8px;
+      border-left: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+      line-height: 1.4;
+    }
+    .toc-list a:hover { color: var(--fg-2); border-left-color: var(--border); }
+    .toc-list a.active { color: var(--accent); border-left-color: var(--accent); }
+
+    /* NEXT PAGE */
+    .next-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 28px;
+      background: var(--bg-sub); border: 1px solid var(--border);
+      border-radius: 12px; text-decoration: none; color: var(--fg);
+      margin-top: 56px;
+      transition: border-color .2s;
+    }
+    .next-link:hover { border-color: var(--accent); }
+    .next-meta { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+    .next-title { font-family: var(--f-display); font-size: 17px; font-weight: 700; }
+    .next-arrow { color: var(--accent); }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg-foot); border-top: 1px solid var(--border);
+      padding: 28px 48px;
+    }
+    .footer-inner {
+      max-width: 1160px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); }
+    .footer-back {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-3); text-decoration: none; transition: color .2s;
+    }
+    .footer-back:hover { color: var(--accent); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+    .vis { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .toc-wrap { display: none; }
+      .nav-inner { padding: 0 20px; }
+      .page-header { padding: 36px 20px 32px; }
+      .main-layout { padding: 0 20px; }
+      footer { padding: 24px 20px; }
+      .footer-inner { flex-direction: column; gap: 10px; text-align: center; }
+      .data-row { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .data-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Trevor Huang
+    </a>
+    <span class="sep">/</span>
+    <span class="nav-crumb">CNY Campaign</span>
+    <div class="nav-right">
+      <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="page-header-inner">
+    <a href="index.html#projects" class="back-to-projects">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Projects
+    </a>
+    <h1>Meituan Flash Sale<br>CNY Campaign</h1>
+    <div class="meta-row">
+      <div class="meta-item"><strong>Company</strong> <span>Mayora Food (迈大食品)</span></div>
+      <div class="meta-item"><strong>Role</strong> <span>Campaign Lead</span></div>
+      <div class="meta-item"><strong>Period</strong> <span>Dec 2024 – Feb 2025</span></div>
+      <div class="meta-item"><strong>Platform</strong> <span>Meituan Flash Sale (美团闪购)</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="main-layout">
+  <article class="article">
+
+    <!-- CONTEXT -->
+    <section class="cs-section reveal" id="context">
+      <h2>Context</h2>
+      <p>This was Mayora's first-ever instant retail campaign. No SOP, no historical benchmark data, no prior Meituan campaign to reference. I was handed a ¥230K budget and asked to make it work for Chinese New Year — the highest-stakes gifting window of the year.</p>
+      <p>Two product lines ran in parallel: gift boxes (the volume driver, tied to CNY gifting behavior) and new products (Kopiko variants, using the holiday as a launch window). I was responsible for the day-to-day execution — audience targeting strategy, budget allocation, optimization decisions, and reporting. My line manager set the macro direction; everything below that was mine to figure out.</p>
+      <div class="callout">
+        <div class="callout-label">Starting condition</div>
+        <p>Zero historical data. Zero SOP. First time Mayora ran an instant retail campaign of any kind.</p>
+      </div>
+    </section>
+
+    <!-- BUDGET STRUCTURE -->
+    <section class="cs-section reveal" id="budget">
+      <h2>Budget Structure</h2>
+      <p>Total approved budget: ¥230K across two mechanics — RTB ad placements and platform vouchers.</p>
+      <div class="data-row">
+        <div class="data-card">
+          <div class="num">¥150K</div>
+          <div class="label">RTB ad spend<br>(gift boxes + new products)</div>
+        </div>
+        <div class="data-card">
+          <div class="num">¥80K</div>
+          <div class="label">Voucher budget<br>(new products only)</div>
+        </div>
+        <div class="data-card">
+          <div class="num">¥12K</div>
+          <div class="label">Actual voucher spend<br>(conservative execution)</div>
+        </div>
+      </div>
+      <p>RTB and vouchers serve different functions. RTB is about finding the right people — placing your ad in front of high-intent audiences through real-time bidding. Vouchers give those people a reason to convert. Running both in parallel means you're solving for both reach quality and conversion rate simultaneously.</p>
+      <p>The voucher line significantly underspent against budget. This was a deliberate call by the team — participating too aggressively in voucher mechanics during a first campaign would have made it harder to isolate what was actually driving sales.</p>
+    </section>
+
+    <!-- AUDIENCE STRATEGY -->
+    <section class="cs-section reveal" id="audience">
+      <h2>Audience Targeting Strategy</h2>
+      <p>With no prior data, every audience decision started as a hypothesis. I mapped each segment to a specific behavioral logic, then planned to validate mid-campaign and cut anything that wasn't working.</p>
+
+      <table class="audience-table">
+        <thead>
+          <tr>
+            <th>Audience Segment</th>
+            <th>Hypothesis</th>
+            <th>Outcome</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cookie / biscuit buyers</strong><br><span style="font-family:var(--f-mono);font-size:11px;color:var(--fg-3);">饼干人群</span></td>
+            <td>Highest category affinity — lowest conversion barrier, core base</td>
+            <td><span class="tag tag-kept">Kept</span></td>
+          </tr>
+          <tr>
+            <td><strong>Gift-giving & care</strong><br><span style="font-family:var(--f-mono);font-size:11px;color:var(--fg-3);">礼赠关怀人群</span></td>
+            <td>CNY gifting occasion + gift box = direct intent match for "send as gift" use case</td>
+            <td><span class="tag tag-kept">Kept + scaled</span></td>
+          </tr>
+          <tr>
+            <td><strong>Existing customers</strong><br><span style="font-family:var(--f-mono);font-size:11px;color:var(--fg-3);">老客</span></td>
+            <td>Brand familiarity drives repurchase during CNY; re-engagement cost is low</td>
+            <td><span class="tag tag-kept">Kept</span></td>
+          </tr>
+          <tr>
+            <td><strong>Dairy transaction buyers</strong><br><span style="font-family:var(--f-mono);font-size:11px;color:var(--fg-3);">乳品交易人群</span></td>
+            <td>Hypothesis: biscuits + milk is a common consumption pairing — adjacent category crossover</td>
+            <td><span class="tag tag-cut">Cut (Week 1)</span></td>
+          </tr>
+          <tr>
+            <td><strong>Cracker series (脆乐脆)</strong><br><span style="font-family:var(--f-mono);font-size:11px;color:var(--fg-3);">CPC objective</span></td>
+            <td>Split out post-campaign as separate low-budget test on CPC bidding</td>
+            <td><span class="tag tag-test">Test</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>The dairy hypothesis turned out to be wrong. Adjacent category logic sounded reasonable but didn't hold up in practice — the incremental ROI was insufficient to justify continued spend. We cut it in Week 1 and reallocated the budget to the segments that were already outperforming.</p>
+
+      <div class="callout">
+        <div class="callout-label">Standout ROI — gift box line</div>
+        <p>Existing customers (老客): ROI 38.7 &nbsp;·&nbsp; Cookie buyers (曲奇交易人群): ROI 56.4 &nbsp;·&nbsp; Gift-giving & care: ROI 7.3</p>
+      </div>
+    </section>
+
+    <!-- OPTIMIZATION ROUNDS -->
+    <section class="cs-section reveal" id="optimization">
+      <h2>Two Rounds of Optimization</h2>
+      <p>The campaign ran two structured optimization rounds, each triggered by accumulated performance data rather than a fixed calendar date.</p>
+
+      <div class="phase-block">
+        <div class="phase-header">
+          <span class="phase-badge">Round 1</span>
+          <span class="phase-title">Precision Pivot</span>
+          <span class="phase-date">Week 1</span>
+        </div>
+        <div class="phase-body">
+          <ul>
+            <li>Gift box cities expanded from 3 to 5 (added Nanjing, Guangzhou)</li>
+            <li>Switched from broad targeting to precision insight plans across both lines</li>
+            <li>Moved gift box bidding to CPM mode for better impression control</li>
+            <li>Eliminated dairy transaction audience — ROI insufficient, budget reallocated to gift-giving segment</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase-block">
+        <div class="phase-header">
+          <span class="phase-badge">Round 2</span>
+          <span class="phase-title">Sprint Ramp</span>
+          <span class="phase-date">Jan 13–17 (peak CNY window)</span>
+        </div>
+        <div class="phase-body">
+          <ul>
+            <li>Gift box GMV daily caps scaled: ¥500 → ¥800 → ¥1,000 → ¥3,000</li>
+            <li>New product daily caps scaled: ¥1,000 → ¥1,500 → ¥2,000</li>
+            <li>Ad delivery hours extended from afternoon-only to full day (07:00–24:00)</li>
+            <li>Continued eliminating low-performing segments; concentrated spend on biscuit buyers and gift-giving audiences</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Post-Campaign Wind-Down</h3>
+      <p>After peak, gift box plans were fully paused (budget utilized). New products shifted to reduced frequency — hours narrowed back to 14:00–22:00, daily budget reduced to ¥250. Only top-performing audiences (biscuit buyers, home-living segment) were retained.</p>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="cs-section reveal" id="results">
+      <h2>Results</h2>
+
+      <h3>Gift Box Line (D-18 to D-1)</h3>
+      <div class="data-row">
+        <div class="data-card">
+          <div class="num">7.22</div>
+          <div class="label">Overall campaign ROI<br>(full CNY window)</div>
+        </div>
+        <div class="data-card">
+          <div class="num">1.38M</div>
+          <div class="label">Total impressions<br>(累计曝光)</div>
+        </div>
+        <div class="data-card">
+          <div class="num">+26%</div>
+          <div class="label">Transacting users<br>vs. prior year</div>
+        </div>
+      </div>
+      <p>Gift box ad-driven sales accounted for 36% of total gift box revenue and 54% of total transacting users during the campaign window. Click-through rate: 1.42%. Order conversion rate: 16.18%.</p>
+
+      <h3>New Product Line (D-16 to D+20)</h3>
+      <div class="data-row">
+        <div class="data-card">
+          <div class="num">~600%</div>
+          <div class="label">Sales growth vs.<br>pre-campaign daily baseline</div>
+        </div>
+        <div class="data-card">
+          <div class="num">¥8,813</div>
+          <div class="label">Peak daily revenue<br>(single day)</div>
+        </div>
+        <div class="data-card">
+          <div class="num">731</div>
+          <div class="label">Peak daily<br>transacting users</div>
+        </div>
+      </div>
+      <p>The 600% growth figure compares sales during the CNY window against the daily average baseline in January before the campaign launched — not a year-over-year comparison. The validation method cross-checked against the 2024 same-period data and isolated campaign-attributed sales from organic sales to control for seasonal uplift.</p>
+      <p>Stage 1 ROI (no daily cap, D-16 to D+5): 1.11. Stage 2 ROI (¥1,500 cap, D+6 to D+20): 1.43. Both below the gift box line, which was expected — this was a first-time launch with no brand recognition on the platform.</p>
+
+      <h3>Combined Assessment</h3>
+      <p>Against actual spend of ¥162K (vouchers underspent), combined ROI was approximately 3.81 — above the 3.7 target. Against the full approved budget of ¥230K, combined ROI would have been approximately 2.69 — below target.</p>
+
+      <div class="callout">
+        <div class="callout-label">Honest reflection</div>
+        <p>The gift box line overdelivered. The new product line underperformed primarily due to insufficient SKU uploads to the platform early in the campaign — an execution gap, not a targeting failure. The ROI ceiling was never identified because the campaign window ended before we could ramp spend high enough.</p>
+      </div>
+    </section>
+
+    <!-- WHAT I LEARNED -->
+    <section class="cs-section reveal" id="learned">
+      <h2>What I'd Do Differently</h2>
+      <p>The hypothesis-driven audience targeting approach worked. Defining each segment's behavioral logic upfront, then making cut decisions based on real incremental ROI data, is the right framework. I'd keep that.</p>
+      <p>What I'd change: pre-define spend ramp criteria before launch instead of making those calls on intuition. In Round 2, the decision to aggressively increase daily caps came from recognizing the budget was underspent — but the threshold for "when to ramp" should have been set in advance as a data trigger (e.g., "if daily spend rate exceeds 80% of plan for 3 consecutive days, increase cap by 50%"), not a judgment call in the moment.</p>
+      <p>I'd also build SKU readiness verification into the pre-launch checklist. Several new product SKUs weren't live on the platform in the first days of the campaign, which capped the new product line's ceiling before it had a chance to fully ramp.</p>
+
+      <hr>
+      <a href="mayora.html" class="next-link">
+        <div>
+          <div class="next-meta">Full company story</div>
+          <div class="next-title">Mayora — Management Trainee</div>
+        </div>
+        <span class="next-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+    </section>
+
+  </article>
+
+  <aside class="toc-wrap">
+    <p class="toc-label">On this page</p>
+    <ul class="toc-list">
+      <li><a href="#context">Context</a></li>
+      <li><a href="#budget">Budget Structure</a></li>
+      <li><a href="#audience">Audience Strategy</a></li>
+      <li><a href="#optimization">Optimization Rounds</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#learned">What I'd Do Differently</a></li>
+    </ul>
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">© 2026 Trevor Huang</span>
+    <a href="index.html" class="footer-back">← Back to home</a>
+  </div>
+</footer>
+
+<script>
+  // Theme
+  const root = document.documentElement;
+  const saved = localStorage.getItem('theme') || 'light';
+  root.setAttribute('data-theme', saved);
+  function toggleTheme() {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  }
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  // Active TOC
+  const sections = document.querySelectorAll('.cs-section');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  const tocObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => tocObs.observe(s));
+</script>
+
+</body>
+</html>
