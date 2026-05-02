@@ -57,6 +57,7 @@ Lightweight project management file. Update after each meaningful change.
 ## Someday
 
 **Phase 4 · Interaction & Polish**
+- [x] Homepage compact floating nav — desktop scroll turns the top bar into a restrained B3-lite floating pill; mobile keeps the stable navigation layout.
 - CSS View Transitions: project card click → detail page animation
 - Subtle scroll-triggered animations on case study pages
 - Custom cursor or other personality touches (evaluate later)
@@ -96,7 +97,8 @@ Lightweight project management file. Update after each meaningful change.
 | 2026-04 | Multi-AI collaboration via /context folder | Claude Code reads repo directly; ChatGPT/Codex require context files to be pasted manually |
 | 2026-05 | Website direction: operator with a maker edge | Prioritize hiring credibility and decision quality, with personal texture as differentiation |
 | 2026-05 | Homepage structured around selected proof | First impression should show business judgment before personal texture |
+| 2026-05 | Homepage nav uses B3-lite compact floating behavior | Keep the playful/product-like reference effect, but preserve full nav clarity and mobile usability |
 
 ---
 
-*Last updated: 2026-05-02*
+*Last updated: 2026-05-03*

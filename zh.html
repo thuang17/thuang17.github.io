@@ -81,17 +81,33 @@
 
     /* ── NAV ─────────────────────────────────────── */
     nav{
-      position:sticky;top:0;z-index:50;
+      position:sticky;top:0;z-index:50;height:52px;
       background:var(--bg);border-bottom:1px solid var(--border);
-      transition:background var(--t),border-color var(--t);
+      transition:background .24s ease,border-color .24s ease;
     }
     nav.frosted{
       background:color-mix(in srgb,var(--bg) 82%,transparent);
       backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     }
+    nav.compact{
+      background:transparent;border-bottom-color:transparent;
+    }
     .nav-inner{
       display:flex;align-items:center;justify-content:space-between;
       height:52px;max-width:1080px;margin:0 auto;padding:0 48px;
+      border:1px solid transparent;border-radius:0;background:transparent;
+      transition:max-width .28s cubic-bezier(.22,1,.36,1),height .28s cubic-bezier(.22,1,.36,1),
+                 padding .28s cubic-bezier(.22,1,.36,1),transform .28s cubic-bezier(.22,1,.36,1),
+                 border-color .24s ease,border-radius .28s cubic-bezier(.22,1,.36,1),
+                 background .24s ease,box-shadow .24s ease;
+    }
+    nav.compact .nav-inner{
+      height:46px;max-width:760px;padding:0 18px 0 20px;
+      transform:translateY(10px);
+      border-color:var(--border);border-radius:999px;
+      background:color-mix(in srgb,var(--bg) 88%,transparent);
+      box-shadow:0 14px 36px rgba(28,25,23,.08);
+      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     }
     .nav-name{font-size:14px;font-weight:600;letter-spacing:-.01em;
               color:var(--fg);transition:color var(--t)}
@@ -108,6 +124,7 @@
       transition:color var(--t),border-color var(--t),background var(--t);
     }
     .tbtn:hover{color:var(--fg);border-color:var(--border-2);background:var(--bg-sub)}
+    [data-theme="dark"] nav.compact .nav-inner{box-shadow:0 14px 36px rgba(0,0,0,.28)}
 
     /* ── HERO ────────────────────────────────────── */
     .hero{padding:80px 0 64px}
@@ -350,6 +367,11 @@
     .stagger.vis>*:nth-child(5){opacity:1;transform:none;transition-delay:260ms}
 
     @media(max-width:480px){
+      nav.compact{background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom-color:var(--border)}
+      nav.compact .nav-inner{
+        height:52px;max-width:1080px;margin:0 auto;padding:0 48px;
+        transform:none;border-color:transparent;border-radius:0;background:transparent;box-shadow:none;
+      }
       .nav-links a{display:none}
       .row,.stats{grid-template-columns:1fr}
       .row-date{display:none}
@@ -358,6 +380,7 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .nav-inner { transition: none !important; }
     }
 
     /* ── Side avatar ─────────────────────────────── */
@@ -746,9 +769,19 @@
   });
 
   const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('frosted', window.scrollY > 8);
-  }, { passive: true });
+  function updateNav() {
+    const y = Math.max(
+      window.scrollY || 0,
+      window.pageYOffset || 0,
+      document.documentElement.scrollTop || 0,
+      document.body.scrollTop || 0
+    );
+    nav.classList.toggle('frosted', y > 8);
+    nav.classList.toggle('compact', y > 96);
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+  document.addEventListener('scroll', updateNav, { passive: true, capture: true });
+  updateNav();
 
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
