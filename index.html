@@ -278,6 +278,19 @@
     .ablock-title{font-size:15px;font-weight:600;color:var(--fg);margin-bottom:7px}
     .ablock-body{font-size:14px;color:var(--fg-2);line-height:1.8}
     .ablock-body p+p{margin-top:7px}
+    .maker-bridge{
+      display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,1.1fr);
+      gap:34px;align-items:start;padding:34px 0;
+    }
+    .maker-line{
+      font-family:var(--f-display);font-size:clamp(22px,4vw,34px);
+      font-weight:750;line-height:1.18;letter-spacing:-.025em;color:var(--fg);
+    }
+    .maker-copy{font-size:15px;line-height:1.82;color:var(--fg-2)}
+    .maker-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    @media(max-width:760px){
+      .maker-bridge{grid-template-columns:1fr;gap:18px;padding:24px 0}
+    }
 
     /* ── FOOTER ──────────────────────────────────── */
     footer{
@@ -592,6 +605,23 @@
         <strong style="color:var(--fg);font-weight:600">Languages:</strong>&nbsp;
         Chinese — Native &nbsp;·&nbsp; English — Professional (IELTS 6.5)
       </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════ MAKER EDGE ═══════════ -->
+<section id="maker-edge">
+  <div class="wrap">
+    <div class="maker-bridge reveal">
+      <p class="maker-line">The personal edge is not separate from the work.</p>
+      <div>
+        <p class="maker-copy">Darts taught me structure, repetition, and pressure. AI tools taught me to move from idea to prototype faster. Both show the same underlying habit: I like turning vague intent into something observable, testable, and better than it was yesterday.</p>
+        <div class="maker-links">
+          <a class="btn-secondary" href="darts.html">Read darts story</a>
+          <a class="btn-secondary" href="ai.html">Read AI story</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
