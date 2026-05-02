@@ -340,6 +340,21 @@
       html { scroll-behavior: auto; }
       .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     }
+
+    /* ── Side avatar ─────────────────────────────── */
+    #side-avatar{
+      position:fixed;left:0;top:50%;
+      width:300px;
+      transform:translateX(-110%) translateY(-50%);
+      transition:transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+      pointer-events:none;z-index:20;will-change:transform;
+    }
+    #side-avatar.visible{
+      transform:translateX(-15%) translateY(-50%);
+    }
+    #side-avatar img{width:100%;height:auto;display:block}
+    @media(max-width:1280px){#side-avatar{display:none}}
+    @media(prefers-reduced-motion:reduce){#side-avatar{transition:none}}
   </style>
 </head>
 <body>
@@ -649,6 +664,9 @@
 
 </main>
 
+<div id="side-avatar" aria-hidden="true">
+  <img src="source 1.png" alt="">
+</div>
 
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer>
@@ -720,6 +738,25 @@
   }, { threshold: 0.07, rootMargin: '0px 0px -24px 0px' });
 
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ── Side avatar scroll reveal ──
+  (function () {
+    var work   = document.getElementById('work');
+    var avatar = document.getElementById('side-avatar');
+    if (!work || !avatar) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var workTop     = work.getBoundingClientRect().top + window.pageYOffset;
+    var triggerShow = Math.max(0, workTop - window.innerHeight * 0.65);
+    function updateAvatar () {
+      if (window.pageYOffset >= triggerShow) {
+        avatar.classList.add('visible');
+      } else {
+        avatar.classList.remove('visible');
+      }
+    }
+    window.addEventListener('scroll', updateAvatar, { passive: true });
+    updateAvatar();
+  })();
 </script>
 
 </body>
