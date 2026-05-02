@@ -11,240 +11,121 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:      #FAFAF8;
-      --bg-sub:  #F0EEE8;
-      --bg-foot: #E8E6DE;
-      --fg:      #1C1917;
-      --fg-2:    #57534E;
-      --fg-3:    #A8A29E;
-      --border:  #E7E5E4;
-      --accent:  #7C3AED;
-      --f-display: 'Montserrat', sans-serif;
-      --f-body:    'Nunito Sans', sans-serif;
-      --f-mono:    'JetBrains Mono', monospace;
+      --bg:#FAFAF8; --bg-sub:#F0EEE8; --bg-foot:#E8E6DE;
+      --fg:#1C1917; --fg-2:#57534E; --fg-3:#A8A29E;
+      --border:#E7E5E4; --accent:#7C3AED;
+      --f-display:'Montserrat',sans-serif; --f-body:'Nunito Sans',sans-serif; --f-mono:'JetBrains Mono',monospace;
     }
     [data-theme="dark"] {
-      --bg:      #1C1917;
-      --bg-sub:  #292524;
-      --bg-foot: #292524;
-      --fg:      #F5F5F4;
-      --fg-2:    #A8A29E;
-      --fg-3:    #57534E;
-      --border:  #44403C;
-      --accent:  #A78BFA;
+      --bg:#1C1917; --bg-sub:#292524; --bg-foot:#292524;
+      --fg:#F5F5F4; --fg-2:#A8A29E; --fg-3:#57534E;
+      --border:#44403C; --accent:#A78BFA;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--f-body); background: var(--bg); color: var(--fg);
-      line-height: 1.75; transition: background .3s, color .3s;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--f-body);background:var(--bg);color:var(--fg);line-height:1.75;transition:background .3s,color .3s}
+    body::before{
+      content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+      background:
+        radial-gradient(circle at 76% 18%, rgba(124,58,237,.13), transparent 28%),
+        linear-gradient(to bottom, rgba(124,58,237,.035), transparent 520px);
     }
 
-    /* NAV */
-    nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); }
-    .nav-inner {
-      max-width: 1160px; margin: 0 auto;
-      padding: 0 48px; height: 56px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .nav-back {
-      display: flex; align-items: center; gap: 5px;
-      font-family: var(--f-mono); font-size: 12px;
-      color: var(--fg-2); text-decoration: none; transition: color .2s;
-    }
-    .nav-back:hover { color: var(--accent); }
-    .sep { color: var(--fg-3); font-family: var(--f-mono); font-size: 12px; }
-    .nav-crumb { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); }
-    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
-    .lang-link { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; transition: color .2s; }
-    .lang-link:hover { color: var(--accent); }
-    .theme-btn { background: none; border: none; cursor: pointer; color: var(--fg-2); padding: 4px; display: flex; align-items: center; transition: color .2s; }
-    .theme-btn:hover { color: var(--accent); }
-    #icon-moon { display: none; }
-    [data-theme="dark"] #icon-sun  { display: none; }
-    [data-theme="dark"] #icon-moon { display: block; }
+    nav{position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 92%,transparent);border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}
+    .nav-inner{max-width:1160px;margin:0 auto;padding:0 48px;height:56px;display:flex;align-items:center;gap:8px}
+    .nav-back{display:flex;align-items:center;gap:5px;font-family:var(--f-mono);font-size:12px;color:var(--fg-2);text-decoration:none;transition:color .2s}
+    .nav-back:hover,.lang-link:hover,.theme-btn:hover{color:var(--accent)}
+    .sep,.nav-crumb,.lang-link{font-family:var(--f-mono);font-size:12px;color:var(--fg-3)}
+    .lang-link{text-decoration:none;transition:color .2s}
+    .nav-right{margin-left:auto;display:flex;align-items:center;gap:16px}
+    .theme-btn{background:none;border:0;cursor:pointer;color:var(--fg-2);padding:4px;display:flex;align-items:center;transition:color .2s}
+    #icon-moon{display:none}[data-theme="dark"] #icon-sun{display:none}[data-theme="dark"] #icon-moon{display:block}
 
-    /* PAGE HEADER */
-    .page-header {
-      border-bottom: 1px solid var(--border);
-      padding: 52px 48px 44px;
-    }
-    .page-header-inner { max-width: 1160px; margin: 0 auto; }
-    .header-label {
-      font-family: var(--f-mono); font-size: 11px;
-      letter-spacing: .1em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 14px;
-    }
-    .header-title {
-      font-family: var(--f-display); font-weight: 800;
-      font-size: clamp(32px, 5vw, 48px);
-      color: var(--fg); line-height: 1.05; margin-bottom: 18px;
-    }
-    .header-desc {
-      font-size: 16px; color: var(--fg-2);
-      max-width: 560px; line-height: 1.75;
-    }
+    .hero{border-bottom:1px solid var(--border);padding:70px 48px 64px;overflow:hidden}
+    .hero-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:64px;align-items:center}
+    .eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+    .hero h1{font-family:var(--f-display);font-size:clamp(42px,7vw,78px);font-weight:800;line-height:.95;letter-spacing:-.02em;margin-bottom:22px}
+    .hero-copy{max-width:600px;color:var(--fg-2);font-size:17px;font-weight:300;line-height:1.75}
+    .hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+    .chip{font-family:var(--f-mono);font-size:11px;color:var(--accent);background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.2);border-radius:999px;padding:4px 11px}
 
-    /* MAIN TWO-COLUMN LAYOUT */
-    .main-layout {
-      max-width: 1160px; margin: 0 auto;
-      padding: 0 48px;
-      display: grid;
-      grid-template-columns: 1fr 220px;
-      gap: 0 60px;
-      align-items: start;
-    }
+    .console{position:relative;border:1px solid var(--border);border-radius:18px;background:color-mix(in srgb,var(--bg-sub) 74%,transparent);padding:18px;box-shadow:0 24px 70px rgba(28,25,23,.08)}
+    .console::before{content:"";position:absolute;inset:-50px -36px;z-index:-1;background:radial-gradient(circle,rgba(124,58,237,.16),transparent 60%)}
+    .console-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:16px}
+    .dots{display:flex;gap:6px}.dots span{width:7px;height:7px;border-radius:50%;background:var(--fg-3)}
+    .console-title{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);letter-spacing:.08em;text-transform:uppercase}
+    .flow{display:grid;gap:10px}
+    .flow-row{display:grid;grid-template-columns:82px 1fr;gap:12px;align-items:center}
+    .flow-key{font-family:var(--f-mono);font-size:10px;color:var(--fg-3);text-transform:uppercase}
+    .flow-card{border:1px solid var(--border);border-radius:10px;background:var(--bg);padding:12px 14px;color:var(--fg);font-size:14px}
+    .cursor{display:inline-block;width:7px;height:14px;background:var(--accent);vertical-align:-2px;margin-left:5px;animation:blink 1.1s steps(2,start) infinite}
+    @keyframes blink{50%{opacity:0}}
 
-    /* ARTICLE */
-    .article { padding: 52px 0 96px; max-width: 680px; }
+    .wrap{max-width:1160px;margin:0 auto;padding:0 48px}
+    .section-intro{padding:70px 0 34px;display:grid;grid-template-columns:260px 1fr;gap:56px;border-bottom:1px solid var(--border)}
+    .section-kicker{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3)}
+    .section-intro p{font-family:var(--f-display);font-size:clamp(24px,3.4vw,40px);font-weight:800;line-height:1.18;letter-spacing:-.01em;color:var(--fg)}
+    .section-intro em{color:var(--accent);font-style:normal}
 
-    /* TIMELINE ENTRIES */
-    .tl-entry {
-      display: grid;
-      grid-template-columns: 72px 1fr;
-      gap: 0 24px;
-      margin-bottom: 52px;
-      scroll-margin-top: 80px;
-    }
-    .tl-left { padding-top: 2px; }
-    .tl-year {
-      font-family: var(--f-mono); font-size: 11px;
-      color: var(--accent); font-weight: 400;
-      line-height: 1.4; text-align: right;
-    }
-    .tl-line {
-      width: 1px; background: var(--border);
-      margin: 10px auto 0; height: calc(100% - 10px);
-    }
-    .tl-right {}
-    .ch-label {
-      font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); letter-spacing: .08em;
-      text-transform: uppercase; margin-bottom: 6px;
-    }
-    .ch-title {
-      font-family: var(--f-display); font-size: 20px;
-      font-weight: 700; color: var(--fg); margin-bottom: 16px;
-      padding-bottom: 10px; border-bottom: 1px solid var(--border);
-    }
-    .tl-right p {
-      color: var(--fg-2); font-size: 15.5px;
-      margin-bottom: 14px; font-weight: 400;
-    }
-    .tl-right p:last-of-type { margin-bottom: 0; }
+    .story-grid{display:grid;grid-template-columns:220px 1fr;gap:56px;padding:54px 0 72px}
+    .story-rail{position:sticky;top:92px;align-self:start}
+    .rail-label{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px}
+    .rail-list{list-style:none}
+    .rail-list a{display:block;font-family:var(--f-mono);font-size:12px;color:var(--fg-3);text-decoration:none;border-left:2px solid transparent;padding:5px 0 5px 12px;transition:color .2s,border-color .2s}
+    .rail-list a:hover,.rail-list a.active{color:var(--accent);border-left-color:var(--accent)}
 
-    /* PULL QUOTE */
-    .pull {
-      border-left: 3px solid var(--accent);
-      background: var(--bg-sub); border-radius: 0 8px 8px 0;
-      padding: 14px 20px; margin: 0 0 52px 96px;
-    }
-    .pull p {
-      color: var(--fg) !important; font-size: 16px !important;
-      font-style: italic; font-weight: 500 !important; margin: 0 !important;
-    }
+    .module{scroll-margin-top:88px;display:grid;grid-template-columns:92px 1fr;gap:28px;padding:34px 0;border-bottom:1px solid var(--border)}
+    .module-num{font-family:var(--f-display);font-size:56px;font-weight:800;line-height:1;color:var(--border);letter-spacing:-.05em}
+    .module h2{font-family:var(--f-display);font-size:24px;font-weight:800;line-height:1.2;margin-bottom:14px}
+    .module p{color:var(--fg-2);font-size:15.5px;margin-bottom:13px}
+    .module p:last-child{margin-bottom:0}
+    .artifact{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+    .tool{font-family:var(--f-mono);font-size:11px;color:var(--accent);background:var(--bg-sub);border:1px solid var(--border);border-radius:999px;padding:3px 10px}
+    .quote{margin:44px 0;padding:34px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .quote p{font-family:var(--f-display);font-size:clamp(22px,3vw,34px);font-weight:800;line-height:1.25;color:var(--fg)}
+    .quote span{display:block;margin-top:12px;font-family:var(--f-mono);font-size:11px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em}
 
-    /* TOOL CHIPS */
-    .tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-    .tool-chip {
-      font-family: var(--f-mono); font-size: 11px;
-      color: var(--accent); background: var(--bg-sub);
-      border: 1px solid var(--border);
-      padding: 3px 10px; border-radius: 20px;
-    }
+    .principles{padding:0 0 82px}
+    .principles-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:22px}
+    .principles h2{font-family:var(--f-display);font-size:24px;font-weight:800}
+    .principles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .principle{border:1px solid var(--border);border-radius:12px;background:var(--bg-sub);padding:20px}
+    .principle b{display:block;font-family:var(--f-display);font-size:16px;margin-bottom:8px}
+    .principle p{font-size:14.5px;color:var(--fg-2);line-height:1.65}
 
-    hr { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+    .next-story{display:flex;align-items:center;justify-content:space-between;padding:24px 28px;background:var(--bg-sub);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--fg);margin:0 0 86px;transition:border-color .2s}
+    .next-story:hover{border-color:var(--accent)}
+    .next-label{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+    .next-title{font-family:var(--f-display);font-size:17px;font-weight:700}.next-arrow{color:var(--accent);flex-shrink:0}
 
-    /* TAGS */
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 32px; }
-    .tag {
-      font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); background: var(--bg-sub);
-      border: 1px solid var(--border);
-      padding: 3px 10px; border-radius: 4px;
-    }
+    footer{background:var(--bg-foot);border-top:1px solid var(--border);padding:28px 48px}
+    .footer-inner{max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .footer-copy,.footer-back{font-family:var(--f-mono);font-size:11px;color:var(--fg-3)}
+    .footer-back{font-size:12px;text-decoration:none;transition:color .2s}.footer-back:hover{color:var(--accent)}
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}.vis{opacity:1;transform:none}
 
-    /* NEXT STORY */
-    .next-story {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 24px 28px;
-      background: var(--bg-sub); border: 1px solid var(--border);
-      border-radius: 12px; text-decoration: none; color: var(--fg);
-      margin-top: 56px;
-      transition: border-color .2s;
+    @media(max-width:900px){
+      .hero-inner,.section-intro,.story-grid{grid-template-columns:1fr}
+      .console{max-width:520px}.story-rail{display:none}.principles-grid{grid-template-columns:1fr}
     }
-    .next-story:hover { border-color: var(--accent); }
-    .next-label {
-      font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); letter-spacing: .08em;
-      text-transform: uppercase; margin-bottom: 4px;
+    @media(max-width:640px){
+      .nav-inner,.hero,.wrap{padding-left:20px;padding-right:20px}
+      .hero{padding-top:44px}.module{grid-template-columns:1fr;gap:12px}.module-num{font-size:42px}
+      .section-intro{padding-top:52px}.footer-inner{flex-direction:column;gap:12px;text-align:center}
     }
-    .next-title { font-family: var(--f-display); font-size: 17px; font-weight: 700; }
-    .next-arrow { color: var(--accent); flex-shrink: 0; }
-
-    /* STICKY TOC */
-    .toc-wrap {
-      padding: 52px 0 0;
-      position: sticky;
-      top: 72px;
-    }
-    .toc-label {
-      font-family: var(--f-mono); font-size: 10px;
-      letter-spacing: .1em; text-transform: uppercase;
-      color: var(--fg-3); margin-bottom: 12px;
-    }
-    .toc-list { list-style: none; }
-    .toc-list li { margin-bottom: 2px; }
-    .toc-list a {
-      font-family: var(--f-mono); font-size: 12px;
-      color: var(--fg-3); text-decoration: none;
-      display: block; padding: 4px 8px;
-      border-left: 2px solid transparent;
-      transition: color .15s, border-color .15s;
-      line-height: 1.4;
-    }
-    .toc-list a:hover { color: var(--fg-2); border-left-color: var(--border); }
-    .toc-list a.active { color: var(--accent); border-left-color: var(--accent); }
-
-    /* FOOTER */
-    footer { background: var(--bg-foot); border-top: 1px solid var(--border); padding: 28px 48px; }
-    .footer-inner { max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-    .footer-copy { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); }
-    .footer-back { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; transition: color .2s; }
-    .footer-back:hover { color: var(--accent); }
-
-    /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-    .vis { opacity: 1; transform: none; }
-
-    @media (max-width: 860px) {
-      .main-layout { grid-template-columns: 1fr; }
-      .toc-wrap { display: none; }
-      .nav-inner, .page-header { padding-left: 20px; padding-right: 20px; }
-      .main-layout { padding: 0 20px; }
-      footer { padding: 24px 20px; }
-      .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
-      .pull { margin-left: 0; }
-    }
-    @media (max-width: 480px) {
-      .tl-entry { grid-template-columns: 48px 1fr; gap: 0 16px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}.reveal{opacity:1!important;transform:none!important;transition:none!important}.cursor{animation:none}
     }
   </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-inner">
     <a href="index.html" class="nav-back">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       Trevor Huang
     </a>
-    <span class="sep">/</span>
-    <span class="nav-crumb">AI Explorer</span>
+    <span class="sep">/</span><span class="nav-crumb">AI Explorer</span>
     <div class="nav-right">
       <a href="zh-ai.html" class="lang-link">中文</a>
       <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
@@ -255,200 +136,148 @@
   </div>
 </nav>
 
-<header class="page-header">
-  <div class="page-header-inner">
-    <p class="header-label">Outside the office</p>
-    <h1 class="header-title">AI Explorer</h1>
-    <p class="header-desc">No engineering background. Started with ChatGPT as a workaround just to get past mainland China's restrictions. Now building things I couldn't have imagined two years ago.</p>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="reveal">
+      <p class="eyebrow">Outside the office / AI Explorer</p>
+      <h1>Learning to build before calling myself technical.</h1>
+      <p class="hero-copy">I did not come from engineering. AI started as a workaround, then became a way to think, organize context, and ship small real products without waiting for permission from my own technical insecurity.</p>
+      <div class="hero-chips">
+        <span class="chip">Claude Code</span><span class="chip">NotebookLM</span><span class="chip">Obsidian</span><span class="chip">Vibe Coding</span>
+      </div>
+    </div>
+    <div class="console reveal" aria-label="AI workflow diagram">
+      <div class="console-top"><div class="dots"><span></span><span></span><span></span></div><p class="console-title">personal stack</p></div>
+      <div class="flow">
+        <div class="flow-row"><span class="flow-key">input</span><div class="flow-card">messy notes, PDFs, product ideas</div></div>
+        <div class="flow-row"><span class="flow-key">context</span><div class="flow-card">Projects, NotebookLM, Obsidian</div></div>
+        <div class="flow-row"><span class="flow-key">loop</span><div class="flow-card">ask, test, correct, ship<span class="cursor"></span></div></div>
+        <div class="flow-row"><span class="flow-key">output</span><div class="flow-card">budget tracker, this website, a better system</div></div>
+      </div>
+    </div>
   </div>
 </header>
 
-<div class="main-layout">
-  <article class="article">
+<main class="wrap">
+  <section class="section-intro reveal">
+    <p class="section-kicker">The shift</p>
+    <p>AI stopped being a faster search box when I realized it could hold <em>context</em>, not just produce answers.</p>
+  </section>
 
-    <div class="tl-entry reveal" id="start">
-      <div class="tl-left">
-        <p class="tl-year">2022–<br>2023</p>
-        <div class="tl-line"></div>
-      </div>
-      <div class="tl-right">
-        <p class="ch-label">How it started</p>
-        <h2 class="ch-title">Getting past the wall</h2>
-        <p>First heard about ChatGPT and needed a workaround just to register — IP blocks, account restrictions, the full mainland China experience. Got help from some CS classmates who knew their way around it.</p>
-        <p>Once I had access, I used it mostly like a smarter search engine. Helped with some essays, answered questions, gave me information faster than Baidu. Useful, but not something I thought much about beyond that.</p>
-        <div class="tools">
-          <span class="tool-chip">ChatGPT</span>
+  <div class="story-grid">
+    <aside class="story-rail">
+      <p class="rail-label">Story map</p>
+      <ul class="rail-list">
+        <li><a href="#access">Access</a></li>
+        <li><a href="#sources">Sources</a></li>
+        <li><a href="#prompts">Prompts</a></li>
+        <li><a href="#claude">Claude</a></li>
+        <li><a href="#build">First build</a></li>
+        <li><a href="#now">Now</a></li>
+      </ul>
+    </aside>
+
+    <article>
+      <section class="module reveal" id="access">
+        <div class="module-num">01</div>
+        <div>
+          <h2>It started with access, not strategy.</h2>
+          <p>First heard about ChatGPT and needed a workaround just to register: IP blocks, account restrictions, the full mainland China experience. Some CS classmates helped me get through the setup.</p>
+          <p>Once I had access, I used it like a smarter search engine. Essays, questions, quick explanations. Useful, but I did not yet see it as anything more serious than that.</p>
+          <div class="artifact"><span class="tool">ChatGPT</span><span class="tool">Search replacement</span></div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="tl-entry reveal" id="notebooklm">
-      <div class="tl-left">
-        <p class="tl-year">Late<br>2025</p>
-        <div class="tl-line"></div>
-      </div>
-      <div class="tl-right">
-        <p class="ch-label">Things got serious</p>
-        <h2 class="ch-title">NotebookLM changes something</h2>
-        <p>During my Decathlon internship, I accidentally ended up with a free year of Gemini Pro. Started using it for work — drafting, summarizing, translating between Chinese and English quickly.</p>
-        <p>Then I found NotebookLM. The concept: you feed it any materials — PDFs, documents, YouTube links — and it only works within what you give it. No hallucinations from the broader internet, just your sources. For research, for writing reports, for making sense of information you've collected — it clicked immediately.</p>
-        <p>This was the first time AI felt like a system rather than a feature.</p>
-        <div class="tools">
-          <span class="tool-chip">Gemini Pro</span>
-          <span class="tool-chip">NotebookLM</span>
+      <section class="module reveal" id="sources">
+        <div class="module-num">02</div>
+        <div>
+          <h2>NotebookLM made the system visible.</h2>
+          <p>During my Decathlon internship, I ended up with a free year of Gemini Pro and started using it for work: drafting, summarizing, and moving between Chinese and English quickly.</p>
+          <p>NotebookLM changed the mental model. Feed it PDFs, documents, and YouTube links, then make it answer from those sources. For research and report writing, that felt different from a chatbot. It was closer to a working memory.</p>
+          <div class="artifact"><span class="tool">Gemini Pro</span><span class="tool">NotebookLM</span><span class="tool">Source-grounded work</span></div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="pull reveal">
-      <p>"This was the first time AI felt like a system rather than a feature."</p>
-    </div>
-
-    <div class="tl-entry reveal" id="prompts">
-      <div class="tl-left">
-        <p class="tl-year">2025–<br>2026</p>
-        <div class="tl-line"></div>
+      <div class="quote reveal">
+        <p>"This was the first time AI felt like a system rather than a feature."</p>
+        <span>Turning point</span>
       </div>
-      <div class="tl-right">
-        <p class="ch-label">Learning to communicate</p>
-        <h2 class="ch-title">Prompt training</h2>
-        <p>When I started my master's at Sydney, I started using ChatGPT more deliberately — not just for outputs, but to understand how to ask better. What makes a good prompt. What context actually changes the result. How to get from a vague idea to something useful.</p>
-        <p>This is the part most people skip. I found it worth spending time on.</p>
-        <div class="tools">
-          <span class="tool-chip">ChatGPT</span>
-          <span class="tool-chip">Prompt Engineering</span>
+
+      <section class="module reveal" id="prompts">
+        <div class="module-num">03</div>
+        <div>
+          <h2>I started treating prompts as thinking tools.</h2>
+          <p>At Sydney, I became more deliberate with ChatGPT. Not just asking for outputs, but studying what changed the quality of the response: context, constraints, examples, tone, and the order of questions.</p>
+          <p>Most people skip that layer. I found it worth learning because the better I got at framing the problem, the more useful the tool became.</p>
+          <div class="artifact"><span class="tool">Prompt engineering</span><span class="tool">Context design</span></div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="tl-entry reveal" id="claude">
-      <div class="tl-left">
-        <p class="tl-year">April<br>2026</p>
-        <div class="tl-line"></div>
-      </div>
-      <div class="tl-right">
-        <p class="ch-label">Discovering Claude</p>
-        <h2 class="ch-title">From chat tool to something else</h2>
-        <p>I'd heard about Claude Code being popular for developers, but assumed it wasn't for me — I don't write code. Started using Claude as a regular chat assistant, same as everything else.</p>
-        <p>Then I started exploring Projects — long-running conversations with custom context. Then Claude Code, which I'd been avoiding. Somewhere in there I realized the thing I'd been worried about (not being technical enough) wasn't actually the barrier I thought it was.</p>
-        <div class="tools">
-          <span class="tool-chip">Claude</span>
-          <span class="tool-chip">Claude Code</span>
-          <span class="tool-chip">Obsidian</span>
+      <section class="module reveal" id="claude">
+        <div class="module-num">04</div>
+        <div>
+          <h2>Claude moved it from conversation to execution.</h2>
+          <p>I had heard Claude Code was popular with developers, but assumed it was not for me. I do not write code. I started with Claude as a normal chat assistant, then explored Projects and long-running context.</p>
+          <p>Claude Code was the thing I kept avoiding. Once I used it, I realized the barrier was not "I cannot code." The real barrier was whether I could describe the outcome clearly, review what changed, and keep iterating.</p>
+          <div class="artifact"><span class="tool">Claude</span><span class="tool">Claude Code</span><span class="tool">Projects</span></div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="tl-entry reveal" id="build">
-      <div class="tl-left">
-        <p class="tl-year">First<br>build</p>
-        <div class="tl-line"></div>
-      </div>
-      <div class="tl-right">
-        <p class="ch-label">Vibe coding</p>
-        <h2 class="ch-title">I made a product</h2>
-        <p>My first project: a personal budget tracker. I wanted to build an app. Claude talked me into a web version instead — simpler stack, deployable immediately, works on any device.</p>
-        <p>I bought an Alibaba Cloud domain. Deployed it. The interface was rough. I didn't care at all.</p>
-        <p>Before this, I'd seen the full product development process from the inside at Decathlon: BRD, PRD, dev sprints, testing, UAT, stakeholder sign-off. A whole team, months of work. Here I'd done something complete — from idea to deployed product — in a weekend, on my own, without any of that formal structure.</p>
-        <p>That was the moment something changed in how I thought about what I was capable of building.</p>
-        <div class="tools">
-          <span class="tool-chip">Vibe Coding</span>
-          <span class="tool-chip">Alibaba Cloud</span>
+      <section class="module reveal" id="build">
+        <div class="module-num">05</div>
+        <div>
+          <h2>The first product changed the question.</h2>
+          <p>My first build was a personal budget tracker. I wanted an app. Claude pushed me toward a web version: simpler stack, deployable immediately, usable on any device.</p>
+          <p>I bought an Alibaba Cloud domain and deployed it. The interface was rough. I did not care. What mattered was that I had gone from idea to shipped product in a weekend, on my own.</p>
+          <p>At Decathlon, I had seen product work as BRD, PRD, dev sprints, testing, UAT, and stakeholder sign-off. This was smaller, messier, and much faster. It made building feel reachable.</p>
+          <div class="artifact"><span class="tool">Vibe coding</span><span class="tool">Alibaba Cloud</span><span class="tool">Weekend build</span></div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="pull reveal">
-      <p>"I'm not a coder. Probably won't become one. But 'I can't build things' is no longer how I think."</p>
-    </div>
-
-    <div class="tl-entry reveal" id="now">
-      <div class="tl-left">
-        <p class="tl-year">Now</p>
-        <div class="tl-line"></div>
+      <div class="quote reveal">
+        <p>"I am not a coder. But 'I cannot build things' is no longer how I think."</p>
+        <span>What changed</span>
       </div>
-      <div class="tl-right">
-        <p class="ch-label">What's next</p>
-        <h2 class="ch-title">Personal website. Knowledge base. What comes after.</h2>
-        <p>This website is the second thing I've built. Using Claude Code, same principle — describe what you want, iterate, deploy. It takes longer than I expected. It also produces something real.</p>
-        <p>I'm also building a personal knowledge base in Obsidian — a place to actually keep the ideas and observations that have been disappearing for years. I've had a lot of thoughts that seemed worth holding onto and then didn't. That's not a habit I want to continue.</p>
-        <p>I don't have a specific product I'm trying to build. I have a direction: understand these tools deeply enough that when I have an idea worth executing, the technical side isn't the thing that stops it.</p>
-        <div class="tools">
-          <span class="tool-chip">Claude Code</span>
-          <span class="tool-chip">Obsidian</span>
-          <span class="tool-chip">Vibe Coding</span>
+
+      <section class="module reveal" id="now">
+        <div class="module-num">06</div>
+        <div>
+          <h2>Now I am building a personal operating system.</h2>
+          <p>This website is the second thing I have built with Claude Code. Same principle: describe the intent, inspect the result, correct the parts that feel wrong, and deploy.</p>
+          <p>I am also building a personal knowledge base in Obsidian because too many useful observations have disappeared after I failed to capture them. The goal is not to become a software engineer overnight. It is to understand these tools deeply enough that the technical side does not stop a good idea before it starts.</p>
+          <div class="artifact"><span class="tool">Personal website</span><span class="tool">Obsidian</span><span class="tool">Knowledge base</span></div>
         </div>
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="tags reveal">
-      <span class="tag">Claude Code</span>
-      <span class="tag">Vibe Coding</span>
-      <span class="tag">NotebookLM</span>
-      <span class="tag">Obsidian</span>
-      <span class="tag">Gemini Pro</span>
-      <span class="tag">Prompt Engineering</span>
-    </div>
-
-    <a href="darts.html" class="next-story reveal">
-      <div>
-        <p class="next-label">Other story</p>
-        <p class="next-title">Darts</p>
-      </div>
-      <svg class="next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </a>
-
-  </article>
-
-  <aside class="toc-wrap">
-    <p class="toc-label">Timeline</p>
-    <ul class="toc-list">
-      <li><a href="#start">Getting past the wall</a></li>
-      <li><a href="#notebooklm">NotebookLM</a></li>
-      <li><a href="#prompts">Prompt training</a></li>
-      <li><a href="#claude">Discovering Claude</a></li>
-      <li><a href="#build">First build</a></li>
-      <li><a href="#now">Now</a></li>
-    </ul>
-  </aside>
-</div>
-
-<footer>
-  <div class="footer-inner">
-    <span class="footer-copy">© 2026 Trevor Huang</span>
-    <a href="index.html" class="footer-back">← Back to home</a>
+      </section>
+    </article>
   </div>
-</footer>
+
+  <section class="principles reveal">
+    <div class="principles-head">
+      <p class="section-kicker">Operating principles</p>
+      <h2>How I use AI now</h2>
+    </div>
+    <div class="principles-grid">
+      <div class="principle"><b>Context first</b><p>I try to feed the model the right source material before asking for output. Bad context makes confident noise.</p></div>
+      <div class="principle"><b>Iterate in public</b><p>I do not expect a perfect first answer. I inspect, correct, and keep the loop tight until the thing works.</p></div>
+      <div class="principle"><b>Ship small</b><p>The point is not to make a grand product immediately. It is to keep converting vague ideas into real artifacts.</p></div>
+    </div>
+  </section>
+
+  <a href="darts.html" class="next-story reveal">
+    <div><p class="next-label">Other story</p><p class="next-title">Darts</p></div>
+    <svg class="next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</main>
+
+<footer><div class="footer-inner"><span class="footer-copy">© 2026 Trevor Huang</span><a href="index.html" class="footer-back">← Back to home</a></div></footer>
 
 <script>
-  (function(){ const t = localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme = t; })();
-  function toggleTheme(){
-    const el = document.documentElement;
-    const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
-    el.dataset.theme = next; localStorage.setItem('theme', next);
-  }
-
-  // Scroll reveal
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); } });
-  }, { threshold: 0.06 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  // Active TOC
-  const entries = document.querySelectorAll('.tl-entry');
-  const tocLinks = document.querySelectorAll('.toc-list a');
-  const tocObs = new IntersectionObserver(entries_ => {
-    entries_.forEach(e => {
-      if (e.isIntersecting) {
-        tocLinks.forEach(a => a.classList.remove('active'));
-        const active = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
-        if (active) active.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px' });
-  entries.forEach(s => tocObs.observe(s));
+  function toggleTheme(){const el=document.documentElement;const next=el.dataset.theme==='dark'?'light':'dark';el.dataset.theme=next;localStorage.setItem('theme',next);}
+  const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}})},{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  const sections=document.querySelectorAll('.module');const links=document.querySelectorAll('.rail-list a');
+  const tocObs=new IntersectionObserver((items)=>{items.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.remove('active'));const a=document.querySelector(`.rail-list a[href="#${e.target.id}"]`);if(a)a.classList.add('active');}})},{rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(s=>tocObs.observe(s));
 </script>
 </body>
 </html>

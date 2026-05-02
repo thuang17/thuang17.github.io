@@ -11,161 +11,98 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:      #FAFAF8;
-      --bg-sub:  #F0EEE8;
-      --bg-foot: #E8E6DE;
-      --fg:      #1C1917;
-      --fg-2:    #57534E;
-      --fg-3:    #A8A29E;
-      --border:  #E7E5E4;
-      --accent:  #7C3AED;
-      --f-display: 'Montserrat', 'Noto Sans SC', sans-serif;
-      --f-body:    'Nunito Sans', 'Noto Sans SC', sans-serif;
-      --f-mono:    'JetBrains Mono', monospace;
+      --bg:#FAFAF8; --bg-sub:#F0EEE8; --bg-foot:#E8E6DE;
+      --fg:#1C1917; --fg-2:#57534E; --fg-3:#A8A29E;
+      --border:#E7E5E4; --accent:#7C3AED;
+      --f-display:'Montserrat','Noto Sans SC',sans-serif; --f-body:'Nunito Sans','Noto Sans SC',sans-serif; --f-mono:'JetBrains Mono',monospace;
     }
     [data-theme="dark"] {
-      --bg:      #1C1917;
-      --bg-sub:  #292524;
-      --bg-foot: #292524;
-      --fg:      #F5F5F4;
-      --fg-2:    #A8A29E;
-      --fg-3:    #57534E;
-      --border:  #44403C;
-      --accent:  #A78BFA;
+      --bg:#1C1917; --bg-sub:#292524; --bg-foot:#292524;
+      --fg:#F5F5F4; --fg-2:#A8A29E; --fg-3:#57534E;
+      --border:#44403C; --accent:#A78BFA;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--f-body); background: var(--bg); color: var(--fg);
-      line-height: 1.8; transition: background .3s, color .3s;
-    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--f-body);background:var(--bg);color:var(--fg);line-height:1.85;transition:background .3s,color .3s}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 76% 18%,rgba(124,58,237,.13),transparent 28%),linear-gradient(to bottom,rgba(124,58,237,.035),transparent 520px)}
 
-    /* NAV */
-    nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); }
-    .nav-inner {
-      max-width: 1160px; margin: 0 auto;
-      padding: 0 48px; height: 56px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .nav-back { display: flex; align-items: center; gap: 5px; font-family: var(--f-mono); font-size: 12px; color: var(--fg-2); text-decoration: none; transition: color .2s; }
-    .nav-back:hover { color: var(--accent); }
-    .sep { color: var(--fg-3); font-family: var(--f-mono); font-size: 12px; }
-    .nav-crumb { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); }
-    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
-    .lang-link { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; transition: color .2s; }
-    .lang-link:hover { color: var(--accent); }
-    .theme-btn { background: none; border: none; cursor: pointer; color: var(--fg-2); padding: 4px; display: flex; align-items: center; transition: color .2s; }
-    .theme-btn:hover { color: var(--accent); }
-    #icon-moon { display: none; }
-    [data-theme="dark"] #icon-sun  { display: none; }
-    [data-theme="dark"] #icon-moon { display: block; }
+    nav{position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 92%,transparent);border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}
+    .nav-inner{max-width:1160px;margin:0 auto;padding:0 48px;height:56px;display:flex;align-items:center;gap:8px}
+    .nav-back{display:flex;align-items:center;gap:5px;font-family:var(--f-mono);font-size:12px;color:var(--fg-2);text-decoration:none;transition:color .2s}
+    .nav-back:hover,.lang-link:hover,.theme-btn:hover{color:var(--accent)}
+    .sep,.nav-crumb,.lang-link{font-family:var(--f-mono);font-size:12px;color:var(--fg-3)}
+    .lang-link{text-decoration:none;transition:color .2s}.nav-right{margin-left:auto;display:flex;align-items:center;gap:16px}
+    .theme-btn{background:none;border:0;cursor:pointer;color:var(--fg-2);padding:4px;display:flex;align-items:center;transition:color .2s}
+    #icon-moon{display:none}[data-theme="dark"] #icon-sun{display:none}[data-theme="dark"] #icon-moon{display:block}
 
-    /* PAGE HEADER */
-    .page-header { border-bottom: 1px solid var(--border); padding: 52px 48px 44px; }
-    .page-header-inner { max-width: 1160px; margin: 0 auto; }
-    .header-label { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-    .header-title { font-family: 'Noto Sans SC', sans-serif; font-weight: 800; font-size: clamp(32px, 5vw, 48px); color: var(--fg); line-height: 1.1; margin-bottom: 18px; }
-    .header-desc { font-size: 16px; color: var(--fg-2); max-width: 560px; line-height: 1.75; font-family: 'Noto Sans SC', sans-serif; }
+    .hero{border-bottom:1px solid var(--border);padding:70px 48px 64px;overflow:hidden}
+    .hero-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:64px;align-items:center}
+    .eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+    .hero h1{font-family:'Noto Sans SC',var(--f-display);font-size:clamp(36px,6vw,68px);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin-bottom:22px}
+    .hero-copy{max-width:620px;color:var(--fg-2);font-size:17px;font-weight:300;line-height:1.85}
+    .hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+    .chip{font-family:var(--f-mono);font-size:11px;color:var(--accent);background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.2);border-radius:999px;padding:4px 11px}
 
-    /* MAIN TWO-COLUMN LAYOUT */
-    .main-layout {
-      max-width: 1160px; margin: 0 auto;
-      padding: 0 48px;
-      display: grid;
-      grid-template-columns: 1fr 220px;
-      gap: 0 60px;
-      align-items: start;
-    }
+    .console{position:relative;border:1px solid var(--border);border-radius:18px;background:color-mix(in srgb,var(--bg-sub) 74%,transparent);padding:18px;box-shadow:0 24px 70px rgba(28,25,23,.08)}
+    .console::before{content:"";position:absolute;inset:-50px -36px;z-index:-1;background:radial-gradient(circle,rgba(124,58,237,.16),transparent 60%)}
+    .console-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:16px}
+    .dots{display:flex;gap:6px}.dots span{width:7px;height:7px;border-radius:50%;background:var(--fg-3)}
+    .console-title{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);letter-spacing:.08em;text-transform:uppercase}
+    .flow{display:grid;gap:10px}.flow-row{display:grid;grid-template-columns:82px 1fr;gap:12px;align-items:center}
+    .flow-key{font-family:var(--f-mono);font-size:10px;color:var(--fg-3);text-transform:uppercase}
+    .flow-card{border:1px solid var(--border);border-radius:10px;background:var(--bg);padding:12px 14px;color:var(--fg);font-size:14px}
+    .cursor{display:inline-block;width:7px;height:14px;background:var(--accent);vertical-align:-2px;margin-left:5px;animation:blink 1.1s steps(2,start) infinite}
+    @keyframes blink{50%{opacity:0}}
 
-    /* ARTICLE */
-    .article { padding: 52px 0 96px; max-width: 680px; }
+    .wrap{max-width:1160px;margin:0 auto;padding:0 48px}
+    .section-intro{padding:70px 0 34px;display:grid;grid-template-columns:260px 1fr;gap:56px;border-bottom:1px solid var(--border)}
+    .section-kicker{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3)}
+    .section-intro p{font-family:'Noto Sans SC',var(--f-display);font-size:clamp(24px,3.4vw,38px);font-weight:800;line-height:1.28;color:var(--fg)}
+    .section-intro em{color:var(--accent);font-style:normal}
 
-    /* TIMELINE ENTRIES */
-    .tl-entry {
-      display: grid;
-      grid-template-columns: 72px 1fr;
-      gap: 0 24px;
-      margin-bottom: 52px;
-      scroll-margin-top: 80px;
-    }
-    .tl-left { padding-top: 2px; }
-    .tl-year { font-family: var(--f-mono); font-size: 11px; color: var(--accent); font-weight: 400; line-height: 1.4; text-align: right; }
-    .tl-line { width: 1px; background: var(--border); margin: 10px auto 0; height: calc(100% - 10px); }
-    .ch-label { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
-    .ch-title { font-family: 'Noto Sans SC', sans-serif; font-size: 20px; font-weight: 700; color: var(--fg); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-    .tl-right p { color: var(--fg-2); font-size: 15.5px; margin-bottom: 14px; font-weight: 400; font-family: 'Noto Sans SC', sans-serif; }
-    .tl-right p:last-of-type { margin-bottom: 0; }
+    .story-grid{display:grid;grid-template-columns:220px 1fr;gap:56px;padding:54px 0 72px}
+    .story-rail{position:sticky;top:92px;align-self:start}.rail-label{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px}
+    .rail-list{list-style:none}.rail-list a{display:block;font-family:'Noto Sans SC',var(--f-body);font-size:12px;color:var(--fg-3);text-decoration:none;border-left:2px solid transparent;padding:5px 0 5px 12px;transition:color .2s,border-color .2s}
+    .rail-list a:hover,.rail-list a.active{color:var(--accent);border-left-color:var(--accent)}
 
-    /* PULL QUOTE */
-    .pull { border-left: 3px solid var(--accent); background: var(--bg-sub); border-radius: 0 8px 8px 0; padding: 14px 20px; margin: 0 0 52px 96px; }
-    .pull p { color: var(--fg) !important; font-size: 16px !important; font-weight: 500 !important; margin: 0 !important; font-family: 'Noto Sans SC', sans-serif !important; }
+    .module{scroll-margin-top:88px;display:grid;grid-template-columns:92px 1fr;gap:28px;padding:34px 0;border-bottom:1px solid var(--border)}
+    .module-num{font-family:var(--f-display);font-size:56px;font-weight:800;line-height:1;color:var(--border);letter-spacing:-.05em}
+    .module h2{font-family:'Noto Sans SC',var(--f-display);font-size:24px;font-weight:800;line-height:1.3;margin-bottom:14px}
+    .module p{color:var(--fg-2);font-size:15.5px;margin-bottom:13px}.module p:last-child{margin-bottom:0}
+    .artifact{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+    .tool{font-family:var(--f-mono);font-size:11px;color:var(--accent);background:var(--bg-sub);border:1px solid var(--border);border-radius:999px;padding:3px 10px}
+    .quote{margin:44px 0;padding:34px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .quote p{font-family:'Noto Sans SC',var(--f-display);font-size:clamp(22px,3vw,34px);font-weight:800;line-height:1.35;color:var(--fg)}
+    .quote span{display:block;margin-top:12px;font-family:var(--f-mono);font-size:11px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em}
 
-    /* TOOL CHIPS */
-    .tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-    .tool-chip { font-family: var(--f-mono); font-size: 11px; color: var(--accent); background: var(--bg-sub); border: 1px solid var(--border); padding: 3px 10px; border-radius: 20px; }
+    .principles{padding:0 0 82px}.principles-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:22px}
+    .principles h2{font-family:'Noto Sans SC',var(--f-display);font-size:24px;font-weight:800}
+    .principles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .principle{border:1px solid var(--border);border-radius:12px;background:var(--bg-sub);padding:20px}
+    .principle b{display:block;font-size:16px;margin-bottom:8px}.principle p{font-size:14.5px;color:var(--fg-2);line-height:1.7}
 
-    hr { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+    .next-story{display:flex;align-items:center;justify-content:space-between;padding:24px 28px;background:var(--bg-sub);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--fg);margin:0 0 86px;transition:border-color .2s}
+    .next-story:hover{border-color:var(--accent)}.next-label{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+    .next-title{font-family:'Noto Sans SC',var(--f-display);font-size:17px;font-weight:700}.next-arrow{color:var(--accent);flex-shrink:0}
 
-    /* TAGS */
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 32px; }
-    .tag { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); background: var(--bg-sub); border: 1px solid var(--border); padding: 3px 10px; border-radius: 4px; }
+    footer{background:var(--bg-foot);border-top:1px solid var(--border);padding:28px 48px}
+    .footer-inner{max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .footer-copy,.footer-back{font-family:var(--f-mono);font-size:11px;color:var(--fg-3)}.footer-back{font-size:12px;text-decoration:none;transition:color .2s}.footer-back:hover{color:var(--accent)}
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}.vis{opacity:1;transform:none}
 
-    /* NEXT STORY */
-    .next-story { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px; background: var(--bg-sub); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--fg); margin-top: 56px; transition: border-color .2s; }
-    .next-story:hover { border-color: var(--accent); }
-    .next-label { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
-    .next-title { font-family: 'Noto Sans SC', sans-serif; font-size: 17px; font-weight: 700; }
-    .next-arrow { color: var(--accent); flex-shrink: 0; }
-
-    /* STICKY TOC */
-    .toc-wrap { padding: 52px 0 0; position: sticky; top: 72px; }
-    .toc-label { font-family: var(--f-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 12px; }
-    .toc-list { list-style: none; }
-    .toc-list li { margin-bottom: 2px; }
-    .toc-list a { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: var(--fg-3); text-decoration: none; display: block; padding: 4px 8px; border-left: 2px solid transparent; transition: color .15s, border-color .15s; line-height: 1.5; }
-    .toc-list a:hover { color: var(--fg-2); border-left-color: var(--border); }
-    .toc-list a.active { color: var(--accent); border-left-color: var(--accent); }
-
-    /* FOOTER */
-    footer { background: var(--bg-foot); border-top: 1px solid var(--border); padding: 28px 48px; }
-    .footer-inner { max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-    .footer-copy { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); }
-    .footer-back { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); text-decoration: none; transition: color .2s; }
-    .footer-back:hover { color: var(--accent); }
-
-    /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-    .vis { opacity: 1; transform: none; }
-
-    @media (max-width: 860px) {
-      .main-layout { grid-template-columns: 1fr; }
-      .toc-wrap { display: none; }
-      .nav-inner { padding: 0 20px; }
-      .page-header { padding: 36px 20px 32px; }
-      .main-layout { padding: 0 20px; }
-      footer { padding: 24px 20px; }
-      .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
-      .pull { margin-left: 0; }
-    }
-    @media (max-width: 480px) {
-      .tl-entry { grid-template-columns: 48px 1fr; gap: 0 16px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-    }
+    @media(max-width:900px){.hero-inner,.section-intro,.story-grid{grid-template-columns:1fr}.console{max-width:520px}.story-rail{display:none}.principles-grid{grid-template-columns:1fr}}
+    @media(max-width:640px){.nav-inner,.hero,.wrap{padding-left:20px;padding-right:20px}.hero{padding-top:44px}.module{grid-template-columns:1fr;gap:12px}.module-num{font-size:42px}.section-intro{padding-top:52px}.footer-inner{flex-direction:column;gap:12px;text-align:center}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1!important;transform:none!important;transition:none!important}.cursor{animation:none}}
   </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-inner">
     <a href="zh.html" class="nav-back">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       黄拓文
     </a>
-    <span class="sep">/</span>
-    <span class="nav-crumb">AI 探索</span>
+    <span class="sep">/</span><span class="nav-crumb">AI 探索</span>
     <div class="nav-right">
       <a href="ai.html" class="lang-link">EN</a>
       <button class="theme-btn" onclick="toggleTheme()" aria-label="切换主题">
@@ -176,199 +113,149 @@
   </div>
 </nav>
 
-<header class="page-header">
-  <div class="page-header-inner">
-    <p class="header-label">工作之外</p>
-    <h1 class="header-title">AI 探索</h1>
-    <p class="header-desc">没有技术背景。最开始用 ChatGPT 是靠绕过封锁才注册上的。现在在用 Claude Code 做两年前根本想不到自己能做的东西。</p>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="reveal">
+      <p class="eyebrow">工作之外 / AI 探索</p>
+      <h1>还没学会写代码之前，我先学会了把东西做出来。</h1>
+      <p class="hero-copy">我不是技术背景。AI 最开始只是一个绕过限制才能用上的工具，后来慢慢变成一套方法：整理上下文、拆想法、反复改，最后把一个小东西真的上线。</p>
+      <div class="hero-chips">
+        <span class="chip">Claude Code</span><span class="chip">NotebookLM</span><span class="chip">Obsidian</span><span class="chip">Vibe Coding</span>
+      </div>
+    </div>
+    <div class="console reveal" aria-label="AI workflow diagram">
+      <div class="console-top"><div class="dots"><span></span><span></span><span></span></div><p class="console-title">personal stack</p></div>
+      <div class="flow">
+        <div class="flow-row"><span class="flow-key">input</span><div class="flow-card">零散笔记、PDF、产品想法</div></div>
+        <div class="flow-row"><span class="flow-key">context</span><div class="flow-card">Projects、NotebookLM、Obsidian</div></div>
+        <div class="flow-row"><span class="flow-key">loop</span><div class="flow-card">提问、检查、修改、上线<span class="cursor"></span></div></div>
+        <div class="flow-row"><span class="flow-key">output</span><div class="flow-card">记账工具、个人网站、更清楚的工作流</div></div>
+      </div>
+    </div>
   </div>
 </header>
 
-<div class="main-layout">
-  <article class="article">
+<main class="wrap">
+  <section class="section-intro reveal">
+    <p class="section-kicker">真正的变化</p>
+    <p>AI 对我来说不再只是更快的搜索框，是从我意识到它能承接<em>上下文</em>开始的。</p>
+  </section>
 
-    <div class="tl-entry reveal" id="start">
-      <div class="tl-left">
-        <p class="tl-year">2022–<br>2023</p>
-        <div class="tl-line"></div>
-      </div>
-      <div class="tl-right">
-        <p class="ch-label">怎么开始的</p>
-        <h2 class="ch-title">翻过那道墙</h2>
-        <p>第一次知道 ChatGPT，注册就是个问题——IP 封锁，账号限制，国内的那套全碰上了。靠计算机系的同学帮忙，各种办法绕过去的。</p>
-        <p>注册上之后用得也简单，主要就是当升级版的搜索引擎。帮忙写过论文，回答问题，速度比百度快。有用，但也没觉得有多特别。</p>
-        <div class="tools">
-          <span class="tool-chip">ChatGPT</span>
+  <div class="story-grid">
+    <aside class="story-rail">
+      <p class="rail-label">Story map</p>
+      <ul class="rail-list">
+        <li><a href="#access">开始使用</a></li>
+        <li><a href="#sources">资料系统</a></li>
+        <li><a href="#prompts">Prompt</a></li>
+        <li><a href="#claude">Claude</a></li>
+        <li><a href="#build">第一个作品</a></li>
+        <li><a href="#now">现在</a></li>
+      </ul>
+    </aside>
+
+    <article>
+      <section class="module reveal" id="access">
+        <div class="module-num">01</div>
+        <div>
+          <h2>一开始不是策略，就是先想办法用上。</h2>
+          <p>第一次知道 ChatGPT，注册本身就是个问题：IP 限制、账号限制，国内那套麻烦基本都遇上了。最后是靠计算机系同学帮忙，才把账号弄好。</p>
+          <p>刚开始用得很浅。写论文、问问题、查解释，比百度快，也更顺。但那时候我还没觉得它会改变什么。</p>
+          <div class="artifact"><span class="tool">ChatGPT</span><span class="tool">搜索替代</span></div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="tl-entry reveal" id="notebooklm">
-      <div class="tl-left">
-        <p class="tl-year">2025<br>年底</p>
-        <div class="tl-line"></div>
-      </div>
-      <div class="tl-right">
-        <p class="ch-label">认真起来了</p>
-        <h2 class="ch-title">NotebookLM 让我觉得不一样了</h2>
-        <p>迪卡侬实习那段时间，意外白嫖了一年 Gemini Pro。开始用在工作上——起草文件、总结资料、中英文快速互译。</p>
-        <p>然后发现了 NotebookLM。逻辑很直接：你把自己的资料喂进去——PDF、文档、YouTube 链接都行——它只在你给的范围内作答，不会乱引用互联网上的东西。拿来做研究、写报告、整理信息，一下子觉得特别好用。</p>
-        <p>那是第一次我觉得 AI 是一个系统，而不只是一个功能。</p>
-        <div class="tools">
-          <span class="tool-chip">Gemini Pro</span>
-          <span class="tool-chip">NotebookLM</span>
+      <section class="module reveal" id="sources">
+        <div class="module-num">02</div>
+        <div>
+          <h2>NotebookLM 让我第一次看到“系统感”。</h2>
+          <p>迪卡侬实习的时候，我意外拿到了一年 Gemini Pro。先是拿来写草稿、总结资料、中英文互译，都是很实用的工作场景。</p>
+          <p>后来发现 NotebookLM：把 PDF、文档、YouTube 链接丢进去，它只基于这些资料回答。做研究、写报告、整理信息的时候，这和普通聊天机器人完全不是一个感觉。它更像一个能工作的资料库。</p>
+          <div class="artifact"><span class="tool">Gemini Pro</span><span class="tool">NotebookLM</span><span class="tool">基于资料回答</span></div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="pull reveal">
-      <p>那是第一次我觉得 AI 是一个系统，而不只是一个功能。</p>
-    </div>
-
-    <div class="tl-entry reveal" id="prompts">
-      <div class="tl-left">
-        <p class="tl-year">2025–<br>2026</p>
-        <div class="tl-line"></div>
+      <div class="quote reveal">
+        <p>那是第一次，我觉得 AI 不是一个功能，而是一套系统。</p>
+        <span>Turning point</span>
       </div>
-      <div class="tl-right">
-        <p class="ch-label">学怎么沟通</p>
-        <h2 class="ch-title">训练 Prompt</h2>
-        <p>去悉尼读研之后开始更刻意地用 ChatGPT——不只是要输出结果，而是去搞懂怎么问才有用。好的 Prompt 是什么样的，加什么上下文会让结果变好，怎么从一个模糊的想法走到真正有用的东西。</p>
-        <p>这部分大多数人会跳过。我觉得值得花时间。</p>
-        <div class="tools">
-          <span class="tool-chip">ChatGPT</span>
-          <span class="tool-chip">Prompt 工程</span>
+
+      <section class="module reveal" id="prompts">
+        <div class="module-num">03</div>
+        <div>
+          <h2>后来我开始把 Prompt 当成思考工具。</h2>
+          <p>到了悉尼读研，我开始更刻意地用 ChatGPT。不只是要一个答案，而是观察什么会影响答案质量：上下文、限制条件、例子、语气，还有问题的顺序。</p>
+          <p>很多人会跳过这一层。我觉得这层很关键。问题说得越清楚，工具越有用。</p>
+          <div class="artifact"><span class="tool">Prompt 工程</span><span class="tool">上下文设计</span></div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="tl-entry reveal" id="claude">
-      <div class="tl-left">
-        <p class="tl-year">2026<br>年4月</p>
-        <div class="tl-line"></div>
-      </div>
-      <div class="tl-right">
-        <p class="ch-label">发现 Claude</p>
-        <h2 class="ch-title">从聊天工具到别的什么</h2>
-        <p>之前就听说 Claude Code 在开发者里很火，但觉得跟我没关系——我不写代码。最开始用 Claude 也就是普通的聊天助手，跟其他的没什么区别。</p>
-        <p>然后开始摸 Projects——有持久上下文的长期对话。再到 Claude Code，一直在回避，后来还是用了。用了之后发现我之前担心的那些（技术门槛太高），其实根本不是我以为的那道坎。</p>
-        <div class="tools">
-          <span class="tool-chip">Claude</span>
-          <span class="tool-chip">Claude Code</span>
-          <span class="tool-chip">Obsidian</span>
+      <section class="module reveal" id="claude">
+        <div class="module-num">04</div>
+        <div>
+          <h2>Claude 把它从聊天变成了执行。</h2>
+          <p>我早就听说 Claude Code 在开发者里很火，但一直觉得跟我没关系。我不写代码，所以一开始只是把 Claude 当普通聊天助手用。</p>
+          <p>后来开始摸 Projects，发现长期上下文很有用。再到 Claude Code，之前一直躲，真正用起来才发现，门槛不是“我会不会写代码”，而是我能不能把想要的结果讲清楚，能不能看懂改了什么，能不能一轮轮修。</p>
+          <div class="artifact"><span class="tool">Claude</span><span class="tool">Claude Code</span><span class="tool">Projects</span></div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="tl-entry reveal" id="build">
-      <div class="tl-left">
-        <p class="tl-year">第一个<br>作品</p>
-        <div class="tl-line"></div>
-      </div>
-      <div class="tl-right">
-        <p class="ch-label">Vibe Coding</p>
-        <h2 class="ch-title">我居然做了个产品</h2>
-        <p>第一个项目：个人记账工具。本来想做 App，被 Claude 劝成了网页版——技术栈更简单，直接部署，手机电脑都能用。</p>
-        <p>买了阿里云域名，部署上去了。界面很糙，我完全不在意。</p>
-        <p>在迪卡侬的时候，我近距离见过完整的产品研发流程：BRD、PRD、开发迭代、测试、UAT、各方签字。一整个团队，好几个月。这次我一个人从想法到上线，一个周末搞完，没有那些正式流程，但完整。</p>
-        <p>就是那一刻，我对自己能做什么的认知变了。</p>
-        <div class="tools">
-          <span class="tool-chip">Vibe Coding</span>
-          <span class="tool-chip">阿里云</span>
+      <section class="module reveal" id="build">
+        <div class="module-num">05</div>
+        <div>
+          <h2>第一个产品改变了问题本身。</h2>
+          <p>第一个作品是个人记账工具。本来想做 App，Claude 建议我先做网页版：技术栈简单，能马上部署，手机电脑都能用。</p>
+          <p>我买了阿里云域名，部署上去了。界面很糙，但我一点都不在意。重点是，我一个人从想法做到上线，一个周末真的把东西做出来了。</p>
+          <p>在迪卡侬，我见过完整产品流程：BRD、PRD、开发迭代、测试、UAT、各方确认。那套流程很完整，但也很重。这次小很多、粗糙很多，也快很多。它让我觉得“做东西”这件事离我近了。</p>
+          <div class="artifact"><span class="tool">Vibe coding</span><span class="tool">阿里云</span><span class="tool">周末上线</span></div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="pull reveal">
-      <p>不懂代码，大概也不会专门去学。但「我没法自己做东西」这个念头，已经不在了。</p>
-    </div>
-
-    <div class="tl-entry reveal" id="now">
-      <div class="tl-left">
-        <p class="tl-year">现在</p>
-        <div class="tl-line"></div>
+      <div class="quote reveal">
+        <p>我不是程序员，大概也不会马上变成程序员。但“我做不了东西”这个念头，已经不在了。</p>
+        <span>What changed</span>
       </div>
-      <div class="tl-right">
-        <p class="ch-label">接下来</p>
-        <h2 class="ch-title">个人网站、知识库，以及再往后</h2>
-        <p>这个网站是第二个作品。用 Claude Code，同样的方式——描述想要什么，不断迭代，部署上线。比预期慢，但做出来的是真的东西。</p>
-        <p>我也在用 Obsidian 搭个人知识库——把多年来那些没有被好好留下来的想法和观察放进去。我有不少觉得值得记的想法，后来都消散了。这个习惯我不想继续了。</p>
-        <p>我没有一个现在就想做出来的具体产品。我有一个方向：把这些工具理解得足够深，等到我真的有一个值得去做的想法的时候，技术这边不是拦住它的理由。</p>
-        <div class="tools">
-          <span class="tool-chip">Claude Code</span>
-          <span class="tool-chip">Obsidian</span>
-          <span class="tool-chip">Vibe Coding</span>
+
+      <section class="module reveal" id="now">
+        <div class="module-num">06</div>
+        <div>
+          <h2>现在，我在搭自己的工作系统。</h2>
+          <p>这个网站是我用 Claude Code 做的第二个东西。方法还是一样：讲清楚想要什么，看结果，指出哪里不对，继续改，然后上线。</p>
+          <p>我也在用 Obsidian 搭个人知识库。过去有太多想法和观察，因为没有好好记录，后来就散掉了。我不想继续这样。</p>
+          <p>目标不是一夜之间变成工程师，而是把这些工具理解到一定程度。等我真的有一个值得做的想法时，技术不要成为最先挡住它的东西。</p>
+          <div class="artifact"><span class="tool">个人网站</span><span class="tool">Obsidian</span><span class="tool">知识库</span></div>
         </div>
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="tags reveal">
-      <span class="tag">Claude Code</span>
-      <span class="tag">Vibe Coding</span>
-      <span class="tag">NotebookLM</span>
-      <span class="tag">Obsidian</span>
-      <span class="tag">Gemini Pro</span>
-      <span class="tag">Prompt 工程</span>
-    </div>
-
-    <a href="zh-darts.html" class="next-story reveal">
-      <div>
-        <p class="next-label">另一个故事</p>
-        <p class="next-title">飞镖</p>
-      </div>
-      <svg class="next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </a>
-
-  </article>
-
-  <aside class="toc-wrap">
-    <p class="toc-label">时间线</p>
-    <ul class="toc-list">
-      <li><a href="#start">翻过那道墙</a></li>
-      <li><a href="#notebooklm">NotebookLM</a></li>
-      <li><a href="#prompts">训练 Prompt</a></li>
-      <li><a href="#claude">发现 Claude</a></li>
-      <li><a href="#build">第一个作品</a></li>
-      <li><a href="#now">现在</a></li>
-    </ul>
-  </aside>
-</div>
-
-<footer>
-  <div class="footer-inner">
-    <span class="footer-copy">© 2026 黄拓文</span>
-    <a href="zh.html" class="footer-back">← 返回主页</a>
+      </section>
+    </article>
   </div>
-</footer>
+
+  <section class="principles reveal">
+    <div class="principles-head">
+      <p class="section-kicker">使用原则</p>
+      <h2>我现在怎么用 AI</h2>
+    </div>
+    <div class="principles-grid">
+      <div class="principle"><b>先给上下文</b><p>先把资料、背景和限制条件讲清楚，再要输出。上下文错了，答案再流畅也没用。</p></div>
+      <div class="principle"><b>短循环迭代</b><p>不期待第一版完美。先做出来，再检查、指出问题、继续修。循环越短，结果越稳。</p></div>
+      <div class="principle"><b>小东西先上线</b><p>不急着做宏大的产品。先把模糊想法变成真实可看的东西，这件事本身就很重要。</p></div>
+    </div>
+  </section>
+
+  <a href="zh-darts.html" class="next-story reveal">
+    <div><p class="next-label">另一个故事</p><p class="next-title">飞镖</p></div>
+    <svg class="next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</main>
+
+<footer><div class="footer-inner"><span class="footer-copy">© 2026 黄拓文</span><a href="zh.html" class="footer-back">← 返回主页</a></div></footer>
 
 <script>
-  function toggleTheme(){
-    const el = document.documentElement;
-    const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
-    el.dataset.theme = next; localStorage.setItem('theme', next);
-  }
-
-  // Scroll reveal
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); } });
-  }, { threshold: 0.06 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  // Active TOC
-  const tlEntries = document.querySelectorAll('.tl-entry');
-  const tocLinks = document.querySelectorAll('.toc-list a');
-  const tocObs = new IntersectionObserver(entries_ => {
-    entries_.forEach(e => {
-      if (e.isIntersecting) {
-        tocLinks.forEach(a => a.classList.remove('active'));
-        const active = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
-        if (active) active.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px' });
-  tlEntries.forEach(s => tocObs.observe(s));
+  function toggleTheme(){const el=document.documentElement;const next=el.dataset.theme==='dark'?'light':'dark';el.dataset.theme=next;localStorage.setItem('theme',next);}
+  const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}})},{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  const sections=document.querySelectorAll('.module');const links=document.querySelectorAll('.rail-list a');
+  const tocObs=new IntersectionObserver((items)=>{items.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.remove('active'));const a=document.querySelector(`.rail-list a[href="#${e.target.id}"]`);if(a)a.classList.add('active');}})},{rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(s=>tocObs.observe(s));
 </script>
 </body>
 </html>

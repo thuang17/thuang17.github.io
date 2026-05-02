@@ -35,7 +35,7 @@ Lightweight project management file. Update after each meaningful change.
 
 **Phase 2 · Content & Story Quality**
 
-- [ ] Redesign darts.html and ai.html — current layout feels like a WeChat article (single column, no real layout design). Needs proper structure.
+- [x] Redesign darts.html and ai.html — both story pages now use stronger editorial / immersive layouts instead of single-column article layouts.
 - [ ] Chinese text rewrite — current Chinese copy has AI-generated patterns, feels unnatural. Trevor writes key sentences, Claude structures around them.
 - [ ] Create Chinese versions of work case study pages (zh-decathlon.html, zh-mayora.html) — optional, lower priority
 
@@ -95,4 +95,4 @@ Lightweight project management file. Update after each meaningful change.
 
 ---
 
-*Last updated: 2026-04-30*
+*Last updated: 2026-05-02*
