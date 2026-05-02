@@ -45,6 +45,7 @@ Lightweight project management file. Update after each meaningful change.
 
 **Phase 3 · Main Narrative**
 
+- [x] Website direction PRD — define "operator with a maker edge" as the next design/narrative direction
 - [ ] "Now" section / page — what Trevor is currently doing, thinking, building (Trevor provides content)
 - [ ] Writing section placeholder — no content yet, just structure
 - [ ] Hero bio refinement — after "Now" content is ready
@@ -92,6 +93,7 @@ Lightweight project management file. Update after each meaningful change.
 | 2026-04 | Pain points count: 16 | Verified against source files across both work context documents |
 | 2026-04 | No Next.js migration for now | Static HTML sufficient; migration only when backend/CMS needs arise |
 | 2026-04 | Multi-AI collaboration via /context folder | Claude Code reads repo directly; ChatGPT/Codex require context files to be pasted manually |
+| 2026-05 | Website direction: operator with a maker edge | Prioritize hiring credibility and decision quality, with personal texture as differentiation |
 
 ---
 
