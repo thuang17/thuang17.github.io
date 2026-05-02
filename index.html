@@ -209,6 +209,41 @@
                 transition:color var(--t),transform var(--t)}
     .card:hover .card-arrow{color:var(--accent);transform:translate(2px,-2px)}
     .card-desc{font-size:14px;color:var(--fg-2);line-height:1.72;margin-top:5px}
+    .proof-card{
+      position:relative;border:1px solid var(--border);background:var(--bg);
+      padding:22px;border-radius:10px;margin:0 0 14px;
+      transition:background var(--t),border-color var(--t),transform var(--t),box-shadow var(--t);
+    }
+    .proof-card:hover{
+      background:var(--bg-sub);border-color:var(--border-2);
+      transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.06);
+    }
+    [data-theme="dark"] .proof-card:hover{box-shadow:0 10px 30px rgba(0,0,0,.26)}
+    .proof-card-kicker{
+      font-family:var(--f-mono);font-size:10px;letter-spacing:.09em;
+      text-transform:uppercase;color:var(--fg-3);margin-bottom:8px;
+    }
+    .proof-card-grid{
+      display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,280px);
+      gap:28px;align-items:end;
+    }
+    .proof-card-question{
+      font-size:14px;line-height:1.65;color:var(--fg-2);
+      border-left:2px solid var(--accent);padding-left:12px;margin-top:12px;
+    }
+    .proof-metrics{
+      display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+    }
+    .proof-metric{
+      border-top:1px solid var(--border);padding-top:10px;
+    }
+    @media(max-width:760px){
+      .proof-card-grid{grid-template-columns:1fr;gap:18px}
+      .proof-metrics{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:480px){
+      .proof-metrics{grid-template-columns:1fr}
+    }
     .stats{display:flex;gap:20px;margin-top:12px}
     .stat-v{font-family:var(--f-display);font-size:22px;font-weight:700;
             letter-spacing:-.03em;color:var(--accent);line-height:1.1}
@@ -434,35 +469,47 @@
 <!-- ═══════════ PROJECTS ═══════════ -->
 <section id="projects">
   <div class="wrap">
-    <div class="reveal"><p class="label">Case Studies</p><h2 class="h2">Projects</h2></div>
+    <div class="reveal"><p class="label">Selected proof</p><h2 class="h2">Where judgment shows up</h2></div>
 
     <div>
-      <a href="cny-campaign.html" class="card reveal" style="display:block">
-        <div class="card-head">
-          <span>CNY FMCG O2O Growth Campaign</span>
-          <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      <a href="cny-campaign.html" class="proof-card reveal" style="display:block">
+        <div class="proof-card-grid">
+          <div>
+            <p class="proof-card-kicker">Business ambiguity → operating system</p>
+            <div class="card-head">
+              <span>CNY FMCG O2O Growth Campaign</span>
+              <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+            </div>
+            <p class="card-desc">Mayora's first instant retail campaign had no SOP, no historical data, and no proven audience playbook. I built the campaign structure, tracked audience-level ROI weekly, and reallocated budget when returning customers and gifting-intent segments clearly outperformed broad targeting.</p>
+            <p class="proof-card-question">Key judgment: when signal appeared, shift budget toward the highest-converting audience instead of keeping spend evenly distributed.</p>
+            <div class="tags" style="margin-top:14px"><span class="tag">FMCG</span><span class="tag">O2O</span><span class="tag">RTB</span><span class="tag">Budget reallocation</span></div>
+          </div>
+          <div class="proof-metrics">
+            <div class="proof-metric"><div class="stat-v">7.2×</div><div class="stat-l">Gift box ROI</div></div>
+            <div class="proof-metric"><div class="stat-v">600%</div><div class="stat-l">New product growth</div></div>
+            <div class="proof-metric"><div class="stat-v">1.38M</div><div class="stat-l">Impressions</div></div>
+          </div>
         </div>
-        <p class="card-desc">Company's first instant retail campaign, built from scratch with no SOP or historical data. Ran RTB across gift box and new product lines, made two rounds of budget reallocation based on audience-level ROI, and found that returning customers and gifting-intent segments consistently outperformed broad targeting by a wide margin.</p>
-        <div class="stats">
-          <div><div class="stat-v">7.2×</div><div class="stat-l">Gift box ROI</div></div>
-          <div><div class="stat-v">600%</div><div class="stat-l">New product growth</div></div>
-          <div><div class="stat-v">1.38M</div><div class="stat-l">Impressions</div></div>
-        </div>
-        <div class="tags" style="margin-top:12px"><span class="tag">FMCG</span><span class="tag">O2O</span><span class="tag">Data-driven</span></div>
       </a>
 
-      <a href="decathlon-ux.html" class="card reveal" style="display:block;margin-top:2px">
-        <div class="card-head">
-          <span>Decathlon WeChat Mini Program UX Study</span>
-          <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      <a href="decathlon-ux.html" class="proof-card reveal" style="display:block">
+        <div class="proof-card-grid">
+          <div>
+            <p class="proof-card-kicker">Blank canvas → prioritized roadmap</p>
+            <div class="card-head">
+              <span>Decathlon WeChat Mini Program UX Study</span>
+              <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+            </div>
+            <p class="card-desc">No one assigned the project. I benchmarked Decathlon's WeChat Mini Program against JD 1P/3P across purchase and returns flows, surfaced 16 pain points, and built a dual-weighted Value-Effort Matrix to help the team prioritize what should move first.</p>
+            <p class="proof-card-question">Key judgment: push back on courier return pickup because the short-term return-rate risk outweighed the UX upside before logistics was ready.</p>
+            <div class="tags" style="margin-top:14px"><span class="tag">UX research</span><span class="tag">Prioritization</span><span class="tag">Competitive analysis</span></div>
+          </div>
+          <div class="proof-metrics">
+            <div class="proof-metric"><div class="stat-v">16</div><div class="stat-l">Pain points</div></div>
+            <div class="proof-metric"><div class="stat-v">4</div><div class="stat-l">Platforms</div></div>
+            <div class="proof-metric"><div class="stat-v">¥6M+</div><div class="stat-l">Projected GMV</div></div>
+          </div>
         </div>
-        <p class="card-desc">Self-initiated — no one asked me to do this. Benchmarked Decathlon's WeChat Mini Program against JD 1P/3P across the full purchase and returns funnel, surfaced 16 pain points, and built a dual-weighted Value-Effort Matrix to prioritize them. Also pushed back on one item the team wanted to fast-track: argued that courier return pickup would spike return rates before the logistics infrastructure was ready. We parked it. Drove the rest to formal project approval.</p>
-        <div class="stats">
-          <div><div class="stat-v">16</div><div class="stat-l">Pain points found</div></div>
-          <div><div class="stat-v">4</div><div class="stat-l">Platforms benchmarked</div></div>
-          <div><div class="stat-v">¥6M+</div><div class="stat-l">BRD projected GMV</div></div>
-        </div>
-        <div class="tags" style="margin-top:12px"><span class="tag">UX Research</span><span class="tag">Prioritization</span><span class="tag">Competitive Analysis</span></div>
       </a>
     </div>
   </div>

@@ -205,6 +205,41 @@
                 transition:color var(--t),transform var(--t)}
     .card:hover .card-arrow{color:var(--accent);transform:translate(2px,-2px)}
     .card-desc{font-size:14px;color:var(--fg-2);line-height:1.72;margin-top:5px}
+    .proof-card{
+      position:relative;border:1px solid var(--border);background:var(--bg);
+      padding:22px;border-radius:10px;margin:0 0 14px;
+      transition:background var(--t),border-color var(--t),transform var(--t),box-shadow var(--t);
+    }
+    .proof-card:hover{
+      background:var(--bg-sub);border-color:var(--border-2);
+      transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.06);
+    }
+    [data-theme="dark"] .proof-card:hover{box-shadow:0 10px 30px rgba(0,0,0,.26)}
+    .proof-card-kicker{
+      font-family:var(--f-mono);font-size:10px;letter-spacing:.09em;
+      text-transform:uppercase;color:var(--fg-3);margin-bottom:8px;
+    }
+    .proof-card-grid{
+      display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,280px);
+      gap:28px;align-items:end;
+    }
+    .proof-card-question{
+      font-size:14px;line-height:1.65;color:var(--fg-2);
+      border-left:2px solid var(--accent);padding-left:12px;margin-top:12px;
+    }
+    .proof-metrics{
+      display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+    }
+    .proof-metric{
+      border-top:1px solid var(--border);padding-top:10px;
+    }
+    @media(max-width:760px){
+      .proof-card-grid{grid-template-columns:1fr;gap:18px}
+      .proof-metrics{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:480px){
+      .proof-metrics{grid-template-columns:1fr}
+    }
     .stats{display:flex;gap:20px;margin-top:12px}
     .stat-v{font-family:var(--f-display);font-size:22px;font-weight:700;
             letter-spacing:-.02em;color:var(--accent);line-height:1.1}
@@ -416,35 +451,47 @@
 <!-- ═══════════ PROJECTS ═══════════ -->
 <section id="projects">
   <div class="wrap">
-    <div class="reveal"><p class="label">项目案例</p><h2 class="h2">项目</h2></div>
+    <div class="reveal"><p class="label">代表案例</p><h2 class="h2">判断力体现在哪里</h2></div>
 
     <div>
-      <a href="cny-campaign.html" class="card reveal" style="display:block">
-        <div class="card-head">
-          <span>美团闪购 CNY 促销增长项目</span>
-          <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      <a href="cny-campaign.html" class="proof-card reveal" style="display:block">
+        <div class="proof-card-grid">
+          <div>
+            <p class="proof-card-kicker">业务空白 → 可执行系统</p>
+            <div class="card-head">
+              <span>美团闪购 CNY 促销增长项目</span>
+              <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+            </div>
+            <p class="card-desc">公司第一次做即时零售大促，没有 SOP，也没有历史数据。我从活动结构、投放节奏、受众拆分到 ROI 追踪搭起一套可执行方法，并在老客和礼赠人群表现明显更好后，及时调整预算方向。</p>
+            <p class="proof-card-question">关键判断：不是平均分配预算，而是在信号出现后，把资源转向转化效率最高的人群。</p>
+            <div class="tags" style="margin-top:14px"><span class="tag">快消</span><span class="tag">O2O</span><span class="tag">RTB</span><span class="tag">预算调整</span></div>
+          </div>
+          <div class="proof-metrics">
+            <div class="proof-metric"><div class="stat-v">7.2×</div><div class="stat-l">礼盒 ROI</div></div>
+            <div class="proof-metric"><div class="stat-v">600%</div><div class="stat-l">新品增长</div></div>
+            <div class="proof-metric"><div class="stat-v">1.38M</div><div class="stat-l">曝光量</div></div>
+          </div>
         </div>
-        <p class="card-desc">公司首个即时零售大促，从零搭建，没有 SOP 也没有历史数据。分礼盒和新品两条线做 RTB 投放，做了两轮受众级别的预算动态调整，发现老客和礼赠人群的转化效率远高于泛人群——然后果断把预算往那边转。</p>
-        <div class="stats">
-          <div><div class="stat-v">7.2×</div><div class="stat-l">礼盒 ROI</div></div>
-          <div><div class="stat-v">600%</div><div class="stat-l">新品销售增长</div></div>
-          <div><div class="stat-v">1.38M</div><div class="stat-l">曝光量</div></div>
-        </div>
-        <div class="tags" style="margin-top:12px"><span class="tag">快消</span><span class="tag">O2O</span><span class="tag">数据驱动</span></div>
       </a>
 
-      <a href="decathlon-ux.html" class="card reveal" style="display:block;margin-top:2px">
-        <div class="card-head">
-          <span>迪卡侬微信小程序 UX 研究</span>
-          <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      <a href="decathlon-ux.html" class="proof-card reveal" style="display:block">
+        <div class="proof-card-grid">
+          <div>
+            <p class="proof-card-kicker">空白任务 → 优先级路线图</p>
+            <div class="card-head">
+              <span>迪卡侬微信小程序 UX 研究</span>
+              <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+            </div>
+            <p class="card-desc">没人要求我做这件事。我自发对标京东 1P/3P 的下单、物流和售后链路，整理出 16 个用户痛点，再用双维度 Value-Effort 矩阵帮助团队判断哪些需求值得先推进。</p>
+            <p class="proof-card-question">关键判断：快递上门取件短期可能拉高退货率，在物流基础还没准备好前，先暂缓比快速上线更合理。</p>
+            <div class="tags" style="margin-top:14px"><span class="tag">UX 研究</span><span class="tag">需求优先级</span><span class="tag">竞品分析</span></div>
+          </div>
+          <div class="proof-metrics">
+            <div class="proof-metric"><div class="stat-v">16</div><div class="stat-l">痛点数</div></div>
+            <div class="proof-metric"><div class="stat-v">4</div><div class="stat-l">对标平台</div></div>
+            <div class="proof-metric"><div class="stat-v">¥6M+</div><div class="stat-l">预测 GMV</div></div>
+          </div>
         </div>
-        <p class="card-desc">没人要求我做这件事。自发对标京东 1P/3P 的全链路体验（下单、物流、售后），整理出 16 个用户痛点，用双维度 Value-Effort 矩阵做优先级排序。其中有一项团队想快速推进（快递上门取件），我认为短期内会拉高退货率、ROI 不划算，给出了具体测算后说服了主管暂缓。其余高优项目推动正式立项。</p>
-        <div class="stats">
-          <div><div class="stat-v">16</div><div class="stat-l">发现痛点数</div></div>
-          <div><div class="stat-v">4</div><div class="stat-l">竞品平台</div></div>
-          <div><div class="stat-v">¥6M+</div><div class="stat-l">BRD 预测 GMV</div></div>
-        </div>
-        <div class="tags" style="margin-top:12px"><span class="tag">UX 研究</span><span class="tag">需求优先级</span><span class="tag">竞品分析</span></div>
       </a>
     </div>
   </div>
