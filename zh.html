@@ -136,6 +136,41 @@
     .hero-bio{font-size:15px;color:var(--fg-2);line-height:1.85;max-width:500px}
     .hero-bio p+p{margin-top:10px}
     .hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+    .hero-position{
+      font-family:var(--f-display);font-size:clamp(22px,4vw,34px);
+      font-weight:700;line-height:1.18;letter-spacing:-.025em;
+      color:var(--fg);max-width:680px;margin:0 0 18px;
+    }
+    .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+    .btn-primary,.btn-secondary{
+      display:inline-flex;align-items:center;gap:7px;
+      min-height:38px;padding:8px 13px;border-radius:8px;
+      font-size:13px;font-weight:650;line-height:1;
+      transition:background var(--t),border-color var(--t),color var(--t),transform var(--t);
+    }
+    .btn-primary{background:var(--fg);color:var(--bg);border:1px solid var(--fg)}
+    .btn-primary:hover{transform:translateY(-1px);background:var(--accent);border-color:var(--accent);color:#fff}
+    .btn-secondary{color:var(--fg);border:1px solid var(--border);background:transparent}
+    .btn-secondary:hover{background:var(--bg-sub);border-color:var(--border-2);transform:translateY(-1px)}
+    .proof-strip{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+      margin-top:42px;border:1px solid var(--border);border-radius:10px;
+      overflow:hidden;background:var(--border);
+    }
+    .proof-item{background:var(--bg);padding:16px 18px;min-height:92px}
+    .proof-value{
+      font-family:var(--f-display);font-size:clamp(22px,4vw,32px);
+      font-weight:800;line-height:1;letter-spacing:-.035em;color:var(--accent);
+    }
+    .proof-label{
+      font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;
+      text-transform:uppercase;color:var(--fg-3);margin-top:7px;
+    }
+    .proof-note{font-size:13px;line-height:1.45;color:var(--fg-2);margin-top:6px}
+    @media(max-width:720px){
+      .proof-strip{grid-template-columns:1fr;margin-top:32px}
+      .proof-item{min-height:auto}
+    }
 
     /* ── SECTIONS ────────────────────────────────── */
     section{padding:56px 0}
@@ -274,23 +309,32 @@
     <div class="hero-grid">
 
       <div>
-        <p class="hero-eyebrow reveal">你好</p>
+        <p class="hero-eyebrow reveal">运营 / 项目协作 / AI Builder</p>
 
         <div class="reveal" style="transition-delay:55ms">
           <h1 class="hero-name">黄拓文</h1>
           <p class="hero-name-en">Trevor Huang</p>
         </div>
 
-        <div class="hero-bio reveal" style="transition-delay:110ms">
-          <p>悉尼大学项目管理硕士在读（GPA 3.8，TOP 15%），FMCG O2O 运营出身。在快消供应链、即时零售和电商技术都实际做过事，对中国市场执行层面有比较接地气的理解。</p>
-          <p>最近在深度用 AI 工具——vibe coding、Claude Code，在做两年前完全不敢想的东西。平时打飞镖。</p>
+        <p class="hero-position reveal" style="transition-delay:70ms">
+          我擅长把模糊的业务和产品问题，拆成可以推进的行动。
+        </p>
+
+        <div class="hero-bio reveal" style="transition-delay:120ms">
+          <p>悉尼大学项目管理硕士在读，有 FMCG O2O、即时零售和电商技术相关经历。我的优势在运营、数据、用户体验和跨部门协作的交界处。</p>
+          <p>我使用 AI 工具的方式也类似：先面对一个混乱的问题，再把它做成一个能跑、能用、还能继续迭代的系统。</p>
         </div>
 
-        <div class="hero-chips reveal" style="transition-delay:165ms">
-          <span class="tag">MPM 在读</span>
+        <div class="hero-chips reveal" style="transition-delay:170ms">
           <span class="tag">FMCG O2O</span>
-          <span class="tag">E-commerce Tech</span>
-          <span class="tag">悉尼 · 2026</span>
+          <span class="tag">电商技术</span>
+          <span class="tag">UX 优先级判断</span>
+          <span class="tag">AI 辅助构建</span>
+        </div>
+
+        <div class="hero-actions reveal" style="transition-delay:220ms">
+          <a class="btn-primary" href="#projects">查看代表案例 →</a>
+          <a class="btn-secondary" href="#about">了解个人侧面</a>
         </div>
       </div>
 
@@ -298,6 +342,23 @@
         <img src="avatar.png" alt="">
       </div>
 
+    </div>
+    <div class="proof-strip reveal" style="transition-delay:260ms" aria-label="代表性证明点">
+      <div class="proof-item">
+        <div class="proof-value">7.2×</div>
+        <div class="proof-label">Campaign ROI</div>
+        <p class="proof-note">从零搭建迈大食品首个即时零售 CNY 大促。</p>
+      </div>
+      <div class="proof-item">
+        <div class="proof-value">16</div>
+        <div class="proof-label">UX pain points</div>
+        <p class="proof-note">自发完成迪卡侬微信小程序全链路竞品分析。</p>
+      </div>
+      <div class="proof-item">
+        <div class="proof-value">8</div>
+        <div class="proof-label">Parallel UAT projects</div>
+        <p class="proof-note">协调抖音、天猫、淘宝闪购等多个并行项目测试。</p>
+      </div>
     </div>
   </div>
 </section>
