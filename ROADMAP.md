@@ -47,10 +47,10 @@ Lightweight project management file. Update after each meaningful change.
 
 - [x] Website direction PRD — define "operator with a maker edge" as the next design/narrative direction
 - [x] Homepage direction refresh — reframe hero, selected proof, work scanability, and personal maker bridge around operator judgment
+- [x] Remove duplicated Beyond Work block — maker edge bridge now carries the personal-story entry points
 - [ ] "Now" section / page — what Trevor is currently doing, thinking, building (Trevor provides content)
 - [ ] Writing section placeholder — no content yet, just structure
 - [ ] Hero bio refinement — after "Now" content is ready
-- [ ] About section: add photo(s) once Trevor provides them
 
 ---
 
