@@ -784,8 +784,8 @@
         var rect = card.getBoundingClientRect();
         var x = (e.clientX - rect.left) / rect.width;
         var y = (e.clientY - rect.top)  / rect.height;
-        var rotX = (y - 0.5) * -3;
-        var rotY = (x - 0.5) *  3;
+        var rotX = (y - 0.5) * -2;
+        var rotY = (x - 0.5) *  2;
         card.style.transition = 'background var(--t), border-color 0.25s ease, box-shadow 0.25s ease';
         card.style.transform  = 'perspective(900px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateY(-4px)';
         card.style.setProperty('--glare-x', (x * 100) + '%');
