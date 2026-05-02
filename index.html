@@ -234,11 +234,20 @@
       transition:height 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
     }
     .proof-card:hover::before{height:65%}
+    .proof-card::after{
+      content:'';position:absolute;inset:0;border-radius:10px;
+      background:radial-gradient(circle at var(--glare-x,50%) var(--glare-y,50%), rgba(255,255,255,0.22) 0%, transparent 60%);
+      opacity:0;transition:opacity 0.3s ease;pointer-events:none;
+    }
+    .proof-card:hover::after{opacity:1}
+    [data-theme="dark"] .proof-card::after{
+      background:radial-gradient(circle at var(--glare-x,50%) var(--glare-y,50%), rgba(255,255,255,0.08) 0%, transparent 60%);
+    }
     .proof-card:hover{
       background:var(--bg-sub);border-color:var(--border-2);
-      transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.08);
+      box-shadow:0 16px 48px rgba(0,0,0,.10);
     }
-    [data-theme="dark"] .proof-card:hover{box-shadow:0 12px 36px rgba(0,0,0,.30)}
+    [data-theme="dark"] .proof-card:hover{box-shadow:0 16px 48px rgba(0,0,0,.35)}
     .proof-card:hover .card-arrow{color:var(--accent);transform:translate(3px,-3px)}
     .stat-v{transition:transform 0.25s ease}
     .proof-card:hover .stat-v{transform:scale(1.07);transform-origin:left center}
@@ -820,6 +829,27 @@
       card.addEventListener('mouseleave', function () {
         this.classList.remove('is-magnetic');
         this.style.transform = '';
+      });
+    });
+  }
+
+  // ── Proof card 3D tilt + glare ──
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.proof-card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width;
+        var y = (e.clientY - rect.top)  / rect.height;
+        var rotX = (y - 0.5) * -10;
+        var rotY = (x - 0.5) *  10;
+        card.style.transition = 'background var(--t), border-color 0.25s ease, box-shadow 0.25s ease';
+        card.style.transform  = 'perspective(900px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateY(-4px)';
+        card.style.setProperty('--glare-x', (x * 100) + '%');
+        card.style.setProperty('--glare-y', (y * 100) + '%');
+      });
+      card.addEventListener('mouseleave', function () {
+        card.style.transition = 'transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94), background var(--t), border-color 0.25s ease, box-shadow 0.25s ease';
+        card.style.transform  = '';
       });
     });
   }
