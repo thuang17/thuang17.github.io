@@ -160,9 +160,12 @@
     /* ── PROJECT CARDS ───────────────────────────── */
     .card{
       padding:18px;margin:0 -18px;border-radius:10px;
-      transition:background var(--t);
+      transition:background var(--t), transform 0.5s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+      will-change:transform;
     }
-    .card:hover{background:var(--bg-sub)}
+    .card:hover{background:var(--bg-sub);box-shadow:0 8px 28px rgba(0,0,0,0.07)}
+    [data-theme="dark"] .card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.28)}
+    .card.is-magnetic{transition:background var(--t),box-shadow 0.3s ease}
     .card-head{
       font-size:15px;font-weight:600;color:var(--fg);
       display:flex;align-items:center;justify-content:space-between;gap:12px;
@@ -628,6 +631,25 @@
   }, { threshold: 0.07, rootMargin: '0px 0px -24px 0px' });
 
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ── Magnetic card effect ──
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var rect = this.getBoundingClientRect();
+        var cx = rect.left + rect.width  / 2;
+        var cy = rect.top  + rect.height / 2;
+        var dx = Math.max(-8,  Math.min(8,  (e.clientX - cx) * 0.05));
+        var dy = Math.max(-5,  Math.min(5,  (e.clientY - cy) * 0.05));
+        this.classList.add('is-magnetic');
+        this.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+      });
+      card.addEventListener('mouseleave', function () {
+        this.classList.remove('is-magnetic');
+        this.style.transform = '';
+      });
+    });
+  }
 
   // ── Hero name character split animation ──
   (function () {
