@@ -118,6 +118,10 @@
       .footer-inner { flex-direction: column; gap: 10px; text-align: center; }
       .data-row { grid-template-columns: 1fr 1fr; }
     }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>

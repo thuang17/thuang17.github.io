@@ -305,6 +305,10 @@
     @media (max-width: 480px) {
       .data-row { grid-template-columns: 1fr; }
     }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>

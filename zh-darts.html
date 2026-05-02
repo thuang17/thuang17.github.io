@@ -163,6 +163,10 @@
     @media (max-width: 480px) {
       .photo-grid-2 img { height: 150px; }
     }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -229,14 +233,14 @@
     </div>
 
     <div class="photo-strip reveal">
-      <img src="darts/微信图片_20260429164731_425_10.jpg" alt="穿队服的校队" onclick="openLightbox(this.src)">
-      <img src="darts/微信图片_20260429164728_424_10.jpg" alt="穿队服的社团成员" onclick="openLightbox(this.src)">
-      <img src="darts/微信图片_20260429164744_429_10.jpg" alt="拍立得瞬间" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164731_425_10.jpg" alt="穿队服的校队" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164728_424_10.jpg" alt="穿队服的社团成员" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164744_429_10.jpg" alt="拍立得瞬间" onclick="openLightbox(this.src)">
     </div>
     <p class="caption reveal">穿着队服的团队 · 左右滑动查看 →</p>
 
     <div class="photo-wide reveal" onclick="openLightbox(this.querySelector('img').src)">
-      <img src="darts/微信图片_20260429164725_423_10.jpg" alt="社团全体合影 SINCE 2018">
+      <img loading="lazy" src="darts/微信图片_20260429164725_423_10.jpg" alt="社团全体合影 SINCE 2018">
     </div>
     <p class="caption reveal">上经贸大飞镖俱乐部 · 全员合照</p>
 
@@ -249,7 +253,7 @@
     </div>
 
     <div class="photo-wide reveal" onclick="openLightbox(this.querySelector('img').src)">
-      <img src="darts/微信图片_20260429164638_420_10.jpg" alt="上海市高校飞镖交流赛">
+      <img loading="lazy" src="darts/微信图片_20260429164638_420_10.jpg" alt="上海市高校飞镖交流赛">
     </div>
     <p class="caption reveal">上海市高校飞镖交流赛</p>
 
@@ -263,23 +267,23 @@
     </div>
 
     <div class="photo-strip reveal">
-      <img src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive 比赛合影" onclick="openLightbox(this.src)">
-      <img src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive 比赛" onclick="openLightbox(this.src)">
-      <img src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET 赛事" onclick="openLightbox(this.src)">
-      <img src="darts/微信图片_20260429164812_434_10.jpg" alt="深夜飞镖局" onclick="openLightbox(this.src)">
-      <img src="darts/微信图片_20260429164842_436_10.jpg" alt="CHAMPION 牌子" onclick="openLightbox(this.src)">
-      <img src="darts/微信图片_20260429164710_422_10.jpg" alt="Dartslive 场地合照" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive 比赛合影" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive 比赛" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET 赛事" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164812_434_10.jpg" alt="深夜飞镖局" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164842_436_10.jpg" alt="CHAMPION 牌子" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164710_422_10.jpg" alt="Dartslive 场地合照" onclick="openLightbox(this.src)">
     </div>
     <p class="caption reveal">Dartslive 赛事 — 大多数都打到很晚 · 左右滑动 →</p>
 
     <div class="photo-block reveal" onclick="openLightbox(this.querySelector('img').src)">
-      <img src="darts/微信图片_20260429164756_432_10.jpg" alt="比完赛凌晨吃面">
+      <img loading="lazy" src="darts/微信图片_20260429164756_432_10.jpg" alt="比完赛凌晨吃面">
     </div>
     <p class="caption reveal">重要的是比赛之后那部分</p>
 
     <div class="photo-grid-2 reveal">
-      <img src="darts/微信图片_20260429164857_438_10.jpg" alt="回家路上" onclick="openLightbox(this.src)">
-      <img src="darts/微信图片_20260429164833_435_10.jpg" alt="和朋友们" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164857_438_10.jpg" alt="回家路上" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164833_435_10.jpg" alt="和朋友们" onclick="openLightbox(this.src)">
     </div>
 
     <hr>

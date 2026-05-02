@@ -241,6 +241,10 @@
       .row-date{display:none}
       .foot-top{flex-direction:column-reverse;align-items:flex-start}
     }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>

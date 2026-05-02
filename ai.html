@@ -229,6 +229,10 @@
     @media (max-width: 480px) {
       .tl-entry { grid-template-columns: 48px 1fr; gap: 0 16px; }
     }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>
