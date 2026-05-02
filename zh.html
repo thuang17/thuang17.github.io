@@ -188,6 +188,19 @@
                display:flex;align-items:center;gap:7px;flex-wrap:wrap}
     .row-sub{font-weight:400;font-size:13.5px;color:var(--fg-2)}
     .row-desc{font-size:14px;color:var(--fg-2);line-height:1.72;margin-top:5px}
+    .section-intro{
+      font-size:14px;line-height:1.72;color:var(--fg-2);
+      max-width:620px;margin:-18px 0 24px;
+    }
+    .outcome-list{
+      display:grid;gap:6px;margin-top:10px;
+      font-size:13.5px;line-height:1.55;color:var(--fg-2);
+    }
+    .outcome-list span{display:flex;gap:8px;align-items:flex-start}
+    .outcome-list span::before{
+      content:"";width:5px;height:5px;border-radius:50%;
+      background:var(--accent);margin-top:.72em;flex:0 0 auto;
+    }
     .row-date{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);
               white-space:nowrap;padding-top:2px;flex-shrink:0}
 
@@ -403,12 +416,17 @@
 <section id="work">
   <div class="wrap">
     <div class="reveal"><p class="label">工作经历</p><h2 class="h2">经历</h2></div>
+    <p class="section-intro reveal">几段经历里反复出现的一点是：先进入一个不够清晰的业务现场，找到真正的约束，再把它变成可追踪、可推进的系统或决策。</p>
     <div class="stagger reveal">
 
       <div class="row">
         <div>
           <div class="row-title">迪卡侬中国 <span class="row-sub">· E-commerce Tech PM Intern · China-lab</span></div>
           <p class="row-desc">入职第一天，mentor 让我自己去发现问题。自发做了微信小程序与京东 1P/3P 的全链路竞品分析，整理出 16 个用户痛点，建了双维度 Value-Effort 矩阵做优先级排序，推动项目立项。同期跨部门协调了 8 个并行项目的 UAT（覆盖抖音、天猫、淘宝闪购），还排查了团队内部 PM 工具的 13 个痛点——最后推动引入 Trello 作为轻量级看板补充。</p>
+          <div class="outcome-list">
+            <span>把一个很空的实习任务，推进成有优先级的 UX 改进路线图。</span>
+            <span>在建议上线前，先区分用户体验收益和物流承接风险。</span>
+          </div>
           <div class="tags"><span class="tag">UX 研究</span><span class="tag">UAT 协调</span><span class="tag">PM 工具优化</span><span class="tag">微信小程序</span></div>
           <a href="decathlon.html" style="display:inline-flex;align-items:center;gap:5px;margin-top:16px;font-family:var(--f-mono);font-size:12px;color:var(--accent);text-decoration:none;font-weight:400;">详细案例 →</a>
         </div>
@@ -419,6 +437,10 @@
         <div>
           <div class="row-title">迈大食品 <span class="row-sub">· Management Trainee · FMCG O2O</span></div>
           <p class="row-desc">全年负责美团闪购、京东到家、淘宝闪购的 O2O 运营。主导了公司首个即时零售 CNY 大促——没有 SOP，没有历史数据，从零搭建。分礼盒和新品两条线做 RTB 投放，每周追踪各受众人群 ROI，做了两轮预算动态调整，发现老客和礼赠人群转化效率远高于其他受众后果断把预算往那边转。礼盒 campaign 综合 ROI 7.22，新品销售额相比投放前日均基线增长约 600%。</p>
+          <div class="outcome-list">
+            <span>建立受众 ROI 到预算调整的周度运营闭环。</span>
+            <span>从单次大促执行，沉淀出可复用的即时零售判断逻辑。</span>
+          </div>
           <div class="tags"><span class="tag">O2O 运营</span><span class="tag">RTB 精准投放</span><span class="tag">数据分析</span><span class="tag">快消</span></div>
           <a href="mayora.html" style="display:inline-flex;align-items:center;gap:5px;margin-top:16px;font-family:var(--f-mono);font-size:12px;color:var(--accent);text-decoration:none;font-weight:400;">详细案例 →</a>
         </div>

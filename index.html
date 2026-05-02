@@ -189,6 +189,19 @@
                display:flex;align-items:center;gap:7px;flex-wrap:wrap}
     .row-sub{font-weight:400;font-size:13.5px;color:var(--fg-2)}
     .row-desc{font-size:14px;color:var(--fg-2);line-height:1.72;margin-top:5px}
+    .section-intro{
+      font-size:14px;line-height:1.72;color:var(--fg-2);
+      max-width:620px;margin:-18px 0 24px;
+    }
+    .outcome-list{
+      display:grid;gap:6px;margin-top:10px;
+      font-size:13.5px;line-height:1.55;color:var(--fg-2);
+    }
+    .outcome-list span{display:flex;gap:8px;align-items:flex-start}
+    .outcome-list span::before{
+      content:"";width:5px;height:5px;border-radius:50%;
+      background:var(--accent);margin-top:.72em;flex:0 0 auto;
+    }
     .row-date{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);
               white-space:nowrap;padding-top:2px;flex-shrink:0}
 
@@ -421,12 +434,17 @@
 <section id="work">
   <div class="wrap">
     <div class="reveal"><p class="label">Experience</p><h2 class="h2">Work</h2></div>
+    <p class="section-intro reveal">The pattern across my work: enter a messy operating environment, identify the real constraint, then turn it into a trackable system or decision.</p>
     <div class="stagger reveal">
 
       <div class="row">
         <div>
           <div class="row-title">Decathlon <span class="row-sub">· E-commerce Tech PM Intern · China-lab</span></div>
           <p class="row-desc">Given a blank canvas on day one — my job was to find the problems myself. Self-initiated a full-funnel UX benchmarking of the WeChat Mini Program against JD 1P/3P, surfaced 16 pain points, and built a dual-weighted Value-Effort Matrix to drive prioritization. Also coordinated UAT across 8 concurrent projects (Douyin, Tmall, Taobao Flash Sale), and identified 13 issues in the team's internal PM tool — which led to Trello getting adopted alongside it.</p>
+          <div class="outcome-list">
+            <span>Turned a blank intern brief into a prioritized UX improvement roadmap.</span>
+            <span>Separated user pain points from logistics risks before recommending what to build.</span>
+          </div>
           <div class="tags"><span class="tag">UX Research</span><span class="tag">UAT Coordination</span><span class="tag">PM Tooling</span><span class="tag">WeChat Mini Program</span></div>
           <a href="decathlon.html" style="display:inline-flex;align-items:center;gap:5px;margin-top:16px;font-family:var(--f-mono);font-size:12px;color:var(--accent);text-decoration:none;font-weight:400;">Full case study →</a>
         </div>
@@ -437,6 +455,10 @@
         <div>
           <div class="row-title">Mayora Food <span class="row-sub">· Management Trainee · FMCG O2O</span></div>
           <p class="row-desc">Ran O2O operations across Meituan Flash Sale, JD Daojia, and Taobao Flash Sale for the year. Led the company's first-ever instant retail CNY campaign — no SOP, no historical data. Managed RTB ads across gift box and new product lines, tracked audience-level ROI weekly, and reallocated budget when returning customers and gifting-intent audiences started clearly outperforming. Gift box campaign ROI: 7.22. New product sales: ~600% above the pre-campaign daily baseline.</p>
+          <div class="outcome-list">
+            <span>Built a campaign operating loop where audience ROI informed weekly budget shifts.</span>
+            <span>Moved from campaign execution to repeatable instant-retail decision logic.</span>
+          </div>
           <div class="tags"><span class="tag">O2O Operations</span><span class="tag">RTB Advertising</span><span class="tag">Data Analysis</span><span class="tag">FMCG</span></div>
           <a href="mayora.html" style="display:inline-flex;align-items:center;gap:5px;margin-top:16px;font-family:var(--f-mono);font-size:12px;color:var(--accent);text-decoration:none;font-weight:400;">Full case study →</a>
         </div>
