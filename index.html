@@ -110,8 +110,45 @@
     .tbtn:hover{color:var(--fg);border-color:var(--border-2);background:var(--bg-sub)}
 
     /* ── HERO ────────────────────────────────────── */
-    .hero{padding:80px 0 64px}
+    .hero{padding:80px 0 64px;position:relative;overflow:hidden}
+
+    /* ambient glow orbs */
+    .hero::before,.hero::after{
+      content:'';position:absolute;border-radius:50%;
+      pointer-events:none;z-index:0;
+    }
+    .hero::before{
+      width:640px;height:640px;
+      background:radial-gradient(circle,rgba(124,58,237,.09) 0%,transparent 68%);
+      top:-160px;right:-60px;
+      animation:glowA 11s ease-in-out infinite alternate;
+    }
+    .hero::after{
+      width:380px;height:380px;
+      background:radial-gradient(circle,rgba(124,58,237,.07) 0%,transparent 68%);
+      bottom:-80px;left:-60px;
+      animation:glowB 14s ease-in-out infinite alternate;
+    }
+    [data-theme="dark"] .hero::before{
+      background:radial-gradient(circle,rgba(167,139,250,.16) 0%,transparent 68%);
+    }
+    [data-theme="dark"] .hero::after{
+      background:radial-gradient(circle,rgba(167,139,250,.11) 0%,transparent 68%);
+    }
+    @keyframes glowA{
+      from{transform:translate(0,0) scale(1)}
+      to  {transform:translate(-28px,22px) scale(1.13)}
+    }
+    @keyframes glowB{
+      from{transform:translate(0,0) scale(1.05)}
+      to  {transform:translate(22px,-18px) scale(.9)}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .hero::before,.hero::after{animation:none}
+    }
+
     .hero-grid{
+      position:relative;z-index:1;
       display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;
     }
     @media(max-width:620px){
