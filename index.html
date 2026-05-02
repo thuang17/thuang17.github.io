@@ -224,14 +224,24 @@
     .card-desc{font-size:14px;color:var(--fg-2);line-height:1.72;margin-top:5px}
     .proof-card{
       position:relative;border:1px solid var(--border);background:var(--bg);
-      padding:22px;border-radius:10px;margin:0 0 14px;
-      transition:background var(--t),border-color var(--t),transform var(--t),box-shadow var(--t);
+      padding:22px;border-radius:10px;margin:0 0 14px;overflow:hidden;
+      transition:background var(--t),border-color 0.25s ease,transform 0.25s ease,box-shadow 0.25s ease;
     }
+    .proof-card::before{
+      content:'';position:absolute;left:0;top:50%;width:3px;height:0;
+      background:var(--accent);border-radius:0 2px 2px 0;
+      transform:translateY(-50%);
+      transition:height 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .proof-card:hover::before{height:65%}
     .proof-card:hover{
       background:var(--bg-sub);border-color:var(--border-2);
-      transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.06);
+      transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.08);
     }
-    [data-theme="dark"] .proof-card:hover{box-shadow:0 10px 30px rgba(0,0,0,.26)}
+    [data-theme="dark"] .proof-card:hover{box-shadow:0 12px 36px rgba(0,0,0,.30)}
+    .proof-card:hover .card-arrow{color:var(--accent);transform:translate(3px,-3px)}
+    .stat-v{transition:transform 0.25s ease}
+    .proof-card:hover .stat-v{transform:scale(1.07);transform-origin:left center}
     .proof-card-kicker{
       font-family:var(--f-mono);font-size:10px;letter-spacing:.09em;
       text-transform:uppercase;color:var(--fg-3);margin-bottom:8px;
