@@ -345,6 +345,21 @@
       .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     }
 
+    /* ── SIDE AVATAR ────────────────────────────────── */
+    #side-avatar{
+      position:fixed;left:0;top:50%;
+      width:172px;
+      transform:translateX(-115%) translateY(-50%);
+      transition:transform 0.65s cubic-bezier(0.34,1.56,0.64,1);
+      pointer-events:none;z-index:20;will-change:transform;
+    }
+    #side-avatar.visible{
+      transform:translateX(0) translateY(-50%);
+    }
+    #side-avatar img{width:100%;height:auto;display:block}
+    @media(max-width:1280px){#side-avatar{display:none}}
+    @media(prefers-reduced-motion:reduce){#side-avatar{transition:none}}
+
     /* ── HERO NAME CHARACTER ANIMATION ──────────────── */
     @keyframes charIn {
       from { opacity: 0; transform: translateY(24px) scale(0.88); }
@@ -670,6 +685,11 @@
 
 </main>
 
+<div id="side-avatar" aria-hidden="true">
+  <img src="source 1.png" alt="">
+</div>
+
+
 
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer>
@@ -755,6 +775,25 @@
   }, { threshold: 0.07, rootMargin: '0px 0px -24px 0px' });
 
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ── Side avatar scroll reveal ──
+  (function () {
+    var work   = document.getElementById('work');
+    var avatar = document.getElementById('side-avatar');
+    if (!work || !avatar) return;
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          avatar.classList.add('visible');
+        } else if (entry.boundingClientRect.top > 0) {
+          // section is below / above viewport on scroll-back-up → hide
+          avatar.classList.remove('visible');
+        }
+        // if top < 0, user scrolled past — keep visible
+      });
+    }, { threshold: 0 });
+    obs.observe(work);
+  })();
 
   // ── Magnetic card effect ──
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
