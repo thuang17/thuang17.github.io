@@ -523,6 +523,22 @@
       .nav-inner { transition: none !important; }
     }
 
+    /* Info strip */
+    .info-strip{display:flex;gap:0;align-items:flex-start;flex-wrap:wrap}
+    .info-col{flex:1;min-width:180px;padding:0 28px}
+    .info-col:first-child{padding-left:0}
+    .info-col:last-child{padding-right:0}
+    .info-col+.info-col{border-left:1px solid var(--border)}
+    .info-col-label{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);margin-bottom:8px}
+    .info-col-body{font-size:12.5px;color:var(--fg-2);line-height:1.75}
+    .info-col-body a{color:var(--fg-2);text-decoration:none}
+    .info-col-body a:hover{color:var(--accent)}
+    @media(max-width:640px){
+      .info-strip{flex-direction:column;gap:20px}
+      .info-col{padding:0;border-left:none!important}
+      .info-col+.info-col{padding-top:20px;border-top:1px solid var(--border)}
+    }
+
     /* ── SIDE AVATAR ────────────────────────────────── */
     #side-avatar{
       position:fixed;left:0;top:70%;
@@ -721,45 +737,39 @@
   </div>
 </section>
 
-<!-- ═══════════ EDUCATION ═══════════ -->
+<!-- ═══════════ INFO STRIP ═══════════ -->
 <div id="info"></div>
-<section id="education">
-  <div class="wrap">
-    <div class="reveal"><p class="label">Academic background</p><h2 class="h2">Education</h2></div>
-    <div class="stagger reveal">
-
-      <div class="row">
-        <div>
-          <div class="row-title">University of Sydney</div>
-          <div class="row-desc" style="margin-top:3px">Master of Project Management (MPM) · GPA 3.8 / 4.0 · Top 15%</div>
-          <div class="tags"><span class="tag">In Progress</span><span class="tag">PMP Candidate</span></div>
-        </div>
-        <span class="row-date">2025–2027</span>
-      </div>
-
-      <div class="row">
-        <div>
-          <div class="row-title">Shanghai University of International Business and Economics</div>
-          <div class="row-desc" style="margin-top:3px">B.Econ · International Economics & Trade · English-medium instruction (EMI)</div>
-        </div>
-        <span class="row-date">2020–2024</span>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════ CONTACT ═══════════ -->
-<section id="contact">
+<section id="info-strip">
   <div class="wrap reveal">
-    <p class="label">Say hello</p>
-    <h2 class="h2">Get in touch</h2>
-    <p style="font-size:15px;color:var(--fg-2);line-height:1.82;max-width:440px">Whether it's a role that fits, an interesting topic, or just a good conversation — I'm always open.</p>
-    <div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-      <a href="mailto:trevor.tw.huang@outlook.com" class="link" style="font-size:14px;font-weight:500">trevor.tw.huang@outlook.com</a>
-      <span style="color:var(--fg-3)">·</span>
-      <a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener" class="link" style="font-size:14px;font-weight:500">LinkedIn →</a>
+    <div class="info-strip">
+      <div class="info-col">
+        <div class="info-col-label">Education</div>
+        <div class="info-col-body">
+          University of Sydney · MPM<br>
+          <span style="color:var(--fg-3);font-size:11.5px">2025–2027 · GPA 3.8/4.0</span><br>
+          <br>
+          SUIBE Shanghai · BA<br>
+          <span style="color:var(--fg-3);font-size:11.5px">2020–2024 · International Economics</span>
+        </div>
+      </div>
+      <div class="info-col">
+        <div class="info-col-label">Skills</div>
+        <div class="info-col-body">
+          Python · SQL · Tableau · Excel<br>
+          Figma · Feishu · Metabase<br>
+          <br>
+          <span style="color:var(--fg-3);font-size:11.5px">Chinese — Native · English — Professional</span>
+        </div>
+      </div>
+      <div class="info-col">
+        <div class="info-col-label">Contact</div>
+        <div class="info-col-body">
+          <a href="mailto:trevor.tw.huang@outlook.com">trevor.tw.huang@outlook.com</a><br>
+          <a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener">LinkedIn</a>
+          &nbsp;·&nbsp;
+          <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
