@@ -19,9 +19,16 @@ Read these files before doing anything:
 ## Project Summary
 
 Personal website for Trevor Huang (黄拓文), hosted on GitHub Pages.
-Built for job hunting targeting Chinese domestic and foreign-invested companies.
+The current direction is `personal website first, proof-bearing site second`.
+Do not default to treating the homepage as a recruiter-first resume surface.
 
 Live URL: https://thuang17.github.io
+
+Current homepage role:
+
+- a restrained personal index
+- three primary entry points: `Work`, `AI / Making`, `Stories`
+- depth moves to second-layer pages instead of being front-loaded on the homepage
 
 ---
 
@@ -67,8 +74,16 @@ ROADMAP.md           — Project roadmap and decisions log
 - Only modify files explicitly mentioned in the task
 - After any change, update `ROADMAP.md` (mark completed items, update date)
 
+Direction rules:
+
+- Do not re-expand the homepage into a long-scroll resume by default
+- Do not treat `Stories` as a generic misc bucket
+- `darts` belongs under `Stories`
+- `AI` should increasingly be framed as `AI / Making`, not primarily as a personal story page
+- Premium feel should come mainly from restrained hover and click / transition behavior, not decorative animation
+
 Full rules in `/context/rules.md`.
 
 ---
 
-*Last updated: 2026-04-30*
+*Last updated: 2026-05-03*
