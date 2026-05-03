@@ -48,6 +48,7 @@ Lightweight project management file. Update after each meaningful change.
 - [x] Website direction PRD — define "operator with a maker edge" as the next design/narrative direction
 - [x] Homepage direction refresh — reframe hero, selected proof, work scanability, and personal maker bridge around operator judgment
 - [x] Remove duplicated Beyond Work block — maker edge bridge now carries the personal-story entry points
+- [x] Homepage first fold rebuilt as a personal index — the landing surface now foregrounds Work / AI-Making / Stories instead of leading with a resume-style hero
 - [ ] "Now" section / page — what Trevor is currently doing, thinking, building (Trevor provides content)
 - [ ] Writing section placeholder — no content yet, just structure
 - [ ] Hero bio refinement — after "Now" content is ready
@@ -98,6 +99,7 @@ Lightweight project management file. Update after each meaningful change.
 | 2026-05 | Website direction: operator with a maker edge | Prioritize hiring credibility and decision quality, with personal texture as differentiation |
 | 2026-05 | Homepage structured around selected proof | First impression should show business judgment before personal texture |
 | 2026-05 | Homepage nav uses B3-lite compact floating behavior | Keep the playful/product-like reference effect, but preserve full nav clarity and mobile usability |
+| 2026-05 | Homepage becomes a personal index first | The site should feel like Trevor's entry surface first, with detail moved one layer deeper |
 
 ---
 
