@@ -124,6 +124,142 @@
     .tbtn:hover{color:var(--fg);border-color:var(--border-2);background:var(--bg-sub)}
     [data-theme="dark"] nav.compact .nav-inner{box-shadow:0 14px 36px rgba(0,0,0,.28)}
 
+    .index-home{
+      min-height:calc(100vh - 52px);
+      display:grid;
+      align-items:center;
+      padding:28px 0 40px;
+    }
+    .index-surface{
+      position:relative;
+      border:1px solid rgba(28,25,23,.08);
+      border-radius:28px;
+      background:color-mix(in srgb, var(--bg) 84%, #ede9e1);
+      box-shadow:
+        0 24px 72px rgba(28,25,23,.07),
+        inset 0 1px 0 rgba(255,255,255,.72);
+      overflow:hidden;
+      min-height:620px;
+    }
+    .index-surface::before{
+      content:"";
+      position:absolute;inset:0;
+      border-radius:inherit;
+      border:1px solid rgba(255,255,255,.38);
+      pointer-events:none;
+    }
+    .index-shell{
+      position:relative;z-index:1;
+      min-height:620px;
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:32px;
+      padding:34px 34px 30px;
+    }
+    .index-left{
+      display:grid;
+      align-content:space-between;
+      gap:24px;
+    }
+    .index-kicker{
+      font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--fg-3);
+    }
+    .index-title{
+      font-family:var(--f-display);
+      font-size:clamp(52px,8vw,84px);
+      line-height:.92;letter-spacing:-.06em;color:var(--fg);
+      margin-top:14px;
+    }
+    .index-thesis{
+      margin-top:18px;max-width:560px;
+      font-family:var(--f-body);font-size:clamp(20px,3vw,28px);
+      line-height:1.14;color:var(--fg);
+    }
+    .index-meta{
+      display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;
+    }
+    .index-meta .meta-pill{
+      font-family:var(--f-mono);font-size:11px;color:var(--fg-2);
+      padding:4px 10px;border:1px solid var(--border);border-radius:999px;
+      background:color-mix(in srgb,var(--bg) 88%,transparent);
+    }
+    .index-note{
+      max-width:520px;font-size:13px;line-height:1.65;color:var(--fg-2);
+    }
+    .index-right{
+      display:grid;align-content:start;gap:0;
+    }
+    .index-link{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:14px;
+      align-items:baseline;
+      padding:18px 0;
+      border-top:1px solid var(--border);
+      transition:padding var(--t), transform var(--t), border-color var(--t), opacity var(--t);
+    }
+    .index-link:first-child{border-top:0;padding-top:0}
+    .index-link-num{
+      font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--fg-3);min-width:24px;
+    }
+    .index-link-title{
+      font-family:var(--f-display);font-size:clamp(28px,4vw,38px);
+      line-height:1;letter-spacing:-.035em;color:var(--fg);
+      transition:transform .2s ease,color .2s ease;
+    }
+    .index-link-arrow{
+      font-size:16px;color:var(--fg-3);
+      transition:transform .2s ease,color .2s ease,opacity .2s ease;
+    }
+    .index-link-copy{
+      grid-column:2 / 4;
+      margin-top:4px;max-width:420px;
+      font-size:14px;line-height:1.62;color:var(--fg-2);
+      transition:color .2s ease, transform .2s ease, opacity .2s ease;
+    }
+    .index-link:hover{
+      border-color:var(--border-2);
+      transform:translateX(3px);
+    }
+    .index-link:hover .index-link-title{
+      transform:translateX(2px);
+    }
+    .index-link:hover .index-link-arrow{
+      transform:translate(3px,-2px);
+      color:var(--fg);opacity:1;
+    }
+    .index-link:hover .index-link-copy{
+      color:var(--fg);
+    }
+    .index-right:hover .index-link:not(:hover){
+      opacity:.64;
+    }
+    .index-subnav{
+      margin-top:20px;padding-top:16px;border-top:1px solid var(--border);
+      display:flex;gap:14px;flex-wrap:wrap;
+    }
+    .index-subnav a{
+      font-size:12px;color:var(--fg-2);padding:4px 0;
+      transition:color var(--t);
+    }
+    .index-subnav a:hover{color:var(--fg)}
+    @media(max-width:900px){
+      .index-shell{grid-template-columns:1fr;padding:26px 24px 24px;min-height:auto}
+      .index-surface{min-height:auto}
+    }
+    main{
+      transition:opacity .18s ease, transform .18s ease;
+    }
+    body.page-out main{
+      opacity:0;
+      transform:translateY(8px);
+    }
+    @media(prefers-reduced-motion:reduce){
+      main{transition:none}
+    }
+
     /* ── HERO ────────────────────────────────────── */
     .hero{padding:80px 0 64px}
     .hero-grid{
@@ -400,17 +536,16 @@
     @media(max-width:1280px){#side-avatar{display:none}}
     @media(prefers-reduced-motion:reduce){#side-avatar{transition:none}}
 
-    /* ── HERO NAME CHARACTER ANIMATION ──────────────── */
-    @keyframes charIn {
-      from { opacity: 0; transform: translateY(24px) scale(0.88); }
-      to   { opacity: 1; transform: none; }
-    }
-    .hero-name.char-split .char {
-      display: inline-block;
-      animation: charIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .hero-name.char-split .char { animation: none !important; opacity: 1 !important; transform: none !important; }
+    @media(prefers-reduced-motion:reduce){
+      .index-link,
+      .index-link-title,
+      .index-link-arrow,
+      .index-link-copy,
+      .index-right:hover .index-link:not(:hover){
+        transition:none !important;
+        transform:none !important;
+        opacity:1 !important;
+      }
     }
   </style>
 </head>
@@ -421,9 +556,9 @@
   <div class="nav-inner">
     <a href="#" class="nav-name">Trevor Huang</a>
     <div class="nav-links">
-      <a href="#work"      class="muted">Work</a>
-      <a href="#projects"  class="muted">Projects</a>
-      <a href="#maker-edge" class="muted">About</a>
+      <a href="#selected-work" class="muted">Work</a>
+      <a href="ai.html"   class="muted" data-transition="page">AI / Making</a>
+      <a href="darts.html"  class="muted" data-transition="page">Stories</a>
       <a href="#contact"   class="muted">Contact</a>
       <a href="zh.html"    class="muted" style="font-size:12px;letter-spacing:.04em">中文</a>
       <button class="tbtn" id="tbtn" aria-label="Toggle theme">
@@ -437,57 +572,52 @@
 <main>
 
 <!-- ═══════════ HERO ═══════════ -->
-<section class="hero">
+<section class="index-home">
   <div class="wrap-w">
-    <div class="hero-grid">
-
-      <!-- TEXT -->
-      <div>
-        <p class="hero-eyebrow reveal">Operator / PM-minded / Builder</p>
-
-        <div>
-          <h1 class="hero-name">Trevor Huang</h1>
+    <div class="index-surface reveal">
+      <div class="index-shell">
+        <div class="index-left">
+          <div>
+            <p class="index-kicker">Project management / e-commerce / becoming</p>
+            <h1 class="index-title">Trevor Huang</h1>
+            <p class="index-thesis">A personal index for work under ambiguity, self-directed building, and the systems behind both.</p>
+            <div class="index-meta">
+              <span class="meta-pill">Sydney / Shanghai</span>
+              <span class="meta-pill">Student</span>
+              <span class="meta-pill">Early-career</span>
+              <span class="meta-pill">AI-assisted builder</span>
+            </div>
+          </div>
+          <p class="index-note">The homepage shows only what deserves to be chosen first. Detail lives one level deeper.</p>
         </div>
 
-        <p class="hero-position reveal" style="transition-delay:70ms">
-          I turn ambiguous business and product problems into structured action.
-        </p>
+        <div class="index-right">
+          <a class="index-link" href="#selected-work" data-entry="work">
+            <span class="index-link-num">01</span>
+            <span class="index-link-title">Work</span>
+            <span class="index-link-arrow" aria-hidden="true">↗</span>
+            <span class="index-link-copy">Selected proof from real operating environments where judgment mattered more than title.</span>
+          </a>
 
-        <div class="hero-bio reveal" style="transition-delay:120ms">
-          <p>MPM student at the University of Sydney with hands-on FMCG O2O, instant retail, and e-commerce tech experience in China. My strongest work sits between operations, data, user experience, and cross-functional execution.</p>
-          <p>I use AI tools the same way I approach work: start with a messy problem, build a working system, and keep improving it until it becomes useful.</p>
+          <a class="index-link" href="ai.html" data-entry="making" data-transition="page">
+            <span class="index-link-num">02</span>
+            <span class="index-link-title">AI / Making</span>
+            <span class="index-link-arrow" aria-hidden="true">↗</span>
+            <span class="index-link-copy">Experiments, tool use, and the builder instinct behind turning vague ideas into artifacts.</span>
+          </a>
+
+          <a class="index-link" href="darts.html" data-entry="stories" data-transition="page">
+            <span class="index-link-num">03</span>
+            <span class="index-link-title">Stories</span>
+            <span class="index-link-arrow" aria-hidden="true">↗</span>
+            <span class="index-link-copy">The personal material that explains discipline, repetition, pressure, and why Trevor keeps returning to systems.</span>
+          </a>
+
+          <div class="index-subnav">
+            <a href="#info">Info</a>
+            <a href="#contact">Contact</a>
+          </div>
         </div>
-
-        <div class="hero-chips reveal" style="transition-delay:170ms">
-          <span class="tag">FMCG O2O</span>
-          <span class="tag">E-commerce Tech</span>
-          <span class="tag">UX Prioritization</span>
-          <span class="tag">AI-assisted Builder</span>
-        </div>
-
-        <div class="hero-actions reveal" style="transition-delay:220ms">
-          <a class="btn-primary" href="#projects">View selected proof →</a>
-          <a class="btn-secondary" href="#maker-edge">See maker edge</a>
-        </div>
-      </div>
-
-
-    </div>
-    <div class="proof-strip reveal" style="transition-delay:260ms" aria-label="Selected proof points">
-      <div class="proof-item">
-        <div class="proof-value">7.2×</div>
-        <div class="proof-label">Campaign ROI</div>
-        <p class="proof-note">Built Mayora's first instant retail CNY campaign from zero.</p>
-      </div>
-      <div class="proof-item">
-        <div class="proof-value">16</div>
-        <div class="proof-label">UX pain points</div>
-        <p class="proof-note">Self-initiated Decathlon WeChat Mini Program benchmarking.</p>
-      </div>
-      <div class="proof-item">
-        <div class="proof-value">8</div>
-        <div class="proof-label">Parallel UAT projects</div>
-        <p class="proof-note">Coordinated releases across Douyin, Tmall, and Taobao Flash Sale.</p>
       </div>
     </div>
   </div>
@@ -495,6 +625,7 @@
 
 
 <!-- ═══════════ WORK ═══════════ -->
+<div id="selected-work"></div>
 <section id="work">
   <div class="wrap">
     <div class="reveal"><p class="label">Experience</p><h2 class="h2">Work</h2></div>
@@ -603,6 +734,7 @@
 
 
 <!-- ═══════════ SKILLS ═══════════ -->
+<div id="making"></div>
 <section id="skills">
   <div class="wrap">
     <div class="reveal"><p class="label">Toolkit</p><h2 class="h2">Skills</h2></div>
@@ -662,6 +794,8 @@
 
 
 <!-- ═══════════ MAKER EDGE ═══════════ -->
+<div id="stories"></div>
+<div id="now"></div>
 <section id="maker-edge">
   <div class="wrap">
     <div class="maker-bridge reveal">
@@ -678,6 +812,7 @@
 </section>
 
 <!-- ═══════════ EDUCATION ═══════════ -->
+<div id="info"></div>
 <section id="education">
   <div class="wrap">
     <div class="reveal"><p class="label">Academic background</p><h2 class="h2">Education</h2></div>
@@ -822,6 +957,22 @@
 
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+  // ── Index page exit transition ──
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('a[data-transition="page"]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        var href = link.getAttribute('href');
+        if (!href || href.charAt(0) === '#') return;
+        if (link.target === '_blank' || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        document.body.classList.add('page-out');
+        window.setTimeout(function () {
+          window.location.href = href;
+        }, 160);
+      });
+    });
+  }
+
   // ── Side avatar scroll reveal ──
   (function () {
     var work   = document.getElementById('work');
@@ -884,21 +1035,6 @@
       });
     });
   }
-
-  // ── Hero name character split animation ──
-  (function () {
-    const el = document.querySelector('.hero-name');
-    if (!el) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const text = el.textContent;
-    el.classList.add('char-split');
-    el.innerHTML = text.split('').map(function (char, i) {
-      if (char === ' ') {
-        return '<span style="display:inline-block;width:0.28em"> </span>';
-      }
-      return '<span class="char" style="animation-delay:' + (i * 34) + 'ms">' + char + '</span>';
-    }).join('');
-  })();
 </script>
 
 </body>
