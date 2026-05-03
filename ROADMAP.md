@@ -52,6 +52,7 @@ Lightweight project management file. Update after each meaningful change.
 - [x] Context files synced to personal-index direction — `AGENTS.md`, `CLAUDE.md`, and `context/project-context.md` now reflect the new homepage role and IA
 - [x] Homepage contact anchors repaired after info-strip merge — both locales now point `Contact / 联系` to the contact column, and the Instagram profile link is restored
 - [x] Homepage education strip refined — school names are now standalone links and degree details live on the muted year line in both locales
+- [x] Homepage info strip rebalanced for long education labels — desktop now gives the education column more room while preserving responsive fallback
 - [ ] "Now" section / page — what Trevor is currently doing, thinking, building (Trevor provides content)
 - [ ] Writing section placeholder — no content yet, just structure
 - [ ] Hero bio refinement — after "Now" content is ready
