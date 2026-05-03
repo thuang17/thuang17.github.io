@@ -334,6 +334,8 @@
       transition:background var(--t);
     }
     .row:hover{background:var(--bg-sub)}
+    .row-aux{opacity:0.45;padding:10px 0;cursor:default}
+    .row-aux:hover{background:transparent}
     .row+.row{border-top:1px solid var(--border)}
     .row-title{font-size:15px;font-weight:600;color:var(--fg);
                display:flex;align-items:center;gap:7px;flex-wrap:wrap}
@@ -653,22 +655,9 @@
         <span class="row-date">2024–2025</span>
       </div>
 
-      <div class="row">
-        <div>
-          <div class="row-title">商道纵横 <span class="row-sub">· ESG 咨询实习生</span></div>
-          <p class="row-desc">协助起草多家上市企业的 ESG 报告（医疗、工业、能源板块），应用 GRI、CDP、SASB、MSCI 等框架，参与了 20+ 份报告的数据整理与撰写。让我对"把非结构化信息变成有说服力的报告"这件事有了更扎实的理解。</p>
-          <div class="tags"><span class="tag">ESG</span><span class="tag">GRI · CDP · SASB</span><span class="tag">咨询</span></div>
-        </div>
-        <span class="row-date">2024</span>
-      </div>
-
-      <div class="row">
-        <div>
-          <div class="row-title">天风证券 <span class="row-sub">· 行业研究实习生</span></div>
-          <p class="row-desc">独立撰写智能穿戴和男士珠宝赛道的深度研报，挖掘了银发族非医疗消费的结构性机会。时间短，但学到了怎么从宏观数据出发搭论点框架。</p>
-          <div class="tags"><span class="tag">行业研究</span><span class="tag">市场分析</span></div>
-        </div>
-        <span class="row-date">2022</span>
+      <div class="row row-aux">
+        <div style="font-size:13px;color:var(--fg-2)">商道纵横 <span style="color:var(--fg-3)">· ESG 咨询</span> &nbsp;·&nbsp; 天风证券 <span style="color:var(--fg-3)">· 行业研究</span></div>
+        <span class="row-date" style="font-size:12px">2022–2024</span>
       </div>
 
     </div>
