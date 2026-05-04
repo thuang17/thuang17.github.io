@@ -64,6 +64,24 @@
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 12 12, auto;
     }
 
+    .click-ripple {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: #E07B5A;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      animation: rippleOut 0.35s ease-out forwards;
+    }
+
+    @keyframes rippleOut {
+      to { width: 40px; height: 40px; opacity: 0; }
+    }
+
     /* ── CONTAINERS ──────────────────────────────── */
     .wrap, .wrap-w { max-width:1080px; margin:0 auto; padding:0 48px; }
 
@@ -932,6 +950,16 @@
     });
   }, { threshold: 0.07, rootMargin: '0px 0px -24px 0px' });
   document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+
+  // ── Click ripple ──
+  document.addEventListener('click', function(e) {
+    var ripple = document.createElement('div');
+    ripple.className = 'click-ripple';
+    ripple.style.left = e.clientX + 'px';
+    ripple.style.top = e.clientY + 'px';
+    document.body.appendChild(ripple);
+    ripple.addEventListener('animationend', function() { ripple.remove(); });
+  });
 
 </script>
 
