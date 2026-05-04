@@ -64,28 +64,6 @@
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 12 12, auto;
     }
 
-    .click-ripple {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #E07B5A;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      opacity: 1;
-      animation: rippleOut 0.4s ease-out forwards;
-    }
-
-    @keyframes rippleOut {
-      to {
-        width: 50px;
-        height: 50px;
-        opacity: 0;
-        transform: translate(-50%, -50%);
-      }
-    }
-
     /* ── CONTAINERS ──────────────────────────────── */
     .wrap, .wrap-w { max-width:1080px; margin:0 auto; padding:0 48px; }
 
@@ -537,23 +515,6 @@
       color: #f5f5f4;
     }
 
-    .hero-text .hero-line {
-      display: block;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: heroFadeUp 0.7s ease-out forwards;
-    }
-
-    .hero-text .hero-line:nth-child(1) { animation-delay: 0.00s; }
-    .hero-text .hero-line:nth-child(2) { animation-delay: 0.08s; }
-    .hero-text .hero-line:nth-child(3) { animation-delay: 0.16s; }
-    .hero-text .hero-line:nth-child(4) { animation-delay: 0.24s; }
-    .hero-text .hero-line:nth-child(5) { animation-delay: 0.32s; }
-
-    @keyframes heroFadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .hero-circle {
       position: absolute;
       right: -8vw;
@@ -564,21 +525,118 @@
       border-radius: 50%;
       background: #D0C4F0;
       z-index: 1;
-      animation: heroScaleIn 0.6s ease-out forwards;
     }
 
     [data-theme="dark"] .hero-circle {
       background: #5B4A8C;
     }
 
-    @keyframes heroScaleIn {
-      from { transform: translateY(-50%) scale(0.85); }
-      to   { transform: translateY(-50%) scale(1); }
+    /* ── PAGE ENTRY ANIMATION ────────────────────── */
+    .entry-hero-scale {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-origin: center center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .entry-accent-a {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #D0C4F0;
+      opacity: 0.85;
+      transform-origin: center center;
+    }
+
+    [data-theme="dark"] .entry-accent-a {
+      background: #5B4A8C;
+    }
+
+    .entry-line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .entry-line > span {
+      display: inline-block;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .entry-hero {
+        transform: scale(0);
+        transform-origin: center center;
+        animation: entryHeroScale 1200ms cubic-bezier(.2,.8,.2,1) forwards;
+      }
+
+      .entry-hero-scale {
+        transform: scale(0);
+        animation: entryHeroScale 700ms cubic-bezier(.2,.8,.2,1) 100ms forwards;
+      }
+
+      .entry-accent-a {
+        transform: translateY(-50%) scale(0);
+        animation: entryAccentScale 700ms cubic-bezier(.2,.8,.2,1) 400ms forwards;
+      }
+
+      .entry-line > span {
+        transform: translateY(105%);
+        animation: entryLineReveal 640ms cubic-bezier(.2,.8,.2,1) forwards;
+      }
+
+      .entry-line:nth-child(1) > span { animation-delay: 200ms; }
+      .entry-line:nth-child(2) > span { animation-delay: 290ms; }
+      .entry-line:nth-child(3) > span { animation-delay: 380ms; }
+      .entry-line:nth-child(4) > span { animation-delay: 470ms; }
+      .entry-line:nth-child(5) > span { animation-delay: 560ms; }
+
+      .entry-panel {
+        opacity: 0;
+        animation: entryPanelFade 200ms ease-in-out 1100ms forwards;
+      }
+    }
+
+    @keyframes entryHeroScale {
+      to { transform: scale(1); }
+    }
+
+    @keyframes entryAccentScale {
+      to { transform: translateY(-50%) scale(1); }
+    }
+
+    @keyframes entryLineReveal {
+      to { transform: translateY(0); }
+    }
+
+    @keyframes entryPanelFade {
+      to { opacity: 1; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .hero-text .hero-line { opacity: 1; transform: none; animation: none; }
-      .hero-circle { animation: none; }
+      .entry-hero,
+      .entry-hero-scale,
+      .entry-accent-wrap {
+        transform: none;
+        animation: none;
+      }
+      .entry-accent-a {
+        transform: translateY(-50%);
+      }
+      .entry-line > span {
+        transform: none;
+        animation: none;
+      }
+      .entry-panel {
+        opacity: 1;
+        animation: none;
+      }
     }
 
     .info-trigger {
@@ -675,37 +733,39 @@
     <div class="surface-track">
 
       <!-- Hero panel -->
-      <article class="panel panel-hero" data-panel="hero" style="display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:0">
-        <div class="hero-text" style="padding:clamp(32px,8vw,120px)">
-          <span class="hero-line" style="text-align:left;margin-left:-0.3em">Trevor Huang</span>
-          <span class="hero-line" style="text-align:left;margin-left:0.1em">is a student</span>
-          <span class="hero-line" style="text-align:left;margin-left:-0.3em">at USyd</span>
-          <span class="hero-line" style="text-align:left;margin-left:0.1em">working on</span>
-          <span class="hero-line" style="text-align:left;margin-left:-0.3em">figuring things out</span>
+      <article class="panel panel-hero entry-hero" data-panel="hero" style="display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:0">
+        <div class="entry-hero-scale">
+          <div class="hero-text" style="padding:clamp(32px,8vw,120px)">
+            <span class="entry-line" style="margin-left:-0.3em"><span>Trevor Huang</span></span>
+            <span class="entry-line" style="margin-left:0.1em"><span>is a student</span></span>
+            <span class="entry-line" style="margin-left:-0.3em"><span>at USyd</span></span>
+            <span class="entry-line" style="margin-left:0.1em"><span>working on</span></span>
+            <span class="entry-line" style="margin-left:-0.3em"><span>figuring things out</span></span>
+          </div>
         </div>
-        <div class="hero-circle" aria-hidden="true"></div>
+        <div class="entry-accent-a"></div>
       </article>
 
       <!-- Work panel — bottom-left, cropped left -->
-      <a class="panel panel-standard" data-panel="work" href="decathlon.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-start;padding:0 0 28px 0">
+      <a class="panel panel-standard entry-panel" data-panel="work" href="decathlon.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-start;padding:0 0 28px 0">
         <h2 style="margin-left:-0.08em">WORK</h2>
         <p style="padding-left:28px">Selected proof from real operating environments.</p>
       </a>
 
       <!-- Making panel — top-left, cropped top -->
-      <a class="panel panel-standard" data-panel="aimaking" href="ai.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-start;align-items:flex-start;padding:28px 0 0 0">
+      <a class="panel panel-standard entry-panel" data-panel="aimaking" href="ai.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-start;align-items:flex-start;padding:28px 0 0 0">
         <h2 style="margin-top:-0.1em;margin-left:-0.04em">MAKING</h2>
         <p style="padding-left:28px">Experiments, tools, and self-directed building.</p>
       </a>
 
       <!-- Stories panel — dark bg, bottom-right, white text -->
-      <a class="panel panel-standard" data-panel="stories" href="darts.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-end;background:#1c1c1c;border-color:#333;padding:0 0 28px 0">
+      <a class="panel panel-standard entry-panel" data-panel="stories" href="darts.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-end;background:#1c1c1c;border-color:#333;padding:0 0 28px 0">
         <h2 style="color:#f5f5f4;margin-right:-0.04em;text-align:right;width:100%">STORIES</h2>
         <p style="color:#a1a1aa;padding-right:28px;text-align:right;width:100%">Personal material around repetition, pressure, and recovering from failure.</p>
       </a>
 
       <!-- Info panel -->
-      <article class="panel panel-standard" data-panel="info" onclick="openInfo()" style="display:flex;justify-content:flex-end;align-items:flex-end;overflow:hidden;padding:0 0 0 0">
+      <article class="panel panel-standard entry-panel" data-panel="info" onclick="openInfo()" style="display:flex;justify-content:flex-end;align-items:flex-end;overflow:hidden;padding:0 0 0 0">
         <span style="font-family:'Geist','Helvetica Neue',helvetica,arial,sans-serif;font-size:clamp(240px,32vw,500px);font-weight:600;color:var(--fg);line-height:0.9;transform:translateX(0.32em);margin-bottom:-0.05em">Info</span>
       </article>
 
@@ -955,20 +1015,7 @@
   }, { threshold: 0.07, rootMargin: '0px 0px -24px 0px' });
   document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
 
-  // ── Click ripple ──
-  var rippleEl = document.createElement('div');
-  rippleEl.className = 'click-ripple';
-  rippleEl.style.display = 'none';
-  document.body.appendChild(rippleEl);
 
-  document.addEventListener('click', function(e) {
-    rippleEl.style.left = e.clientX + 'px';
-    rippleEl.style.top = e.clientY + 'px';
-    rippleEl.style.display = '';
-    rippleEl.style.animation = 'none';
-    void rippleEl.offsetWidth;
-    rippleEl.style.animation = 'rippleOut 0.4s ease-out forwards';
-  });
 
 </script>
 
