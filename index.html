@@ -16,7 +16,7 @@
   <style>
     /* ── TOKENS ─────────────────────────────────── */
     :root {
-      --bg:        #FAFAF8;
+      --bg:        #E8E8E8;
       --bg-sub:    #F0EEE8;
       --bg-foot:   #E8E6DE;
       --fg:        #1C1917;
@@ -57,6 +57,11 @@
       font-family:var(--f-body);font-size:16px;line-height:1.75;
       -webkit-font-smoothing:antialiased;
       transition:background var(--t),color var(--t);
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='7' fill='%23E07B5A'/%3E%3C/svg%3E") 9 9, auto;
+    }
+
+    a, button, .panel-standard, .tbtn, .tbtn * {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 12 12, auto;
     }
 
     /* ── CONTAINERS ──────────────────────────────── */
@@ -115,13 +120,24 @@
                  padding:5px 9px;border-radius:6px;
                  transition:color var(--t),background var(--t)}
     .nav-links a:hover{color:var(--fg);background:var(--bg-sub)}
-    .tbtn{
-      display:flex;align-items:center;justify-content:center;
-      width:32px;height:32px;border:1px solid var(--border);border-radius:7px;
-      background:transparent;color:var(--fg-2);cursor:pointer;margin-left:6px;
-      transition:color var(--t),border-color var(--t),background var(--t);
+    .tbtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      height: auto;
+      border: none;
+      background: transparent;
+      color: var(--fg-2);
+      padding: 4px;
+      transition: color var(--t);
+      margin-left: 6px;
     }
-    .tbtn:hover{color:var(--fg);border-color:var(--border-2);background:var(--bg-sub)}
+    .tbtn:hover {
+      color: var(--fg);
+      background: transparent;
+      border: none;
+    }
     [data-theme="dark"] nav.compact .nav-inner{box-shadow:0 14px 36px rgba(0,0,0,.28)}
 
     main{
@@ -191,18 +207,45 @@
 
     .demo-topbar {
       display: flex;
-      justify-content: center;
-      padding-top: 28px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 32px 0;
+      flex-shrink: 0;
+    }
+
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
       flex-shrink: 0;
     }
 
     .scrubber-track {
       width: 100%;
       max-width: 200px;
-      height: 3px;
-      background: var(--border);
+      height: 20px;
+      background: transparent;
       border-radius: 1.5px;
       position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .scrubber-track::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 3px;
+      background: #D6D3D1;
+      border-radius: 1.5px;
+    }
+
+    [data-theme="dark"] .scrubber-track::before {
+      background: #52525B;
     }
 
     .scrubber-pill {
@@ -213,16 +256,23 @@
       width: 48px;
       height: 14px;
       border-radius: 7px;
-      background: var(--fg-3);
-      transition: left 120ms linear;
+      background: #78716C;
+      transition: left 120ms linear, transform 0.2s ease;
+      cursor: grab;
+      z-index: 1;
     }
 
-    [data-theme="dark"] .scrubber-track {
-      background: #3f3f46;
+    .scrubber-pill:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .scrubber-pill:active {
+      cursor: grabbing;
+      transform: translate(-50%, -50%) scale(1.1);
     }
 
     [data-theme="dark"] .scrubber-pill {
-      background: #71717a;
+      background: #A1A1AA;
     }
 
     .surface-viewport {
@@ -249,16 +299,21 @@
       will-change: transform;
       transform: translate3d(calc(var(--track-x, 0px) * -1), 0, 0);
       padding-left: calc(20vw - 32px);
+      padding-right: calc(30vw - 32px);
     }
 
     .panel {
       flex: 0 0 auto;
       border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      background: #f9f9f9;
       position: relative;
       overflow: hidden;
       width: min(80vw, 1240px);
       border-radius: 28px;
+    }
+
+    [data-theme="dark"] .panel {
+      background: #1c1c1c;
     }
 
     .panel-hero {
@@ -272,11 +327,40 @@
       padding: 36px 32px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      justify-content: center;
+      align-items: flex-start;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
     }
 
-    .panel-kicker,
-    .panel-index {
+    .panel-standard:hover {
+      transform: scale(1.02);
+      box-shadow: 0 18px 48px rgba(28, 25, 23, 0.10);
+    }
+
+    /* Light mode: non-Stories panels — subtle darken */
+    .panel-standard:not([data-panel="stories"]):hover {
+      background: #f3f3f3;
+    }
+
+    /* Stories panel hover: need !important to override inline style */
+    [data-panel="stories"]:hover {
+      background: #2a2a2a !important;
+    }
+
+    /* Dark mode: all panels — subtle brighten, need !important for Stories inline */
+    [data-theme="dark"] .panel-standard:hover {
+      background: #2a2a2a !important;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.30);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .panel-standard:hover {
+        transform: none;
+      }
+    }
+
+    .panel-kicker {
       font-family: var(--f-mono);
       font-size: 12px;
       color: var(--fg-3);
@@ -300,18 +384,20 @@
     }
 
     .panel-standard h2 {
-      font-family: var(--f-display);
-      font-size: clamp(38px, 3.4vw, 52px);
-      line-height: 1;
-      margin: 14px 0 18px;
+      font-family: 'Geist', 'Helvetica Neue', helvetica, arial, sans-serif;
+      font-size: clamp(120px, 16vw, 220px);
       font-weight: 600;
+      line-height: 0.85;
+      margin: 0;
+      white-space: nowrap;
     }
 
     .panel-standard p {
-      font-size: 20px;
+      font-family: 'Geist', 'Helvetica Neue', helvetica, arial, sans-serif;
+      font-size: 15px;
       line-height: 1.4;
-      max-width: 16ch;
       color: var(--fg-2);
+      text-align: left;
     }
 
     /* Info overlay */
@@ -338,28 +424,32 @@
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 36px 40px;
-      max-width: 560px;
-      width: calc(100% - 64px);
+      padding: 60px 72px;
+      max-width: 1060px;
+      width: calc(100% - 48px);
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 44px 56px;
       box-shadow: 0 24px 72px rgba(28, 25, 23, 0.10);
+    }
+
+    [data-theme="dark"] .info-sheet {
+      box-shadow: 0 24px 72px rgba(0, 0, 0, 0.30);
     }
 
     .info-col-label {
       font-family: var(--f-mono);
-      font-size: 10px;
+      font-size: 12px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--fg-3);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .info-col-body {
-      font-size: 13px;
+      font-size: 17px;
       color: var(--fg-2);
-      line-height: 1.75;
+      line-height: 1.7;
     }
 
     .info-col-body a {
@@ -379,8 +469,8 @@
       border: 0;
       cursor: pointer;
       color: var(--fg-3);
-      font-size: 18px;
-      padding: 4px 8px;
+      font-size: 20px;
+      padding: 6px 12px;
     }
 
     @media (max-width: 640px) {
@@ -450,13 +540,13 @@
       width: clamp(300px, 55vw, 700px);
       aspect-ratio: 1;
       border-radius: 50%;
-      background: #d9d4d0;
+      background: #D0C4F0;
       z-index: 1;
       animation: heroScaleIn 0.6s ease-out forwards;
     }
 
     [data-theme="dark"] .hero-circle {
-      background: #3f3f46;
+      background: #5B4A8C;
     }
 
     @keyframes heroScaleIn {
@@ -509,6 +599,7 @@
         display: grid;
         gap: 20px;
         padding-left: 0;
+        padding-right: 0;
       }
 
       .panel-hero,
@@ -540,25 +631,19 @@
 </head>
 <body>
 
-<!-- ═══════════ NAV ═══════════ -->
-<nav id="nav">
-  <div class="nav-inner">
-    <span class="nav-name">Trevor Huang</span>
-    <div class="nav-links">
-      <a href="zh.html" class="muted" style="font-size:12px;letter-spacing:.04em">中文</a>
-      <button class="tbtn" id="tbtn" aria-label="Toggle theme">
-        <svg id="i-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        <svg id="i-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-    </div>
-  </div>
-</nav>
-
 <main>
-  <!-- ═══════════ TOP BAR + SCRUBBER ═══════════ -->
+  <!-- ═══════════ TOP BAR: SCRUBBER + CONTROLS ═══════════ -->
   <header class="demo-topbar" aria-label="Horizontal progress">
+    <div></div>
     <div class="scrubber-track" aria-hidden="true">
       <div class="scrubber-pill"></div>
+    </div>
+    <div class="topbar-controls">
+      <a href="zh.html" style="font-size:12px;letter-spacing:.04em;color:var(--fg-2);text-decoration:none">中文</a>
+      <button class="tbtn" id="tbtn" aria-label="Toggle theme">
+        <svg id="i-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg id="i-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
   </header>
 
@@ -579,26 +664,28 @@
         <div class="hero-circle" aria-hidden="true"></div>
       </article>
 
-      <!-- Work panel -->
-      <a class="panel panel-standard" data-panel="work" href="decathlon.html" data-transition="page" style="text-decoration:none;color:inherit">
-        <p class="panel-index">01</p>
-        <h2>Work</h2>
-        <p>Selected proof from real operating environments where judgment mattered more than title.</p>
+      <!-- Work panel — bottom-left, cropped left -->
+      <a class="panel panel-standard" data-panel="work" href="decathlon.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-start;padding:0 0 28px 0">
+        <h2 style="margin-left:-0.08em">WORK</h2>
+        <p style="padding-left:28px">Selected proof from real operating environments.</p>
       </a>
 
-      <!-- AI / Making panel -->
-      <a class="panel panel-standard" data-panel="aimaking" href="ai.html" data-transition="page" style="text-decoration:none;color:inherit">
-        <p class="panel-index">02</p>
-        <h2>AI / Making</h2>
-        <p>Experiments, tools, and self-directed building that turn vague ideas into artifacts.</p>
+      <!-- Making panel — top-left, cropped top -->
+      <a class="panel panel-standard" data-panel="aimaking" href="ai.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-start;align-items:flex-start;padding:28px 0 0 0">
+        <h2 style="margin-top:-0.1em;margin-left:-0.04em">MAKING</h2>
+        <p style="padding-left:28px">Experiments, tools, and self-directed building.</p>
       </a>
 
-      <!-- Stories panel -->
-      <a class="panel panel-standard" data-panel="stories" href="darts.html" data-transition="page" style="text-decoration:none;color:inherit">
-        <p class="panel-index">03</p>
-        <h2>Stories</h2>
-        <p>Personal material around repetition, pressure, systems, and the habits behind the work.</p>
+      <!-- Stories panel — dark bg, bottom-right, white text -->
+      <a class="panel panel-standard" data-panel="stories" href="darts.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-end;background:#1c1c1c;border-color:#333;padding:0 0 28px 0">
+        <h2 style="color:#f5f5f4;margin-right:-0.04em;text-align:right;width:100%">STORIES</h2>
+        <p style="color:#a1a1aa;padding-right:28px;text-align:right;width:100%">Personal material around repetition, pressure, and recovering from failure.</p>
       </a>
+
+      <!-- Info panel -->
+      <article class="panel panel-standard" data-panel="info" onclick="openInfo()" style="display:flex;justify-content:flex-end;align-items:flex-end;overflow:hidden;padding:0 0 0 0">
+        <span style="font-family:'Geist','Helvetica Neue',helvetica,arial,sans-serif;font-size:clamp(240px,32vw,500px);font-weight:600;color:var(--fg);line-height:0.9;transform:translateX(0.32em);margin-bottom:-0.05em">Info</span>
+      </article>
 
     </div>
     </div>
@@ -612,64 +699,36 @@
     <div>
       <div class="info-col-label">Education</div>
       <div class="info-col-body">
-        <a href="https://www.sydney.edu.au/" target="_blank" rel="noopener">University of Sydney</a><br>
-        <span style="color:var(--fg-3);font-size:11.5px">2025–2027 · Master of Project Management</span><br>
-        <br>
-        <a href="https://www.suibe.edu.cn/" target="_blank" rel="noopener">Shanghai University of International Business and Economics</a><br>
-        <span style="color:var(--fg-3);font-size:11.5px">2020–2024 · Bachelor of International Economics &amp; Trade</span>
+        <strong>University of Sydney</strong><br>
+        <span style="color:var(--fg-3);font-size:14px">2025–2027 · Master of Project Management</span>
+        <br><br>
+        <strong>Shanghai University of International Business and Trade</strong><br>
+        <span style="color:var(--fg-3);font-size:14px">2020–2024 · Bachelor of International Economics and Trade</span>
       </div>
     </div>
     <div>
-      <div class="info-col-label">Skills</div>
-      <div class="info-col-body">
-        Python · SQL · Tableau · Excel<br>
-        Figma · Feishu · Metabase<br>
-        <br>
-        <span style="color:var(--fg-3);font-size:11.5px">Chinese — Native · English — Professional</span>
-      </div>
-    </div>
-    <div>
-      <div class="info-col-label">Contact</div>
+      <div class="info-col-label">Contact &amp; Social</div>
       <div class="info-col-body">
         <a href="mailto:trevor.tw.huang@outlook.com">trevor.tw.huang@outlook.com</a><br>
         <a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener">LinkedIn</a>
         &nbsp;·&nbsp;
-        <a href="https://www.instagram.com/t.huang17/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.instagram.com/t.huang17/" target="_blank" rel="noopener">Instagram</a><br>
+        <a href="https://x.com/H3art128943" target="_blank" rel="noopener">X</a>
+        &nbsp;·&nbsp;
+        <a href="https://www.xiaohongshu.com/user/profile/6150a3e2000000001f03501f" target="_blank" rel="noopener">Xiaohongshu</a>
+      </div>
+    </div>
+    <div style="grid-column:1/-1">
+      <div class="info-col-label">Toolkit</div>
+      <div class="info-col-body">
+        Python · SQL · Tableau · Excel · Jira · Feishu · MS Project<br>
+        Agile Methodologies<br><br>
+        <span style="color:var(--fg-3);font-size:13px">Chinese — Native · English — Professional</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════ FOOTER ═══════════ -->
-<footer>
-  <div class="wrap">
-    <div class="foot-inner">
-      <div class="foot-top">
-        <p class="foot-tag">I'm always open to a good conversation.</p>
-        <div class="socials">
-          <a class="soc" href="mailto:trevor.tw.huang@outlook.com" title="Email" aria-label="Email">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          </a>
-          <a class="soc" href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </a>
-          <a class="soc" href="https://www.instagram.com/t.huang17/" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-          </a>
-          <a class="soc" href="https://x.com/H3art128943" target="_blank" rel="noopener" title="X" aria-label="X">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-          <a class="soc" href="https://www.xiaohongshu.com/user/profile/6150a3e2000000001f03501f" target="_blank" rel="noopener" title="Xiaohongshu" aria-label="Xiaohongshu">
-            <span class="xhs-mark" aria-hidden="true"></span>
-          </a>
-        </div>
-      </div>
-      <div class="foot-bot">
-        <span class="foot-copy">&copy; 2026 Trevor Huang</span>
-      </div>
-    </div>
-  </div>
-</footer>
 
 <script>
   // ── Theme ──
@@ -693,17 +752,6 @@
     localStorage.setItem('theme', next);
     setTheme(next);
   });
-
-  // ── Nav frost on scroll ──
-  const nav = document.getElementById('nav');
-  function updateNav() {
-    const y = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    nav.classList.toggle('frosted', y > 8);
-    nav.classList.toggle('compact', y > 96);
-  }
-  window.addEventListener('scroll', updateNav, { passive: true });
-  document.addEventListener('scroll', updateNav, { passive: true, capture: true });
-  updateNav();
 
   // ── Info overlay ──
   const infoOverlay = document.getElementById('info-overlay');
@@ -747,7 +795,8 @@
     function updateMaxX() {
       var lastPanel = panels[panels.length - 1];
       var lastPanelRight = lastPanel.offsetLeft + lastPanel.offsetWidth;
-      state.maxX = Math.max(0, lastPanelRight - viewport.clientWidth / SCALE_MIN);
+      var rightPadding = window.innerWidth * 0.4 - 32;
+      state.maxX = Math.max(0, lastPanelRight + rightPadding - viewport.clientWidth / SCALE_MIN);
     }
 
     function measure() {
@@ -784,6 +833,7 @@
       renderHeroState();
       renderProgress();
 
+
       if (Math.abs(state.velocity) >= STOP_THRESHOLD) requestAnimationFrame(updateFrame);
       else state.ticking = false;
     }
@@ -806,16 +856,58 @@
     }
 
     window.addEventListener('wheel', onWheel, { passive: false });
+
+    // ── Scrubber drag ──
+    var dragging = false;
+
+    function onDragStart(e) {
+      if (window.innerWidth <= 980 || state.maxX <= 0) return;
+      e.preventDefault();
+      dragging = true;
+      state.velocity = 0;
+      updatePositionFromEvent(e);
+    }
+
+    function onDragMove(e) {
+      if (!dragging) return;
+      e.preventDefault();
+      updatePositionFromEvent(e);
+    }
+
+    function onDragEnd(e) {
+      if (!dragging) return;
+      dragging = false;
+    }
+
+    function updatePositionFromEvent(e) {
+      var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      var trackRect = scrubberTrack.getBoundingClientRect();
+      var pillWidth = scrubberPill.offsetWidth;
+      var usable = trackRect.width - pillWidth;
+      var relativeX = clientX - trackRect.left - pillWidth / 2;
+      var ratio = Math.max(0, Math.min(1, relativeX / usable));
+      state.x = ratio * state.maxX;
+      requestTick();
+    }
+
+    scrubberTrack.addEventListener('mousedown', onDragStart);
+    scrubberTrack.addEventListener('touchstart', onDragStart, { passive: false });
+    window.addEventListener('mousemove', onDragMove);
+    window.addEventListener('touchmove', onDragMove, { passive: false });
+    window.addEventListener('mouseup', onDragEnd);
+    window.addEventListener('touchend', onDragEnd);
     window.addEventListener('resize', function() {
       measure();
       renderHeroState();
       renderProgress();
+
       track.style.setProperty('--track-x', state.x + 'px');
     });
 
     measure();
     renderHeroState();
     renderProgress();
+    renderPanelFocus();
     track.style.setProperty('--track-x', '0px');
   })();
 
@@ -840,6 +932,7 @@
     });
   }, { threshold: 0.07, rootMargin: '0px 0px -24px 0px' });
   document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+
 </script>
 
 </body>
