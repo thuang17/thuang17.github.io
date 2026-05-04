@@ -54,9 +54,18 @@ Lightweight project management file. Update after each meaningful change.
 - [x] Homepage education strip refined — school names are now standalone links and degree details live on the muted year line in both locales
 - [x] Homepage info strip rebalanced for long education labels — desktop now gives the education column more room while preserving responsive fallback
 - [x] Homepage migrated to horizontal single-surface model — 5 panels (Hero/Work/Making/Stories/Info), Rauno-style hero with Geist typography, velocity+friction scroll, Minimal Scrubber, Info overlay, mobile fallback. Both locales (EN/ZH) migrated.
+- [x] Hero entry animation — panel frame 1200ms scale + circle 700ms scale + text clip reveal + panel fade-in
+- [x] Hero accent refined — single panel-height purple circle (#D0C4F0 / #5B4A8C), replaced double-circle attempt
+- [x] zh.html synced with all latest homepage changes (entry animation, circle, panels)
+- [ ] Click ripple effect — standalone test works, but doesn't render in index.html (likely Tailwind or JS conflict). Debug later.
 - [ ] "Now" section / page — what Trevor is currently doing, thinking, building (Trevor provides content)
 - [ ] Writing section placeholder — no content yet, just structure
-- [ ] Hero bio refinement — after "Now" content is ready
+
+**Phase 3.5 · Sub-page Structure**
+
+- [ ] **Work index page (`work.html`)** — editorial list: Experience (4 rows) + Projects (2 rows), ← Home back-link, Geist + Nunito, thin dividers, chrono order. Design direction confirmed (list over cards, editorial over panel), visual mockup drafted, pending Trevor's review and reference search.
+- [ ] **Fix panel navigation logic** — Work panel → work.html (not decathlon.html directly), Making → ai.html (as Making index), Stories → darts.html (as Stories index). Remove cross-links (AI ↔ darts).
+- [ ] **Unify sub-page visual style** — Apply Geist font + coral cursor + color tokens to all child pages (decathlon, mayora, cny-campaign, decathlon-ux, ai, darts).
 
 ---
 
@@ -66,7 +75,9 @@ Lightweight project management file. Update after each meaningful change.
 - [x] Homepage compact floating nav — desktop scroll turns the top bar into a restrained B3-lite floating pill; mobile keeps the stable navigation layout.
 - CSS View Transitions: project card click → detail page animation
 - Subtle scroll-triggered animations on case study pages
-- Custom cursor or other personality touches (evaluate later)
+- [x] Custom cursor (coral dot #E07B5A, r=7/8px, CSS url(), no system pointer on interactive elements)
+- [x] Page entry animation (hero scale + text clip reveal + panel fade-in)
+- [x] Scrubber hover + drag interaction
 
 **Phase 5 · Content Expansion**
 - Writing: actual articles (China O2O market / AI tools / PM thinking)
