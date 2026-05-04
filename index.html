@@ -956,13 +956,18 @@
   document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
 
   // ── Click ripple ──
+  var rippleEl = document.createElement('div');
+  rippleEl.className = 'click-ripple';
+  rippleEl.style.display = 'none';
+  document.body.appendChild(rippleEl);
+
   document.addEventListener('click', function(e) {
-    var ripple = document.createElement('div');
-    ripple.className = 'click-ripple';
-    ripple.style.left = e.clientX + 'px';
-    ripple.style.top = e.clientY + 'px';
-    document.body.appendChild(ripple);
-    ripple.addEventListener('animationend', function() { ripple.remove(); });
+    rippleEl.style.left = e.clientX + 'px';
+    rippleEl.style.top = e.clientY + 'px';
+    rippleEl.style.display = '';
+    rippleEl.style.animation = 'none';
+    void rippleEl.offsetWidth;
+    rippleEl.style.animation = 'rippleOut 0.4s ease-out forwards';
   });
 
 </script>
