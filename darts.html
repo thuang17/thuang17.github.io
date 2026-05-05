@@ -12,6 +12,7 @@
   <style>
     :root {
       --bg:      #E8E8E8;
+      --canvas:  #F5F3EF;
       --fg:      #1C1917;
       --fg-2:    #57534E;
       --fg-3:    #A8A29E;
@@ -22,16 +23,18 @@
     }
     [data-theme="dark"] {
       --bg:      #18181B;
+      --canvas:  #242424;
       --fg:      #FAFAFA;
       --fg-2:    #A8A29E;
       --fg-3:    #57534E;
       --accent:  #A78BFA;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow: hidden; height: 100%; }
     body {
       font-family: var(--f-body); background: var(--bg); color: var(--fg);
-      line-height: 1.75; transition: background .3s, color .3s;
+      height: 100%; overflow: hidden;
+      transition: background .3s, color .3s;
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='7' cy='7' r='7' fill='%23E07B5A'/%3E%3C/svg%3E") 7 7, auto;
     }
     a, button, [role="button"] {
@@ -65,51 +68,69 @@
     [data-theme="dark"] #icon-sun  { display: none; }
     [data-theme="dark"] #icon-moon { display: block; }
 
-    /* Page header — fixed overlay at top center */
+    /* Canvas — sits between topbar and bottom */
+    .canvas {
+      position: fixed; top: 88px; bottom: 60px; left: 48px; right: 48px;
+      background: var(--canvas); border-radius: 12px;
+      overflow: hidden;
+      transition: background .3s;
+    }
+
+    /* Title — pinned above canvas */
     .page-head {
-      position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+      position: fixed; top: 96px; left: 50%; transform: translateX(-50%);
       z-index: 40; text-align: center; pointer-events: none;
     }
     .page-head h1 {
-      font-family: var(--f-display); font-size: 48px; font-weight: 400;
+      font-family: var(--f-display); font-size: 40px; font-weight: 400;
       line-height: 1.1; letter-spacing: -0.02em; color: var(--fg);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .page-head .sub {
-      font-family: var(--f-body); font-size: 16px; font-weight: 400; color: var(--fg-2);
+      font-family: var(--f-body); font-size: 15px; font-weight: 400; color: var(--fg-2);
     }
 
-    /* Reel: tall container so images have room to scroll through */
-    .reel {
-      /* Each image gets ~60vh of breathing room */
-      padding: 60vh 0 60vh 0;
+    /* Horizontal scroll track */
+    .track {
+      display: flex; align-items: center;
+      height: 100%; padding: 0 calc(50% - 340px); /* center images with 680px max */
+      gap: 60px;
+      overflow-x: auto; overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      cursor: grab;
+      -webkit-overflow-scrolling: touch;
     }
+    .track::-webkit-scrollbar { display: none; }
+    .track.dragging { cursor: grabbing; scroll-snap-type: none; }
 
-    .reel-img {
-      display: block; margin: 20vh auto;
-      width: 100%; max-width: 680px;
+    /* Image slot */
+    .slot {
+      flex: none; scroll-snap-align: center;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .slot img {
+      display: block; height: 55vh; max-height: 600px; width: auto;
+      max-width: 680px; object-fit: contain;
       border-radius: 6px; cursor: pointer;
       will-change: transform, filter, opacity;
-      transition: transform .4s ease, filter .4s ease, opacity .4s ease, box-shadow .4s ease;
+      transition: transform .4s ease, filter .4s ease, opacity .4s ease;
     }
-    .reel-img.active {
-      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
-    }
-    [data-theme="dark"] .reel-img.active {
-      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
-    }
-
-    /* Caption — appears below the active image */
-    .cap {
-      text-align: center;
+    .slot .cap {
       font-family: var(--f-mono); font-size: 11px;
       color: var(--fg-3); letter-spacing: .03em;
-      margin: -12vh auto 20vh auto;
-      max-width: 680px;
-      transition: opacity .4s ease;
+      margin-top: 10px; text-align: center;
+      opacity: 0; transition: opacity .3s ease;
+      white-space: nowrap;
     }
 
-    .page-bottom { height: 60vh; }
+    /* Hint */
+    .hint {
+      position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%);
+      font-family: var(--f-mono); font-size: 10px; color: var(--fg-3);
+      letter-spacing: .06em; pointer-events: none; z-index: 40;
+      opacity: 0.6;
+    }
 
     .lightbox {
       display: none; position: fixed; inset: 0; z-index: 1000;
@@ -125,11 +146,17 @@
       font-family: var(--f-mono);
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      .slot img { transition: none !important; }
+    }
+
     @media (max-width: 680px) {
-      .topbar { padding: 20px 20px; }
-      .page-head { top: 60px; }
-      .page-head h1 { font-size: 32px; }
-      .reel-img { max-width: calc(100vw - 40px); }
+      .canvas { left: 16px; right: 16px; top: 72px; bottom: 48px; border-radius: 8px; }
+      .page-head { top: 78px; }
+      .page-head h1 { font-size: 28px; }
+      .slot img { height: 40vh; max-width: calc(100vw - 64px); }
+      .track { padding: 0 calc(50% - 42vw); gap: 32px; }
+      .hint { bottom: 56px; }
     }
   </style>
 </head>
@@ -154,27 +181,37 @@
   <p class="sub">Got in by accident. Stayed because it made me better.</p>
 </div>
 
-<div class="reel">
+<div class="canvas">
+  <div class="track" id="track">
 
-  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164744_429_10.jpg" alt="Polaroid shots from school competition" onclick="openLightbox(this.src)">
-  <p class="cap">The school team. Only photo I kept from the league days.</p>
+    <div class="slot">
+      <img loading="lazy" src="darts/微信图片_20260429164744_429_10.jpg" alt="Polaroid shots from school competition" onclick="openLightbox(this.src)">
+      <p class="cap">The school team. Only photo I kept from the league days.</p>
+    </div>
+    <div class="slot">
+      <img loading="lazy" src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)">
+    </div>
+    <div class="slot">
+      <img loading="lazy" src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)">
+    </div>
+    <div class="slot">
+      <img loading="lazy" src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)">
+    </div>
+    <div class="slot">
+      <img loading="lazy" src="darts/微信图片_20260429164812_434_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)">
+    </div>
+    <div class="slot">
+      <img loading="lazy" src="darts/微信图片_20260429164756_432_10.jpg" alt="Late night noodles after competition" onclick="openLightbox(this.src)">
+      <p class="cap">Midnight noodles with people I'd just played against. This was the point.</p>
+    </div>
+    <div class="slot">
+      <img loading="lazy" src="darts/微信图片_20260429164833_435_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)">
+    </div>
 
-  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)">
-
-  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)">
-
-  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)">
-
-  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164812_434_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)">
-
-  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164756_432_10.jpg" alt="Late night noodles after competition" onclick="openLightbox(this.src)">
-  <p class="cap">Midnight noodles with people I'd just played against. This was the point.</p>
-
-  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164833_435_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)">
-
+  </div>
 </div>
 
-<div class="page-bottom"></div>
+<p class="hint">Scroll or drag →</p>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">×</button>
@@ -210,52 +247,74 @@
     });
   }
 
-  // Vertical image conveyor with depth
+  // Horizontal conveyor
   (function() {
-    var imgs = document.querySelectorAll('.reel-img');
-    var caps = document.querySelectorAll('.cap');
-    if (!imgs.length) return;
-
+    var track = document.getElementById('track');
+    var slots = document.querySelectorAll('.slot');
     var mp = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!track || !slots.length) return;
+
+    // Intercept wheel for horizontal scroll
+    track.addEventListener('wheel', function(e) {
+      e.preventDefault();
+      track.scrollLeft += e.deltaY + e.deltaX;
+    }, { passive: false });
+
+    // Drag to scroll
+    var isDown = false, startX, scrollStart;
+    track.addEventListener('mousedown', function(e) {
+      isDown = true; track.classList.add('dragging');
+      startX = e.pageX; scrollStart = track.scrollLeft;
+    });
+    track.addEventListener('mouseleave', function() { isDown = false; track.classList.remove('dragging'); });
+    track.addEventListener('mouseup', function() { isDown = false; track.classList.remove('dragging'); });
+    track.addEventListener('mousemove', function(e) {
+      if (!isDown) return;
+      e.preventDefault();
+      track.scrollLeft = scrollStart - (e.pageX - startX);
+    });
+
+    // Hide hint after first interaction
+    var hint = document.querySelector('.hint');
+    var hinted = false;
+    track.addEventListener('scroll', function() {
+      if (!hinted) { hinted = true; hint.style.opacity = '0'; hint.style.transition = 'opacity .6s ease'; }
+    }, { passive: true });
 
     function update() {
-      var vh = window.innerHeight;
-      var centerY = vh / 2;
-      var maxDist = vh * 0.7;
+      var centerX = window.innerWidth / 2;
+      var maxDist = window.innerWidth * 0.5;
 
-      imgs.forEach(function(img, i) {
+      slots.forEach(function(slot) {
+        var img = slot.querySelector('img');
+        var cap = slot.querySelector('.cap');
+        if (!img) return;
         var rect = img.getBoundingClientRect();
-        var imgCenter = rect.top + rect.height / 2;
-        var dist = Math.abs(imgCenter - centerY);
+        var imgCenterX = rect.left + rect.width / 2;
+        var dist = Math.abs(imgCenterX - centerX);
         var t = Math.min(dist / maxDist, 1);
 
         var scale, blur, opacity;
         if (mp.matches) {
           scale = 1; blur = 0; opacity = 1;
         } else {
-          scale = 1 - t * 0.22;
-          blur = t * 4;
-          opacity = 1 - t * 0.45;
+          scale = 1 - t * 0.3;
+          blur = t * 5;
+          opacity = 1 - t * 0.6;
         }
 
         img.style.transform = 'scale(' + scale + ')';
         img.style.filter = 'blur(' + blur + 'px)';
         img.style.opacity = opacity;
 
-        // Active image gets shadow for depth layering
-        if (t < 0.2) img.classList.add('active');
-        else img.classList.remove('active');
-
-        // Caption: visible only near center
-        if (caps[i]) {
-          caps[i].style.opacity = dist < vh * 0.12 ? '1' : '0';
+        if (cap) {
+          cap.style.opacity = t < 0.15 ? '1' : '0';
         }
       });
     }
 
-    var ticking = false;
-    window.addEventListener('scroll', function() {
-      if (!ticking) { requestAnimationFrame(function() { update(); ticking = false; }); ticking = true; }
+    track.addEventListener('scroll', function() {
+      requestAnimationFrame(update);
     }, { passive: true });
     update();
   })();
