@@ -70,8 +70,8 @@
     [data-theme="dark"] #icon-sun  { display: none; }
     [data-theme="dark"] #icon-moon { display: block; }
 
-    /* Content — wider than editorial longform for images */
-    main { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+    /* Content column — title and captions live here */
+    .col { max-width: 680px; margin: 0 auto; padding: 0 32px; }
 
     @media (prefers-reduced-motion: no-preference) {
       .page-enter {
@@ -83,7 +83,7 @@
     @media (prefers-reduced-motion: reduce) {
       .page-enter { opacity: 1; transform: none; }
     }
-    body.page-out main {
+    body.page-out .col {
       opacity: 0; transform: translateY(8px);
       transition: opacity 180ms ease, transform 180ms ease;
     }
@@ -99,39 +99,58 @@
     }
     .page-header-wrap { padding: 80px 0 60px; }
 
-    /* Photo sections */
-    .moment { margin-bottom: 80px; }
+    /* Photo moments */
+    .moment { margin-bottom: 120px; }
     .moment:last-child { margin-bottom: 0; }
 
-    /* Full-width single photo */
-    .photo-full {
-      width: 100%; border-radius: 8px; display: block;
+    /* Standard photo — constrained to column width */
+    .photo {
+      width: 100%; display: block; border-radius: 6px;
       cursor: pointer; transition: transform .4s ease;
     }
-    .photo-full:hover { transform: scale(1.01); }
+    .photo:hover { transform: scale(1.01); }
+
+    /* Portrait (vertical) photo — narrower, centered */
+    .photo-portrait {
+      max-width: 480px; margin: 0 auto; width: 100%;
+      display: block; border-radius: 6px;
+      cursor: pointer; transition: transform .4s ease;
+    }
+    .photo-portrait:hover { transform: scale(1.01); }
+
+    /* Full-bleed photo — breaks out of column */
+    .photo-full {
+      width: 100vw; margin-left: calc(-50vw + 50%);
+      display: block; cursor: pointer; transition: transform .4s ease;
+      max-height: 85vh; object-fit: cover;
+    }
+    .photo-full:hover { transform: scale(1.005); }
 
     /* Horizontal scroll strip */
     .photo-strip {
       display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px;
+      width: 100vw; margin-left: calc(-50vw + 50%);
+      padding-left: max(32px, calc((100vw - 680px) / 2));
+      padding-right: 32px;
       scrollbar-width: thin; scrollbar-color: var(--border) transparent;
     }
     .photo-strip::-webkit-scrollbar { height: 4px; }
     .photo-strip::-webkit-scrollbar-track { background: transparent; }
     .photo-strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
     .photo-strip img {
-      height: 340px; width: auto; flex-shrink: 0;
-      border-radius: 8px; display: block;
+      height: 380px; width: auto; flex-shrink: 0;
+      border-radius: 6px; display: block;
       cursor: pointer; transition: transform .3s ease;
     }
     .photo-strip img:hover { transform: scale(1.02); }
 
-    /* Two-column grid */
+    /* Two-column grid within column width */
     .photo-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
     }
     .photo-grid img {
       width: 100%; aspect-ratio: 4/3; object-fit: cover;
-      border-radius: 8px; display: block;
+      border-radius: 6px; display: block;
       cursor: pointer; transition: transform .3s ease;
     }
     .photo-grid img:hover { transform: scale(1.02); }
@@ -139,14 +158,14 @@
     /* Caption */
     .cap {
       font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); margin-top: 10px; letter-spacing: .03em;
+      color: var(--fg-3); margin-top: 12px; letter-spacing: .03em;
       line-height: 1.6;
     }
 
     /* Stat row */
     .stat-row {
       display: flex; gap: 0;
-      margin: 0 0 12px 0;
+      margin-bottom: 60px;
       border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
     }
     .stat-block {
@@ -182,11 +201,13 @@
 
     @media (max-width: 680px) {
       .topbar { padding: 20px 20px; }
-      main { padding: 0 20px; }
+      .col { padding: 0 20px; }
       .page-title { font-size: 36px; }
       .page-header-wrap { padding: 64px 0 48px; }
-      .moment { margin-bottom: 56px; }
-      .photo-strip img { height: 240px; }
+      .moment { margin-bottom: 80px; }
+      .photo-strip { padding-left: 20px; }
+      .photo-strip img { height: 260px; }
+      .photo-full { max-height: 60vh; }
       .stat-row { flex-direction: column; }
       .stat-block { border-right: none; border-bottom: 1px solid var(--border); }
       .stat-block:last-child { border-bottom: none; }
@@ -214,71 +235,73 @@
   </div>
 </div>
 
-<main class="page-enter">
+<div class="col page-enter">
 
   <div class="page-header-wrap">
     <h1 class="page-title">Darts</h1>
     <p class="page-subtitle">Got in by accident. Stayed because it made me better.</p>
   </div>
 
-  <!-- 1. Team uniforms -->
-  <div class="moment">
-    <div class="photo-strip">
-      <img loading="lazy" src="darts/微信图片_20260429164731_425_10.jpg" alt="School team in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164728_424_10.jpg" alt="Club members in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164744_429_10.jpg" alt="Polaroid shots from club nights" onclick="openLightbox(this.src)">
-    </div>
-    <p class="cap">Designed the uniforms. Black, red, white. "SUIBE DARTS" so we looked like we belonged. Both cuts, because we had both.</p>
+  <!-- Stats — quiet opening -->
+  <div class="stat-row">
+    <div class="stat-block"><div class="stat-num">1st</div><div class="stat-label">Individual</div></div>
+    <div class="stat-block"><div class="stat-num">3rd</div><div class="stat-label">Team</div></div>
+    <div class="stat-block"><div class="stat-num">2 yrs</div><div class="stat-label">President</div></div>
   </div>
 
-  <!-- 2. Full crew -->
-  <div class="moment">
-    <img class="photo-full" loading="lazy" src="darts/微信图片_20260429164725_423_10.jpg" alt="Large club group photo with SINCE 2018 banner" onclick="openLightbox(this.src)">
-    <p class="cap">The full crew. ~100 members by the time I left. From 50 and no structure.</p>
+</div>
+
+<!-- 1. Full-bleed: team uniforms — C+A, break the column -->
+<div class="moment">
+  <div class="photo-strip">
+    <img loading="lazy" src="darts/微信图片_20260429164731_425_10.jpg" alt="School team in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164728_424_10.jpg" alt="Club members in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164744_429_10.jpg" alt="Polaroid shots from club nights" onclick="openLightbox(this.src)">
   </div>
+  <div class="col"><p class="cap">Designed the uniforms. Black, red, white. "SUIBE DARTS" so we looked like we belonged.</p></div>
+</div>
 
-  <!-- 3. Competition + stats -->
-  <div class="moment">
-    <div class="stat-row">
-      <div class="stat-block"><div class="stat-num">1st</div><div class="stat-label">Individual</div></div>
-      <div class="stat-block"><div class="stat-num">3rd</div><div class="stat-label">Team</div></div>
-      <div class="stat-block"><div class="stat-num">2 yrs</div><div class="stat-label">President</div></div>
-    </div>
-    <img class="photo-full" loading="lazy" src="darts/微信图片_20260429164638_420_10.jpg" alt="Shanghai University Darts Exchange Competition" onclick="openLightbox(this.src)">
-    <p class="cap">Shanghai University Darts League. ECUPL. Hands tight on the finishing throw. Threw anyway.</p>
+<!-- 2. Standard: full crew -->
+<div class="moment col">
+  <img class="photo" loading="lazy" src="darts/微信图片_20260429164725_423_10.jpg" alt="Large club group photo with SINCE 2018 banner" onclick="openLightbox(this.src)">
+  <p class="cap">The full crew. ~100 members by the time I left. From 50 and no structure.</p>
+</div>
+
+<!-- 3. Full-bleed hero: competition — C+A -->
+<div class="moment">
+  <img class="photo-full" loading="lazy" src="darts/微信图片_20260429164638_420_10.jpg" alt="Shanghai University Darts Exchange Competition" onclick="openLightbox(this.src)">
+  <div class="col"><p class="cap">Shanghai University Darts League. ECUPL. Hands tight on the finishing throw. Threw anyway.</p></div>
+</div>
+
+<!-- 4. Standard: Dartslive strip — horizontal scroll -->
+<div class="moment">
+  <div class="photo-strip">
+    <img loading="lazy" src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164812_434_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164842_436_10.jpg" alt="Champion board" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164710_422_10.jpg" alt="Dartslive venue group" onclick="openLightbox(this.src)">
   </div>
+  <div class="col"><p class="cap">Dartslive Shanghai. Real players, way faster on finishes. Round one exit most nights. Didn't matter — we played until they dragged in a folding bed.</p></div>
+</div>
 
-  <!-- 4. Dartslive -->
-  <div class="moment">
-    <div class="photo-strip">
-      <img loading="lazy" src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164812_434_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164842_436_10.jpg" alt="Champion board" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164710_422_10.jpg" alt="Dartslive venue group" onclick="openLightbox(this.src)">
-    </div>
-    <p class="cap">Dartslive Shanghai. Real players, way faster on finishes. Round one exit most nights. Didn't matter — we played until they dragged in a folding bed.</p>
+<!-- 5. Standard portrait: late night noodles — vertical photo for rhythm change -->
+<div class="moment col">
+  <img class="photo-portrait" loading="lazy" src="darts/微信图片_20260429164756_432_10.jpg" alt="Late night noodles after competition" onclick="openLightbox(this.src)">
+  <p class="cap">Midnight noodles with people I'd just played against. This was the point.</p>
+</div>
+
+<!-- 6. Grid: friends — lighter weight to close -->
+<div class="moment col">
+  <div class="photo-grid">
+    <img loading="lazy" src="darts/微信图片_20260429164857_438_10.jpg" alt="On the way home with a friend" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164833_435_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)">
   </div>
+  <p class="cap">The friends, the club leaders from across Shanghai — without darts, university would have been a lot smaller.</p>
+</div>
 
-  <!-- 5. Late night noodles -->
-  <div class="moment">
-    <img class="photo-full" loading="lazy" src="darts/微信图片_20260429164756_432_10.jpg" alt="Late night noodles after competition" onclick="openLightbox(this.src)">
-    <p class="cap">Midnight noodles with people I'd just played against. This was the point.</p>
-  </div>
-
-  <!-- 6. Friends -->
-  <div class="moment">
-    <div class="photo-grid">
-      <img loading="lazy" src="darts/微信图片_20260429164857_438_10.jpg" alt="On the way home with a friend" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164833_435_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)">
-    </div>
-    <p class="cap">The friends, the club leaders from across Shanghai — without darts, university would have been a lot smaller.</p>
-  </div>
-
-  <div class="page-bottom"></div>
-
-</main>
+<div class="col page-bottom"></div>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">×</button>
@@ -307,15 +330,6 @@
   var back = document.querySelector('.topbar-back');
   if (back) {
     back.addEventListener('click', function(e) {
-      e.preventDefault();
-      var href = this.getAttribute('href');
-      document.body.classList.add('page-out');
-      setTimeout(function() { window.location.href = href; }, 180);
-    });
-  }
-  var lang = document.querySelector('.lang-link');
-  if (lang) {
-    lang.addEventListener('click', function(e) {
       e.preventDefault();
       var href = this.getAttribute('href');
       document.body.classList.add('page-out');
