@@ -1,0 +1,405 @@
+# Sub-page Visual Unification — Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Rewrite decathlon.html as an editorial longform page matching the new design language, establishing the template for all subsequent sub-page rewrites.
+
+**Architecture:** Single static HTML file, no build step. Inline CSS with shared design tokens (from work.html). Fixed topbar matching work.html layout. Single-column centered content (680px). Geist + Nunito Sans + JetBrains Mono fonts. Coral custom cursor. Dark mode via localStorage + data-theme.
+
+**Tech Stack:** Pure HTML + CSS + vanilla JS. Google Fonts. No Tailwind, no framework.
+
+---
+
+## File Structure
+
+| File | Action | Purpose |
+|------|--------|---------|
+| `decathlon.html` | Rewrite | Full editorial longform page |
+| `work.html` | Modify (later phase) | Remove Projects rows |
+| `zh-work.html` | Modify (later phase) | Remove Projects rows |
+| `mayora.html` | Rewrite (later phase) | Same editorial pattern |
+| `ai.html` | Rewrite (later phase) | Same editorial pattern |
+| `darts.html` | Rewrite (later phase) | Same editorial pattern |
+
+---
+
+## Phase 1: decathlon.html Rewrite
+
+### Task 1: Write the complete CSS
+
+**Files:**
+- Create: `decathlon.html` (entire file)
+
+- [ ] **Step 1: Write the full decathlon.html**
+
+Write the complete file at `/Users/h3art/Documents/github/personal-website/.claude/worktrees/bold-mahavira-f48b76/decathlon.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decathlon — Trevor Huang</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})()</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #E8E8E8;
+      --bg-sub:  #F0EEE8;
+      --bg-foot: #E8E6DE;
+      --fg:      #1C1917;
+      --fg-2:    #57534E;
+      --fg-3:    #A8A29E;
+      --border:  #E7E5E4;
+      --accent:  #7C3AED;
+      --f-display: 'Geist', sans-serif;
+      --f-body:    'Nunito Sans', sans-serif;
+      --f-mono:    'JetBrains Mono', monospace;
+    }
+    [data-theme="dark"] {
+      --bg:      #18181B;
+      --bg-sub:  #292524;
+      --bg-foot: #292524;
+      --fg:      #FAFAFA;
+      --fg-2:    #A8A29E;
+      --fg-3:    #57534E;
+      --border:  #44403C;
+      --accent:  #A78BFA;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--f-body); background: var(--bg); color: var(--fg);
+      line-height: 1.75; transition: background .3s, color .3s;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='7' cy='7' r='7' fill='%23E07B5A'/%3E%3C/svg%3E") 7 7, auto;
+    }
+    a, button, [role="button"] {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 8 8, pointer;
+    }
+
+    /* Topbar */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 32px;
+      pointer-events: none;
+    }
+    .topbar > * { pointer-events: auto; }
+    .topbar-back {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-2); text-decoration: none; transition: color .2s;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .topbar-back:hover { color: var(--accent); }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .lang-link {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-3); text-decoration: none; transition: color .2s;
+    }
+    .lang-link:hover { color: var(--accent); }
+    .theme-btn {
+      background: none; border: none; cursor: inherit;
+      color: var(--fg-2); padding: 4px; display: flex; align-items: center; transition: color .2s;
+    }
+    .theme-btn:hover { color: var(--accent); }
+    #icon-moon { display: none; }
+    [data-theme="dark"] #icon-sun  { display: none; }
+    [data-theme="dark"] #icon-moon { display: block; }
+
+    /* Main content */
+    main {
+      max-width: 680px; margin: 0 auto; padding: 0 32px;
+    }
+
+    /* Entry animation */
+    @media (prefers-reduced-motion: no-preference) {
+      .page-enter {
+        opacity: 0; transform: translateY(6px);
+        animation: page-in 400ms ease-out forwards;
+      }
+      @keyframes page-in {
+        to { opacity: 1; transform: translateY(0); }
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .page-enter { opacity: 1; transform: none; }
+    }
+
+    /* Page out transition */
+    body.page-out main {
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    /* Typography */
+    .page-title {
+      font-family: var(--f-display); font-size: 48px; font-weight: 400;
+      line-height: 1.1; letter-spacing: -0.02em; color: var(--fg);
+      margin-bottom: 12px;
+    }
+    .page-subtitle {
+      font-family: var(--f-body); font-size: 16px; font-weight: 400;
+      color: var(--fg-2); margin-bottom: 0;
+    }
+    .page-header-wrap { padding: 80px 0 48px; }
+
+    .section { margin-bottom: 80px; }
+    .section:last-child { margin-bottom: 0; }
+    .section-heading {
+      font-family: var(--f-display); font-size: 28px; font-weight: 400;
+      line-height: 1.2; letter-spacing: -0.01em; color: var(--fg);
+      margin-bottom: 24px;
+    }
+
+    .body-lg {
+      font-family: var(--f-body); font-size: 18px; font-weight: 400;
+      line-height: 1.8; color: var(--fg);
+      margin-bottom: 16px;
+    }
+    .body-lg:last-child { margin-bottom: 0; }
+
+    .body-text {
+      font-family: var(--f-body); font-size: 16px; font-weight: 400;
+      line-height: 1.8; color: var(--fg-2);
+      margin-bottom: 16px;
+    }
+    .body-text:last-child { margin-bottom: 0; }
+    .body-text strong { color: var(--fg); }
+
+    .pull-quote {
+      border-left: 1px solid var(--accent);
+      padding-left: 20px; margin: 32px 0;
+    }
+    .pull-quote p {
+      font-family: var(--f-body); font-size: 15px; font-weight: 400;
+      line-height: 1.8; color: var(--fg); font-style: italic;
+      margin: 0;
+    }
+
+    .page-bottom { padding-bottom: 120px; }
+
+    /* Responsive */
+    @media (max-width: 680px) {
+      .topbar { padding: 20px 20px; }
+      main { padding: 0 20px; }
+      .page-title { font-size: 36px; }
+      .section-heading { font-size: 24px; }
+      .page-header-wrap { padding: 64px 0 40px; }
+    }
+    @media (max-width: 480px) {
+      .page-title { font-size: 32px; }
+      .body-lg { font-size: 16px; }
+      .page-header-wrap { padding: 56px 0 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="work.html" class="topbar-back">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Work
+  </a>
+  <div class="topbar-right">
+    <a href="zh-decathlon.html" class="lang-link">中文</a>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</div>
+
+<main class="page-enter">
+
+  <!-- Header -->
+  <div class="page-header-wrap">
+    <h1 class="page-title">Decathlon</h1>
+    <p class="page-subtitle">E-commerce Technology PM Intern · 2025–2026</p>
+  </div>
+
+  <!-- Opening -->
+  <div class="section">
+    <p class="body-lg">Decathlon's China e-commerce team runs across WeChat Mini Program, Douyin, Tmall, and Taobao Flash Sale simultaneously. The PM team sits between business and IT — they gather requirements, translate them into specs, coordinate development, and manage testing before launch.</p>
+    <p class="body-lg">I was embedded in this team for three months. My mentor gave me an open brief — learn the system, find problems, contribute. That turned out to define how the internship went.</p>
+  </div>
+
+  <!-- WeChat Mini Program UX -->
+  <div class="section">
+    <h2 class="section-heading">WeChat Mini Program UX</h2>
+
+    <p class="body-text">Nobody assigned me this. In the first few weeks, I spent time using the Decathlon WeChat Mini Program as a regular customer would — browsing, adding to cart, checking logistics, going through the returns flow. Things kept bothering me, so I started writing them down. When I had enough observations to make a structured case, I brought it to my mentor. His response: if you think it's worth pursuing, build the analysis and we'll see if it justifies a project proposal.</p>
+
+    <p class="body-text">No internal user behavior data was available — no heatmaps, no conversion funnel breakdowns. I flagged this to my mentor; his judgment was that the pain points were visible enough to proceed without it. So I competitive-benchmarked instead: full-funnel walkthroughs of JD 1P, JD 3P, and Tmall, covering the product detail page, logistics tracking, and the after-sales and returns flow. Documented everything with screenshots and written notes.</p>
+
+    <p class="body-text">Identified <strong>16 pain points</strong> in total. Key ones: SKU naming inconsistency between the Mini Program and off-platform content — breaking the seeding-to-conversion flow; missing logistics ETA display — a low-cost fix with high customer confidence impact; no self-service return with courier pickup — customers had to contact customer service manually while competitors had fully automated this.</p>
+
+    <p class="body-text">With 16 issues and limited dev bandwidth, I needed a prioritization framework that both I and the team could agree on. Built a <strong>Value-Effort matrix</strong> with dual-dimension weighted scoring — consumer need intensity (0–5) and business value (0–5). Ran two alignment meetings with the team's PM to validate quadrant placements. High-priority items went into the sprint; others into the backlog.</p>
+
+    <div class="pull-quote">
+      <p>My mentor initially wanted to prioritize self-service returns with courier pickup. I pushed back — not on the goal, on timing. The feature requires reverse logistics API integration and courier partnership agreements; short-term build cost is high, and adding a frictionless return path would likely spike return rates before those costs are recouped. We agreed it belonged in the long-term roadmap, not the current sprint.</p>
+    </div>
+
+    <p class="body-text">Also drafted a BRD for a separate initiative: expanding Mini Program delivery radius from 3km to 10km, with a projected annual GMV uplift of 6M+ RMB.</p>
+  </div>
+
+  <!-- UAT Coordination -->
+  <div class="section">
+    <h2 class="section-heading">UAT Coordination</h2>
+
+    <p class="body-text">While the UX project was running, I coordinated UAT across about eight concurrent projects — spanning DTC manual refunds, two new Douyin stores (kids + apparel/footwear), Tmall, and Taobao Flash Sale. The role was essentially information routing: track what tests are scheduled, record issues found, get business, IT, finance, and customer service aligned, and follow up until every issue was closed.</p>
+
+    <p class="body-text">On the DTC manual refund project, Round 1 testing was done and IT had completed their fixes. The customer service team assigned to Round 2 re-testing went past deadline with no response to WeChat messages. I decided async was not working. Walked over and scheduled a short in-person meeting — but did not open with "you're overdue." I asked about their situation first, then explained what the project would actually do for them: standardizing the refund process would reduce their compliance exposure and cut the manual workload they dealt with on every price-difference case. They had not thought about it from that angle. Re-testing was completed promptly afterward.</p>
+
+    <div class="pull-quote">
+      <p>When cross-team alignment stalls, the problem is usually one of incentives, not communication channel. Switching from async to in-person was useful, but more useful was leading with "here's what this does for you" rather than "here's what you're supposed to do by when."</p>
+    </div>
+  </div>
+
+  <!-- PM Tool Optimization -->
+  <div class="section">
+    <h2 class="section-heading">PM Tool Optimization</h2>
+
+    <p class="body-text">My mentor, knowing I was studying project management, assigned me to benchmark the team's internal PM tool against what good PM software actually does. Decathlon was building its own rather than buying — the logic being that their specific workflow did not map cleanly onto Jira or Monday.</p>
+
+    <p class="body-text">Benchmarked against Jira, Trello, Monday, DingTalk, and Feishu. Identified <strong>13 pain points</strong> in the internal tool. Key ones: no project progress visibility without clicking through to an external Jira link; no clear owner mapping — could not tell who was responsible for a project without asking around; dashboard number cards lacking context — just a number, no trend or comparison; milestone hover states not showing detail; filter logic inconsistencies across select-all, reset, and multi-select.</p>
+
+    <p class="body-text">Wrote up a complete requirements iteration document and aligned it with my manager. Separately, I noticed the team was using Notion for team-level task tracking and finding it insufficient — free tier limitations, not designed for kanban workflows. I proposed Trello as a lightweight complement — not a replacement for the internal tool, just the right tool for the team's day-to-day. The team adopted it and continued using it.</p>
+  </div>
+
+  <!-- Reflection -->
+  <div class="section">
+    <h2 class="section-heading">Reflection</h2>
+
+    <p class="body-text">The UX project is the one I'd spend more time on if I did this again. Competitive benchmarking was useful, but I should have pushed harder to get internal data — even partial conversion funnel data would have strengthened the priority arguments significantly. "The pain points are obvious enough" is a reasonable pragmatic call, but it leaves the prioritization open to challenge.</p>
+
+    <p class="body-text">The UAT coordination work was valuable in a different way. Managing eight concurrent projects across four or five stakeholder groups in a large organization is messier than it looks on a Gantt chart. Most of the actual work was keeping information current and making sure the right people knew what they needed to know. When that breaks down, the fix is almost never "send a clearer message." It is usually about changing the frame.</p>
+  </div>
+
+  <div class="page-bottom"></div>
+
+</main>
+
+<script>
+  function toggleTheme() {
+    var el = document.documentElement;
+    var next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+    el.dataset.theme = next; localStorage.setItem('theme', next);
+  }
+
+  (function() {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  })();
+
+  // Exit transition
+  document.querySelector('.topbar-back').addEventListener('click', function(e) {
+    e.preventDefault();
+    var href = this.getAttribute('href');
+    document.body.classList.add('page-out');
+    setTimeout(function() { window.location.href = href; }, 180);
+  });
+  document.querySelector('.lang-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    var href = this.getAttribute('href');
+    document.body.classList.add('page-out');
+    setTimeout(function() { window.location.href = href; }, 180);
+  });
+</script>
+</body>
+</html>
+```
+
+- [ ] **Step 2: Open in browser and verify**
+
+Open `decathlon.html` in Chrome. Check:
+- Topbar: `← Work` left, `中文` + theme toggle right, pointer-events work
+- Dark mode toggle works, persists across refreshes
+- Coral cursor visible on page and changes on hover over links
+- Geist title "Decathlon" renders correctly
+- All body text is Nunito Sans, readable
+- Pull quotes have left accent border + italic
+- Page entrance animates (400ms fade + rise)
+- No TOC, no footer, no next link
+- Responsive: shrink to 375px, layout holds
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add decathlon.html
+git commit -m "feat: rewrite decathlon.html as editorial longform with new design system"
+```
+
+---
+
+## Phase 2: mayora.html Rewrite
+
+After decathlon.html is verified, follow the same pattern for mayora.html. Key differences:
+- Content: Mayora management trainee + CNY campaign merged in
+- Title: "Mayora"
+- Subtitle: "Management Trainee · 2024–2025"
+- Back link: `← Work` → `work.html`
+- Lang link: `中文` → `zh-mayora.html`
+- Sections: Opening → O2O Platform Operations → CNY Campaign (merged from cny-campaign.html) → Product Matrix → Reflection
+- CNY campaign data: ROI 7.22, 600% growth, budget optimization story
+- Same CSS structure as decathlon.html (topbar, tokens, typography, cursor, responsive)
+
+---
+
+## Phase 3: work.html / zh-work.html Update
+
+Remove Projects section rows:
+
+### work.html changes
+Remove two rows:
+```html
+<!-- REMOVE this entry -->
+<div class="entry-row">
+  ...
+  <span class="name"><a href="cny-campaign.html" ...>O2O CNY Promotion</a></span>
+  ...
+</div>
+<!-- REMOVE this entry -->
+<div class="entry-row">
+  ...
+  <span class="name"><a href="decathlon-ux.html" ...>WeChat Mini Program UX Optimization</a></span>
+  ...
+</div>
+```
+
+Update 48px gap between Experience and Projects → remove the gap CSS since only one section remains. Or keep the single `entry-list` wrapper without the gap class.
+
+### zh-work.html changes
+Same removal for:
+- 即时零售CNY大促 (→ cny-campaign.html)
+- 微信小程序用户体验优化 (→ decathlon-ux.html)
+
+---
+
+## Phase 4: ai.html + darts.html Rewrite
+
+Follow same editorial pattern. Each keeps its unique layout needs but adopts:
+- Same topbar (← Stories → stories.html anchor or dedicated index)
+- Same design tokens (colors, fonts, cursor)
+- Same Geist + Nunito Sans + JetBrains Mono
+- Same dark mode toggle
+- Same page-enter animation
+- No footer
+
+### ai.html specifics
+- Topbar back: `← Stories` or `← Making` (TBD based on what nav context makes sense)
+- Title: "AI Explorer"
+- Content sections preserved from current layout (timeline style can stay, but fonts/tokens updated)
+
+### darts.html specifics
+- Topbar back: `← Stories`
+- Title: "Darts"
+- Photo strips preserved but restyled with new tokens
+
+---
+
+*Plan generated: 2026-05-05*
