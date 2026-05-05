@@ -145,7 +145,30 @@
 
     .page-bottom { padding-bottom: 120px; }
 
+    /* Scroll ruler + reading line */
+    .scroll-ruler {
+      position: fixed; left: 48px; top: 0; bottom: 0;
+      width: 1px; z-index: 45; pointer-events: none;
+    }
+    .ruler-bar {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+    .ruler-tick {
+      position: absolute; left: -6px; width: 13px; height: 1px;
+      background: var(--fg-3); transition: width .3s, background .3s;
+    }
+    .ruler-tick.active { background: var(--accent); width: 18px; }
+    .scroll-line {
+      position: fixed; left: 48px; width: calc(100vw - 48px); height: 1px;
+      background: var(--fg-3); z-index: 44; pointer-events: none;
+      opacity: 0.35; transition: transform .15s linear; top: 0;
+    }
+
     /* Responsive */
+    @media (max-width: 860px) {
+      .scroll-ruler, .scroll-line { display: none; }
+    }
     @media (max-width: 680px) {
       .topbar { padding: 20px 20px; }
       main { padding: 0 20px; }
@@ -176,6 +199,16 @@
     </button>
   </div>
 </div>
+
+<div class="scroll-ruler" aria-hidden="true">
+  <div class="ruler-bar"></div>
+  <div class="ruler-tick" data-section="0" style="top:10%"></div>
+  <div class="ruler-tick" data-section="1" style="top:30%"></div>
+  <div class="ruler-tick" data-section="2" style="top:50%"></div>
+  <div class="ruler-tick" data-section="3" style="top:70%"></div>
+  <div class="ruler-tick" data-section="4" style="top:90%"></div>
+</div>
+<div class="scroll-line" aria-hidden="true"></div>
 
 <main class="page-enter">
 
@@ -260,18 +293,58 @@
   })();
 
   // Exit transition
-  document.querySelector('.topbar-back').addEventListener('click', function(e) {
-    e.preventDefault();
-    var href = this.getAttribute('href');
-    document.body.classList.add('page-out');
-    setTimeout(function() { window.location.href = href; }, 180);
-  });
-  document.querySelector('.lang-link').addEventListener('click', function(e) {
-    e.preventDefault();
-    var href = this.getAttribute('href');
-    document.body.classList.add('page-out');
-    setTimeout(function() { window.location.href = href; }, 180);
-  });
+  var back = document.querySelector('.topbar-back');
+  if (back) {
+    back.addEventListener('click', function(e) {
+      e.preventDefault();
+      var href = this.getAttribute('href');
+      document.body.classList.add('page-out');
+      setTimeout(function() { window.location.href = href; }, 180);
+    });
+  }
+  var lang = document.querySelector('.lang-link');
+  if (lang) {
+    lang.addEventListener('click', function(e) {
+      e.preventDefault();
+      var href = this.getAttribute('href');
+      document.body.classList.add('page-out');
+      setTimeout(function() { window.location.href = href; }, 180);
+    });
+  }
+
+  // Scroll ruler + reading line
+  (function() {
+    var ruler = document.querySelector('.scroll-ruler');
+    var line = document.querySelector('.scroll-line');
+    var ticks = document.querySelectorAll('.ruler-tick');
+    if (!ruler || !line) return;
+
+    function update() {
+      var scrollTop = window.scrollY;
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      var progress = docH > 0 ? scrollTop / docH : 0;
+
+      // Line tracks scroll progress via transform for GPU performance
+      var rulerRect = ruler.getBoundingClientRect();
+      var topMargin = rulerRect.top;
+      var rulerH = rulerRect.height;
+      var targetY = topMargin + (progress * rulerH);
+      line.style.transform = 'translateY(' + targetY + 'px)';
+
+      // Activate nearest tick
+      var activeIdx = Math.round(progress * (ticks.length - 1));
+      ticks.forEach(function(t, i) {
+        if (i === activeIdx) t.classList.add('active');
+        else t.classList.remove('active');
+      });
+    }
+
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) { requestAnimationFrame(function() { update(); ticking = false; }); ticking = true; }
+    }, { passive: true });
+    update();
+  })();
 </script>
 </body>
 </html>
