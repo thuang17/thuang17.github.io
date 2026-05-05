@@ -8,10 +8,10 @@
   <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})()</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:      #FAFAF8;
+      --bg:      #E8E8E8;
       --bg-sub:  #F0EEE8;
       --bg-foot: #E8E6DE;
       --fg:      #1C1917;
@@ -19,15 +19,15 @@
       --fg-3:    #A8A29E;
       --border:  #E7E5E4;
       --accent:  #7C3AED;
-      --f-display: 'Montserrat', sans-serif;
+      --f-display: 'Geist', sans-serif;
       --f-body:    'Nunito Sans', sans-serif;
       --f-mono:    'JetBrains Mono', monospace;
     }
     [data-theme="dark"] {
-      --bg:      #1C1917;
+      --bg:      #18181B;
       --bg-sub:  #292524;
       --bg-foot: #292524;
-      --fg:      #F5F5F4;
+      --fg:      #FAFAFA;
       --fg-2:    #A8A29E;
       --fg-3:    #57534E;
       --border:  #44403C;
@@ -36,202 +36,146 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: var(--f-body);
-      background: var(--bg); color: var(--fg);
-      line-height: 1.75;
-      transition: background .3s, color .3s;
+      font-family: var(--f-body); background: var(--bg); color: var(--fg);
+      line-height: 1.75; transition: background .3s, color .3s;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='7' cy='7' r='7' fill='%23E07B5A'/%3E%3C/svg%3E") 7 7, auto;
+    }
+    a, button, [role="button"] {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 8 8, pointer;
     }
 
-    /* NAV */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: var(--bg); border-bottom: 1px solid var(--border);
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 32px;
+      pointer-events: none;
     }
-    .nav-inner {
-      max-width: 1160px; margin: 0 auto;
-      padding: 0 48px; height: 56px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .nav-back {
-      display: flex; align-items: center; gap: 5px;
+    .topbar > * { pointer-events: auto; }
+    .topbar-back {
       font-family: var(--f-mono); font-size: 12px;
-      color: var(--fg-2); text-decoration: none;
-      transition: color .2s;
+      color: var(--fg-2); text-decoration: none; transition: color .2s;
+      display: flex; align-items: center; gap: 5px;
     }
-    .nav-back:hover { color: var(--accent); }
-    .sep { color: var(--fg-3); font-family: var(--f-mono); font-size: 12px; }
-    .nav-crumb { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); }
-    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+    .topbar-back:hover { color: var(--accent); }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
     .lang-link {
       font-family: var(--f-mono); font-size: 12px;
       color: var(--fg-3); text-decoration: none; transition: color .2s;
     }
     .lang-link:hover { color: var(--accent); }
     .theme-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--fg-2); padding: 4px;
-      display: flex; align-items: center; transition: color .2s;
+      background: none; border: none; cursor: inherit;
+      color: var(--fg-2); padding: 4px; display: flex; align-items: center; transition: color .2s;
     }
     .theme-btn:hover { color: var(--accent); }
     #icon-moon { display: none; }
     [data-theme="dark"] #icon-sun  { display: none; }
     [data-theme="dark"] #icon-moon { display: block; }
 
-    /* PAGE HEADER */
-    .page-header {
-      border-bottom: 1px solid var(--border);
-      padding: 64px 48px 56px;
+    main { max-width: 680px; margin: 0 auto; padding: 0 32px; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .page-enter {
+        opacity: 0; transform: translateY(6px);
+        animation: page-in 400ms ease-out forwards;
+      }
+      @keyframes page-in { to { opacity: 1; transform: translateY(0); } }
     }
-    .page-header-inner { max-width: 1160px; margin: 0 auto; }
-    .header-meta {
-      display: flex; align-items: center; gap: 16px;
-      margin-bottom: 20px;
+    @media (prefers-reduced-motion: reduce) {
+      .page-enter { opacity: 1; transform: none; }
     }
-    .header-label {
-      font-family: var(--f-mono); font-size: 11px;
-      letter-spacing: .1em; text-transform: uppercase;
-      color: var(--accent);
-    }
-    .header-meta-sep { color: var(--border); font-family: var(--f-mono); font-size: 11px; }
-    .header-readtime {
-      font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); letter-spacing: .05em;
-    }
-    .header-title {
-      font-family: var(--f-display); font-weight: 800;
-      font-size: clamp(44px, 7vw, 72px);
-      color: var(--fg); line-height: 1.0;
-      letter-spacing: -0.02em;
-      margin-bottom: 20px;
-    }
-    .header-desc {
-      font-size: 17px; color: var(--fg-2);
-      max-width: 600px; line-height: 1.65;
-      font-weight: 300;
+    body.page-out main {
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 180ms ease, transform 180ms ease;
     }
 
-    /* MAIN TWO-COLUMN LAYOUT */
-    .main-layout {
-      max-width: 1160px; margin: 0 auto;
-      padding: 0 48px;
-      display: grid;
-      grid-template-columns: 1fr 220px;
-      gap: 0 60px;
-      align-items: start;
+    .page-title {
+      font-family: var(--f-display); font-size: 48px; font-weight: 400;
+      line-height: 1.1; letter-spacing: -0.02em; color: var(--fg);
+      margin-bottom: 12px;
     }
-
-    /* ARTICLE */
-    .article { padding: 64px 0 96px; max-width: 680px; }
-
-    /* CHAPTERS */
-    .chapter {
-      margin-bottom: 72px;
-      scroll-margin-top: 80px;
-      position: relative;
+    .page-subtitle {
+      font-family: var(--f-body); font-size: 16px; font-weight: 400;
+      color: var(--fg-2);
     }
+    .page-header-wrap { padding: 80px 0 48px; }
+
+    .section { margin-bottom: 80px; }
+    .section:last-child { margin-bottom: 0; }
+
+    .body-text {
+      font-family: var(--f-body); font-size: 16px; font-weight: 400;
+      line-height: 1.8; color: var(--fg-2);
+      margin-bottom: 16px;
+    }
+    .body-text:last-child { margin-bottom: 0; }
+    .body-text strong { color: var(--fg); }
+
+    /* Chapter */
+    .chapter { margin-bottom: 72px; }
     .ch-num {
-      font-family: var(--f-display);
-      font-size: 88px;
-      font-weight: 800;
-      color: var(--border);
-      line-height: 1;
-      margin-bottom: -48px;
-      letter-spacing: -0.04em;
-      user-select: none;
-      pointer-events: none;
-    }
-    .ch-label {
-      font-family: var(--f-mono); font-size: 11px;
-      color: var(--accent); letter-spacing: .1em;
-      text-transform: uppercase; margin-bottom: 8px;
-      position: relative;
+      font-family: var(--f-display); font-size: 72px; font-weight: 400;
+      line-height: 1; color: var(--border); letter-spacing: -0.04em;
+      margin-bottom: -32px; user-select: none; pointer-events: none;
     }
     .ch-title {
-      font-family: var(--f-display); font-size: 22px;
-      font-weight: 700; color: var(--fg); margin-bottom: 20px;
-      padding-bottom: 12px; border-bottom: 1px solid var(--border);
-      position: relative;
+      font-family: var(--f-display); font-size: 22px; font-weight: 400;
+      color: var(--fg); margin-bottom: 16px; letter-spacing: -0.01em;
     }
     .chapter p {
-      color: var(--fg-2); font-size: 15.5px;
-      margin-bottom: 14px; font-weight: 400;
+      font-family: var(--f-body); font-size: 16px; font-weight: 400;
+      line-height: 1.8; color: var(--fg-2);
+      margin-bottom: 14px;
     }
-    .chapter p:last-of-type { margin-bottom: 0; }
+    .chapter p:last-child { margin-bottom: 0; }
 
-    /* PULL QUOTE — editorial style */
+    /* Pull quote */
     .pull {
-      margin: 56px 0;
-      padding: 40px 0;
+      margin: 56px 0; padding: 40px 0;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-    .pull-mark {
-      display: block;
-      font-family: Georgia, 'Times New Roman', serif;
-      font-size: 64px;
-      line-height: 0.6;
-      color: var(--accent);
-      margin-bottom: 16px;
-      opacity: 0.5;
     }
     .pull p {
-      color: var(--fg) !important;
-      font-family: var(--f-display) !important;
-      font-size: 21px !important;
-      font-weight: 700 !important;
-      font-style: italic !important;
-      line-height: 1.45 !important;
-      margin: 0 !important;
-      letter-spacing: -0.01em;
+      font-family: var(--f-display); font-size: 22px; font-weight: 400;
+      line-height: 1.4; color: var(--fg); font-style: italic;
+      letter-spacing: -0.01em; margin: 0;
     }
 
-    /* STATS ROW */
+    /* Stat row */
     .stat-row {
       display: flex; gap: 0;
-      margin: 40px 0;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
+      margin: 48px 0;
+      border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
     }
     .stat-block {
-      flex: 1; padding: 20px 24px;
-      text-align: center;
+      flex: 1; padding: 20px 24px; text-align: center;
       border-right: 1px solid var(--border);
     }
     .stat-block:last-child { border-right: none; }
     .stat-num {
-      font-family: var(--f-display);
-      font-size: 28px; font-weight: 800;
-      color: var(--accent);
-      line-height: 1.1;
-      margin-bottom: 4px;
+      font-family: var(--f-display); font-size: 28px; font-weight: 400;
+      color: var(--accent); line-height: 1.1; margin-bottom: 4px;
     }
     .stat-label {
-      font-family: var(--f-mono);
-      font-size: 10px; letter-spacing: .08em;
-      text-transform: uppercase;
+      font-family: var(--f-mono); font-size: 10px; letter-spacing: .08em;
       color: var(--fg-3);
     }
 
-    /* PHOTOS */
+    /* Photos */
     .photo-wide {
-      width: calc(100% + 40px);
-      margin-left: -20px;
-      margin-top: 36px; margin-bottom: 36px;
+      width: calc(100% + 40px); margin-left: -20px;
+      margin-top: 40px; margin-bottom: 40px;
       overflow: hidden; border-radius: 10px; cursor: pointer;
     }
     .photo-wide img {
-      width: 100%; max-height: 460px;
-      object-fit: cover; display: block;
+      width: 100%; max-height: 460px; object-fit: cover; display: block;
       transition: transform .6s ease;
     }
     .photo-wide:hover img { transform: scale(1.02); }
 
     .photo-block {
-      width: calc(100% + 40px);
-      margin-left: -20px;
-      margin-top: 36px; margin-bottom: 36px;
+      width: calc(100% + 40px); margin-left: -20px;
+      margin-top: 40px; margin-bottom: 40px;
       border-radius: 10px; overflow: hidden; cursor: pointer;
     }
     .photo-block img {
@@ -241,8 +185,7 @@
     .photo-block:hover img { transform: scale(1.02); }
 
     .photo-grid-2 {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px; margin: 36px 0;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 40px 0;
     }
     .photo-grid-2 img {
       width: 100%; height: 220px; object-fit: cover;
@@ -252,14 +195,10 @@
     .photo-grid-2 img:hover { transform: scale(1.03); }
 
     .photo-strip {
-      display: flex; gap: 10px;
-      overflow-x: auto; padding-bottom: 8px;
-      margin-left: -20px;
-      margin-top: 36px; margin-bottom: 36px;
-      padding-left: 20px;
-      width: calc(100% + 40px);
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
+      display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px;
+      margin-left: -20px; margin-top: 40px; margin-bottom: 40px;
+      padding-left: 20px; width: calc(100% + 40px);
+      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
     }
     .photo-strip::-webkit-scrollbar { height: 4px; }
     .photo-strip::-webkit-scrollbar-track { background: transparent; }
@@ -273,14 +212,12 @@
 
     .caption {
       font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); margin-top: -24px; margin-bottom: 36px;
+      color: var(--fg-3); margin-top: -28px; margin-bottom: 40px;
       padding-left: 4px;
     }
 
-    hr { border: none; border-top: 1px solid var(--border); margin: 72px 0; }
-
-    /* TAGS */
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 40px; }
+    /* Tags */
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 48px; }
     .tag {
       font-family: var(--f-mono); font-size: 11px;
       color: var(--fg-3); background: var(--bg-sub);
@@ -288,65 +225,7 @@
       padding: 4px 12px; border-radius: 4px;
     }
 
-    /* NEXT STORY */
-    .next-story {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 28px 32px;
-      background: var(--bg-sub); border: 1px solid var(--border);
-      border-radius: 12px; text-decoration: none; color: var(--fg);
-      margin-top: 64px;
-      transition: border-color .2s, background .2s;
-    }
-    .next-story:hover { border-color: var(--accent); }
-    .next-label {
-      font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); letter-spacing: .08em;
-      text-transform: uppercase; margin-bottom: 6px;
-    }
-    .next-title { font-family: var(--f-display); font-size: 18px; font-weight: 700; }
-    .next-arrow { color: var(--accent); flex-shrink: 0; }
-
-    /* STICKY TOC */
-    .toc-wrap {
-      padding: 64px 0 0;
-      position: sticky;
-      top: 72px;
-    }
-    .toc-label {
-      font-family: var(--f-mono); font-size: 10px;
-      letter-spacing: .1em; text-transform: uppercase;
-      color: var(--fg-3); margin-bottom: 12px;
-    }
-    .toc-list { list-style: none; }
-    .toc-list li { margin-bottom: 2px; }
-    .toc-list a {
-      font-family: var(--f-mono); font-size: 12px;
-      color: var(--fg-3); text-decoration: none;
-      display: block; padding: 4px 8px;
-      border-left: 2px solid transparent;
-      transition: color .15s, border-color .15s;
-      line-height: 1.4;
-    }
-    .toc-list a:hover { color: var(--fg-2); border-left-color: var(--border); }
-    .toc-list a.active { color: var(--accent); border-left-color: var(--accent); }
-
-    /* FOOTER */
-    footer {
-      background: var(--bg-foot); border-top: 1px solid var(--border);
-      padding: 28px 48px;
-    }
-    .footer-inner {
-      max-width: 1160px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .footer-copy { font-family: var(--f-mono); font-size: 11px; color: var(--fg-3); }
-    .footer-back {
-      font-family: var(--f-mono); font-size: 12px;
-      color: var(--fg-3); text-decoration: none; transition: color .2s;
-    }
-    .footer-back:hover { color: var(--accent); }
-
-    /* LIGHTBOX */
+    /* Lightbox */
     .lightbox {
       display: none; position: fixed; inset: 0; z-index: 1000;
       background: rgba(0,0,0,.92);
@@ -361,231 +240,169 @@
       font-family: var(--f-mono);
     }
 
-    /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
-    .vis { opacity: 1; transform: none; }
+    .page-bottom { padding-bottom: 120px; }
 
-    @media (max-width: 860px) {
-      .main-layout { grid-template-columns: 1fr; }
-      .toc-wrap { display: none; }
-      .nav-inner { padding: 0 20px; }
-      .page-header { padding: 40px 20px 36px; }
-      .main-layout { padding: 0 20px; }
-      footer { padding: 24px 20px; }
-      .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+    @media (max-width: 680px) {
+      .topbar { padding: 20px 20px; }
+      main { padding: 0 20px; }
+      .page-title { font-size: 36px; }
+      .page-header-wrap { padding: 64px 0 40px; }
       .photo-wide, .photo-block, .photo-strip { margin-left: 0; width: 100%; padding-left: 0; }
       .stat-row { flex-direction: column; }
       .stat-block { border-right: none; border-bottom: 1px solid var(--border); }
       .stat-block:last-child { border-bottom: none; }
+      .ch-num { font-size: 56px; margin-bottom: -24px; }
     }
     @media (max-width: 480px) {
+      .page-title { font-size: 32px; }
       .photo-grid-2 img { height: 160px; }
-      .ch-num { font-size: 64px; margin-bottom: -36px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .page-header-wrap { padding: 56px 0 36px; }
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-inner">
-    <a href="index.html" class="nav-back">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      Trevor Huang
-    </a>
-    <span class="sep">/</span>
-    <span class="nav-crumb">Darts</span>
-    <div class="nav-right">
-      <a href="zh-darts.html" class="lang-link">中文</a>
-      <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
-        <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-      </button>
-    </div>
+<div class="topbar">
+  <a href="index.html" class="topbar-back">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Home
+  </a>
+  <div class="topbar-right">
+    <a href="zh-darts.html" class="lang-link">中文</a>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
   </div>
-</nav>
-
-<header class="page-header">
-  <div class="page-header-inner">
-    <div class="header-meta">
-      <span class="header-label">Outside the office</span>
-      <span class="header-meta-sep">·</span>
-      <span class="header-readtime">5 min read</span>
-    </div>
-    <h1 class="header-title">Darts</h1>
-    <p class="header-desc">Got in by accident. Stayed because it made me better. Two years as president, one city league title, and a lot of late nights that had nothing to do with sport.</p>
-  </div>
-</header>
-
-<div class="main-layout">
-  <article class="article">
-
-    <div class="chapter reveal" id="lottery">
-      <div class="ch-num">01</div>
-      <p class="ch-label">How it started</p>
-      <h2 class="ch-title">The lottery</h2>
-      <p>I ended up here by accident. In my first year at SUIBE, I tried to sign up for archery as my PE elective. Didn't get it. Got darts instead.</p>
-      <p>For the first few sessions, it was just something to fill a requirement. Then it wasn't.</p>
-    </div>
-
-    <div class="chapter reveal" id="practice">
-      <div class="ch-num">02</div>
-      <p class="ch-label">Getting serious</p>
-      <h2 class="ch-title">Deliberate practice</h2>
-      <p>I started staying after sessions to practice alone. Watched professional players — studied their stance, their grip, their follow-through. Then went back to the board and tried to fix one thing at a time.</p>
-      <p>What got me was the precision of it. Every throw is fully repeatable. Every inconsistency is yours to own.</p>
-    </div>
-
-    <div class="pull reveal">
-      <span class="pull-mark">"</span>
-      <p>Every throw is repeatable. Every inconsistency is yours to own.</p>
-    </div>
-
-    <div class="chapter reveal" id="president">
-      <div class="ch-num">03</div>
-      <p class="ch-label">Taking over</p>
-      <h2 class="ch-title">An organization in name only</h2>
-      <p>The SUIBE Darts Association had been nationally ranked in 2019. Then COVID hit, the club went quiet for two years, and by the time things reopened the structure had mostly dissolved.</p>
-      <p>Somehow I became president.</p>
-      <p>I didn't inherit an organization so much as a general idea of one — about 50 people with varying levels of commitment, no formal school team, no event calendar. The first thing I did was rebuild the structure. Added a dedicated events department and a PR/outreach department. People thinking about competitions, people thinking about recruitment, separately.</p>
-    </div>
-
-    <div class="chapter reveal" id="building">
-      <div class="ch-num">04</div>
-      <p class="ch-label">Building</p>
-      <h2 class="ch-title">From 50 to 100, and a real team</h2>
-      <p>Within two years the club grew from about 50 to nearly 100 members. We rebuilt the school team from scratch — proper selection, regular training sessions, a real lineup at competitions.</p>
-      <p>I also wanted us to look like we belonged when we showed up to compete. So I designed new team uniforms: black base, red and white graphics, "SUIBE DARTS" across the front. Both men's and women's cuts.</p>
-    </div>
-
-    <div class="photo-strip reveal">
-      <img loading="lazy" src="darts/微信图片_20260429164731_425_10.jpg" alt="School team in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164728_424_10.jpg" alt="Club members in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164744_429_10.jpg" alt="Polaroid shots from club nights" onclick="openLightbox(this.src)">
-    </div>
-    <p class="caption reveal">The team, in the uniforms · scroll →</p>
-
-    <div class="photo-wide reveal" onclick="openLightbox(this.querySelector('img').src)">
-      <img loading="lazy" src="darts/微信图片_20260429164725_423_10.jpg" alt="Large club group photo with SINCE 2018 banner">
-    </div>
-    <p class="caption reveal">SUIBE Darts Association · the full crew</p>
-
-    <div class="chapter reveal" id="competition">
-      <div class="ch-num">05</div>
-      <p class="ch-label">Competition</p>
-      <h2 class="ch-title">The Shanghai University League</h2>
-      <p>The competition I remember most is the Shanghai University Darts League, hosted at ECUPL. Multiple schools, proper format, individual and team events.</p>
-      <p>I won individual first. Our team finished third.</p>
-      <p>I always get nervous on the finishing throws — hands tighten, everything slows down. That match I was nervous. Threw anyway. The outcome was fine.</p>
-    </div>
-
-    <div class="stat-row reveal">
-      <div class="stat-block">
-        <div class="stat-num">1st</div>
-        <div class="stat-label">Individual</div>
-      </div>
-      <div class="stat-block">
-        <div class="stat-num">3rd</div>
-        <div class="stat-label">Team</div>
-      </div>
-      <div class="stat-block">
-        <div class="stat-num">2 yrs</div>
-        <div class="stat-label">President</div>
-      </div>
-    </div>
-
-    <div class="photo-wide reveal" onclick="openLightbox(this.querySelector('img').src)">
-      <img loading="lazy" src="darts/微信图片_20260429164638_420_10.jpg" alt="Shanghai University Darts Exchange Competition">
-    </div>
-    <p class="caption reveal">Shanghai University Darts Exchange</p>
-
-    <div class="chapter reveal" id="beyond">
-      <div class="ch-num">06</div>
-      <p class="ch-label">Beyond campus</p>
-      <h2 class="ch-title">Try to be a real player</h2>
-      <p>Dartslive is a global network of ranked darts machines with organized tournaments. I registered a card and started competing in their Shanghai events.</p>
-      <p>The players there were in a completely different league — regulars who'd been playing for years, way faster on the finishes. I made it past round one maybe once or twice. Most of the time I was out early.</p>
-      <p>That was fine. What I actually looked forward to: finishing a tournament at midnight and heading to a nearby noodle place with people I'd just played against. Or the late-night sessions across town at a venue with more machines, better lighting, and — I'm not making this up — a folding bed someone had dragged in because we kept playing until 11pm.</p>
-      <p>The friends from other schools, the club leaders from across Shanghai — those connections came directly from darts. Without it, university would have been a lot smaller.</p>
-    </div>
-
-    <div class="photo-strip reveal">
-      <img loading="lazy" src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164812_434_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164842_436_10.jpg" alt="Champion board" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164710_422_10.jpg" alt="Dartslive venue group" onclick="openLightbox(this.src)">
-    </div>
-    <p class="caption reveal">Dartslive tournaments — most of these end late · scroll →</p>
-
-    <div class="pull reveal">
-      <span class="pull-mark">"</span>
-      <p>The friends from other schools, the club leaders from across Shanghai — those connections came directly from darts. Without it, university would have been a lot smaller.</p>
-    </div>
-
-    <div class="photo-block reveal" onclick="openLightbox(this.querySelector('img').src)">
-      <img loading="lazy" src="darts/微信图片_20260429164756_432_10.jpg" alt="Late night noodles after competition">
-    </div>
-    <p class="caption reveal">The important part: what happens after the competition</p>
-
-    <div class="photo-grid-2 reveal">
-      <img loading="lazy" src="darts/微信图片_20260429164857_438_10.jpg" alt="On the way home with a friend" onclick="openLightbox(this.src)">
-      <img loading="lazy" src="darts/微信图片_20260429164833_435_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)">
-    </div>
-
-    <hr>
-
-    <div class="chapter reveal" id="handoff">
-      <div class="ch-num">07</div>
-      <p class="ch-label">Passing it on</p>
-      <h2 class="ch-title">Finding the next president</h2>
-      <p>Before I left, I needed to find a successor. I wanted someone who genuinely cared about the game, not just the title.</p>
-      <p>I found a junior who'd been playing seriously since high school — technically strong, good at bringing people together. We competed together, trained together, spent enough time in the same venues that it felt like a real handoff rather than an administrative one.</p>
-      <p>I left knowing the club would be fine.</p>
-    </div>
-
-    <div class="tags reveal">
-      <span class="tag">Club President · 2 yrs</span>
-      <span class="tag">~100 members</span>
-      <span class="tag">Shanghai Uni League · 1st (Individual)</span>
-      <span class="tag">Dartslive Shanghai</span>
-      <span class="tag">SUIBE Darts Association · Since 2018</span>
-    </div>
-
-    <a href="ai.html" class="next-story reveal">
-      <div>
-        <p class="next-label">Next story</p>
-        <p class="next-title">AI Explorer</p>
-      </div>
-      <svg class="next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </a>
-
-  </article>
-
-  <aside class="toc-wrap">
-    <p class="toc-label">Chapters</p>
-    <ul class="toc-list">
-      <li><a href="#lottery">The lottery</a></li>
-      <li><a href="#practice">Deliberate practice</a></li>
-      <li><a href="#president">Taking over</a></li>
-      <li><a href="#building">50 → 100</a></li>
-      <li><a href="#competition">Shanghai Uni League</a></li>
-      <li><a href="#beyond">Beyond campus</a></li>
-      <li><a href="#handoff">Passing it on</a></li>
-    </ul>
-  </aside>
 </div>
 
-<footer>
-  <div class="footer-inner">
-    <span class="footer-copy">© 2026 Trevor Huang</span>
-    <a href="index.html" class="footer-back">← Back to home</a>
+<main class="page-enter">
+
+  <div class="page-header-wrap">
+    <h1 class="page-title">Darts</h1>
+    <p class="page-subtitle">Got in by accident. Stayed because it made me better.</p>
   </div>
-</footer>
+
+  <div class="chapter" id="lottery">
+    <div class="ch-num">01</div>
+    <h2 class="ch-title">The lottery</h2>
+    <p>First year at SUIBE, I tried to sign up for archery as my PE elective. Didn't get it. Got darts instead. For the first few sessions, it was just something to fill a requirement. Then it wasn't.</p>
+  </div>
+
+  <div class="chapter" id="practice">
+    <div class="ch-num">02</div>
+    <h2 class="ch-title">Deliberate practice</h2>
+    <p>I started staying after sessions to practice alone. Watched professional players — studied their stance, their grip, their follow-through. Then went back to the board and tried to fix one thing at a time.</p>
+    <p>What got me was the precision of it. Every throw is fully repeatable. Every inconsistency is yours to own.</p>
+  </div>
+
+  <div class="pull">
+    <p>Every throw is repeatable. Every inconsistency is yours to own.</p>
+  </div>
+
+  <div class="chapter" id="president">
+    <div class="ch-num">03</div>
+    <h2 class="ch-title">An organization in name only</h2>
+    <p>The SUIBE Darts Association had been nationally ranked in 2019. Then COVID hit, the club went quiet for two years, and by the time things reopened the structure had mostly dissolved.</p>
+    <p>Somehow I became president. I didn't inherit an organization so much as a general idea of one — about 50 people with varying levels of commitment, no formal school team, no event calendar. The first thing I did was rebuild the structure. Added a dedicated events department and a PR/outreach department. People thinking about competitions, people thinking about recruitment, separately.</p>
+  </div>
+
+  <div class="chapter" id="building">
+    <div class="ch-num">04</div>
+    <h2 class="ch-title">From 50 to 100, and a real team</h2>
+    <p>Within two years the club grew from about 50 to nearly 100 members. We rebuilt the school team from scratch — proper selection, regular training sessions, a real lineup at competitions.</p>
+    <p>I also wanted us to look like we belonged when we showed up to compete. So I designed new team uniforms: black base, red and white graphics, "SUIBE DARTS" across the front. Both men's and women's cuts.</p>
+  </div>
+
+  <div class="photo-strip">
+    <img loading="lazy" src="darts/微信图片_20260429164731_425_10.jpg" alt="School team in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164728_424_10.jpg" alt="Club members in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164744_429_10.jpg" alt="Polaroid shots from club nights" onclick="openLightbox(this.src)">
+  </div>
+  <p class="caption">The team, in the uniforms · scroll →</p>
+
+  <div class="photo-wide" onclick="openLightbox(this.querySelector('img').src)">
+    <img loading="lazy" src="darts/微信图片_20260429164725_423_10.jpg" alt="Large club group photo with SINCE 2018 banner">
+  </div>
+  <p class="caption">SUIBE Darts Association · the full crew</p>
+
+  <div class="chapter" id="competition">
+    <div class="ch-num">05</div>
+    <h2 class="ch-title">The Shanghai University League</h2>
+    <p>The competition I remember most is the Shanghai University Darts League, hosted at ECUPL. Multiple schools, proper format, individual and team events.</p>
+    <p>I won individual first. Our team finished third. I always get nervous on the finishing throws — hands tighten, everything slows down. That match I was nervous. Threw anyway.</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-block">
+      <div class="stat-num">1st</div>
+      <div class="stat-label">Individual</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num">3rd</div>
+      <div class="stat-label">Team</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num">2 yrs</div>
+      <div class="stat-label">President</div>
+    </div>
+  </div>
+
+  <div class="photo-wide" onclick="openLightbox(this.querySelector('img').src)">
+    <img loading="lazy" src="darts/微信图片_20260429164638_420_10.jpg" alt="Shanghai University Darts Exchange Competition">
+  </div>
+  <p class="caption">Shanghai University Darts Exchange</p>
+
+  <div class="chapter" id="beyond">
+    <div class="ch-num">06</div>
+    <h2 class="ch-title">Try to be a real player</h2>
+    <p>Dartslive is a global network of ranked darts machines with organized tournaments. I registered a card and started competing in their Shanghai events. The players there were in a completely different league — regulars who'd been playing for years, way faster on the finishes. I made it past round one maybe once or twice.</p>
+    <p>That was fine. What I actually looked forward to: finishing a tournament at midnight and heading to a nearby noodle place with people I'd just played against. Or the late-night sessions across town at a venue with more machines, better lighting, and — I'm not making this up — a folding bed someone had dragged in because we kept playing until 11pm.</p>
+    <p>The friends from other schools, the club leaders from across Shanghai — those connections came directly from darts. Without it, university would have been a lot smaller.</p>
+  </div>
+
+  <div class="photo-strip">
+    <img loading="lazy" src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164812_434_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164842_436_10.jpg" alt="Champion board" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164710_422_10.jpg" alt="Dartslive venue group" onclick="openLightbox(this.src)">
+  </div>
+  <p class="caption">Dartslive tournaments — most of these end late · scroll →</p>
+
+  <div class="pull">
+    <p>The friends from other schools, the club leaders from across Shanghai — those connections came directly from darts. Without it, university would have been a lot smaller.</p>
+  </div>
+
+  <div class="photo-block" onclick="openLightbox(this.querySelector('img').src)">
+    <img loading="lazy" src="darts/微信图片_20260429164756_432_10.jpg" alt="Late night noodles after competition">
+  </div>
+  <p class="caption">The important part: what happens after the competition</p>
+
+  <div class="photo-grid-2">
+    <img loading="lazy" src="darts/微信图片_20260429164857_438_10.jpg" alt="On the way home with a friend" onclick="openLightbox(this.src)">
+    <img loading="lazy" src="darts/微信图片_20260429164833_435_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)">
+  </div>
+
+  <div class="chapter" id="handoff">
+    <div class="ch-num">07</div>
+    <h2 class="ch-title">Finding the next president</h2>
+    <p>Before I left, I needed to find a successor. I wanted someone who genuinely cared about the game, not just the title.</p>
+    <p>I found a junior who'd been playing seriously since high school — technically strong, good at bringing people together. We competed together, trained together, spent enough time in the same venues that it felt like a real handoff rather than an administrative one. I left knowing the club would be fine.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag">Club President · 2 yrs</span>
+    <span class="tag">~100 members</span>
+    <span class="tag">Shanghai Uni League · 1st (Individual)</span>
+    <span class="tag">Dartslive Shanghai</span>
+    <span class="tag">SUIBE Darts Association · Since 2018</span>
+  </div>
+
+  <div class="page-bottom"></div>
+
+</main>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">×</button>
@@ -593,52 +410,42 @@
 </div>
 
 <script>
-  (function(){ const t = localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme = t; })();
-  function toggleTheme(){
-    const el = document.documentElement;
-    const next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+  function toggleTheme() {
+    var el = document.documentElement;
+    var next = el.dataset.theme === 'dark' ? 'light' : 'dark';
     el.dataset.theme = next; localStorage.setItem('theme', next);
   }
+  (function() {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  })();
 
-  // Scroll reveal
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); } });
-  }, { threshold: 0.06 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  // Active TOC
-  const chapters = document.querySelectorAll('.chapter');
-  const tocLinks = document.querySelectorAll('.toc-list a');
-  const tocObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        tocLinks.forEach(a => a.classList.remove('active'));
-        const active = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
-        if (active) active.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px' });
-  chapters.forEach(s => tocObs.observe(s));
-
-  // Last TOC item fallback
-  window.addEventListener('scroll', () => {
-    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80) {
-      tocLinks.forEach(a => a.classList.remove('active'));
-      if (tocLinks.length) tocLinks[tocLinks.length - 1].classList.add('active');
-    }
-  }, { passive: true });
-
-  // Lightbox
-  function openLightbox(src){
+  function openLightbox(src) {
     document.getElementById('lightbox-img').src = src;
     document.getElementById('lightbox').classList.add('open');
-    document.body.style.overflow = 'hidden';
   }
-  function closeLightbox(){
+  function closeLightbox() {
     document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow = '';
   }
-  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+
+  var back = document.querySelector('.topbar-back');
+  if (back) {
+    back.addEventListener('click', function(e) {
+      e.preventDefault();
+      var href = this.getAttribute('href');
+      document.body.classList.add('page-out');
+      setTimeout(function() { window.location.href = href; }, 180);
+    });
+  }
+  var lang = document.querySelector('.lang-link');
+  if (lang) {
+    lang.addEventListener('click', function(e) {
+      e.preventDefault();
+      var href = this.getAttribute('href');
+      document.body.classList.add('page-out');
+      setTimeout(function() { window.location.href = href; }, 180);
+    });
+  }
 </script>
 </body>
 </html>
