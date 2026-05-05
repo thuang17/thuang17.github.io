@@ -63,8 +63,8 @@ Lightweight project management file. Update after each meaningful change.
 
 **Phase 3.5 · Sub-page Structure**
 
-- [ ] **Work index page (`work.html`)** — editorial list: Experience (4 rows) + Projects (2 rows), ← Home back-link, Geist + Nunito, thin dividers, chrono order. Design direction confirmed (list over cards, editorial over panel), visual mockup drafted, pending Trevor's review and reference search.
-- [ ] **Fix panel navigation logic** — Work panel → work.html (not decathlon.html directly), Making → ai.html (as Making index), Stories → darts.html (as Stories index). Remove cross-links (AI ↔ darts).
+- [x] **Work index page (`work.html` + `zh-work.html`)** — editorial directory with v9 entry animation (rise+fade, 100ms stagger, dot leader center-expand). Centered narrow layout (max-width 680px), fixed topbar with ← Home + lang/theme toggles, focus hover effect (hover list → others dim 0.35), 48px gap between Experience and Projects sections. Chinese mirror with translated company/project names. No titles, no dividers, no footer.
+- [x] **Fix panel navigation logic** — Work panel → work.html (English) / zh-work.html (Chinese). Making → ai.html, Stories → darts.html already correct.
 - [ ] **Unify sub-page visual style** — Apply Geist font + coral cursor + color tokens to all child pages (decathlon, mayora, cny-campaign, decathlon-ux, ai, darts).
 
 ---
@@ -117,7 +117,8 @@ Lightweight project management file. Update after each meaningful change.
 | 2026-05 | Homepage nav uses B3-lite compact floating behavior | Keep the playful/product-like reference effect, but preserve full nav clarity and mobile usability |
 | 2026-05 | Homepage becomes a personal index first | The site should feel like Trevor's entry surface first, with detail moved one layer deeper |
 | 2026-05 | Context files now follow the personal-index direction | Prevent future sessions from drifting back to a recruiter-first homepage interpretation |
+| 2026-05-05 | Work index page: editorial directory over cards | Rauno-inspired restrained list with v9 entry animation, focus hover, no titles/footer. Better matches the personal-index direction and feels more editorial than panel-card layout |
 
 ---
 
-*Last updated: 2026-05-03*
+*Last updated: 2026-05-05*
