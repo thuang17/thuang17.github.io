@@ -134,19 +134,18 @@
     }
     .ruler {
       position: relative;
-      width: 200px; height: 12px;
+      width: 200px; height: 24px;
     }
     .ruler-tick {
       position: absolute; bottom: 0;
-      width: 1px; height: 12px; background: var(--fg-3);
-      opacity: 0.45;
+      width: 1.5px; height: 24px; background: var(--fg-3);
+      opacity: 0.4; border-radius: 1px;
     }
     .dart {
-      position: absolute; bottom: 14px;
+      position: absolute; bottom: 26px;
       width: 28px; height: 12px;
       transform: translateX(-50%);
-      transition: left .4s ease;
-      color: var(--fg);
+      color: var(--fg); z-index: 2;
     }
     .dart svg {
       display: block; width: 100%; height: 100%;
@@ -297,9 +296,11 @@
         idxEl.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
       }
 
-      // Move dart
-      var pct = total > 1 ? current / (total - 1) * 100 : 0;
-      dart.style.left = pct + '%';
+      // Dart follows scroll progress, not image index
+      var maxScroll = track.scrollWidth - track.clientWidth;
+      var progress = maxScroll > 0 ? track.scrollLeft / maxScroll : 0;
+      dart.style.left = (progress * 100) + '%';
+      dart.style.transition = 'none';
 
       imgs.forEach(function(img, i) {
         if (i === current) img.classList.remove('dim');
