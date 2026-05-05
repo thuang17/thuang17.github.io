@@ -12,11 +12,9 @@
   <style>
     :root {
       --bg:      #E8E8E8;
-      --bg-sub:  #F0EEE8;
       --fg:      #1C1917;
       --fg-2:    #57534E;
       --fg-3:    #A8A29E;
-      --border:  #E7E5E4;
       --accent:  #7C3AED;
       --f-display: 'Geist', sans-serif;
       --f-body:    'Nunito Sans', sans-serif;
@@ -24,11 +22,9 @@
     }
     [data-theme="dark"] {
       --bg:      #18181B;
-      --bg-sub:  #292524;
       --fg:      #FAFAFA;
       --fg-2:    #A8A29E;
       --fg-3:    #57534E;
-      --border:  #44403C;
       --accent:  #A78BFA;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -69,105 +65,45 @@
     [data-theme="dark"] #icon-sun  { display: none; }
     [data-theme="dark"] #icon-moon { display: block; }
 
-    main { max-width: 960px; margin: 0 auto; padding: 0 40px; }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .page-enter {
-        opacity: 0; transform: translateY(6px);
-        animation: page-in 400ms ease-out forwards;
-      }
-      @keyframes page-in { to { opacity: 1; transform: translateY(0); } }
+    /* Page header — fixed overlay at top center */
+    .page-head {
+      position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+      z-index: 40; text-align: center; pointer-events: none;
     }
-    @media (prefers-reduced-motion: reduce) {
-      .page-enter { opacity: 1; transform: none; }
-    }
-    body.page-out main {
-      opacity: 0; transform: translateY(8px);
-      transition: opacity 180ms ease, transform 180ms ease;
-    }
-
-    .page-title {
+    .page-head h1 {
       font-family: var(--f-display); font-size: 48px; font-weight: 400;
       line-height: 1.1; letter-spacing: -0.02em; color: var(--fg);
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
-    .page-subtitle {
+    .page-head .sub {
       font-family: var(--f-body); font-size: 16px; font-weight: 400; color: var(--fg-2);
     }
-    .page-header-wrap { padding: 80px 0 80px; }
 
-    /* Asymmetric row — image + text side by side */
-    .asym-row {
-      display: flex; gap: 28px; align-items: center;
-      margin-bottom: 100px;
+    /* Reel: tall container so images have room to scroll through */
+    .reel {
+      /* Each image gets ~60vh of breathing room */
+      padding: 60vh 0 60vh 0;
     }
-    .asym-row.reverse { flex-direction: row-reverse; }
-    .asym-img {
-      flex: none; border-radius: 6px; display: block;
-      cursor: pointer; transition: transform .3s ease;
-      object-fit: cover;
+
+    .reel-img {
+      display: block; margin: 0 auto;
+      width: 100%; max-width: 680px;
+      border-radius: 6px; cursor: pointer;
+      transition: transform .35s ease, filter .35s ease, opacity .35s ease;
+      /* Start: small + blurred — JS will override */
     }
-    .asym-img:hover { transform: scale(1.02); }
-    .asym-text {
-      flex: 1; min-width: 0;
-    }
-    .asym-text .cap {
+
+    /* Caption — appears below the active image */
+    .cap {
+      text-align: center;
       font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); letter-spacing: .03em; line-height: 1.7;
+      color: var(--fg-3); letter-spacing: .03em;
+      margin: 0 auto 0 auto;
+      max-width: 680px;
+      transition: opacity .35s ease;
     }
 
-    /* Full-width single image */
-    .full-img {
-      width: 100%; border-radius: 6px; display: block; margin-bottom: 100px;
-      cursor: pointer; transition: transform .3s ease;
-    }
-    .full-img:hover { transform: scale(1.01); }
-
-    /* Horizontal strip */
-    .strip {
-      display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 100px;
-      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
-    }
-    .strip::-webkit-scrollbar { height: 4px; }
-    .strip::-webkit-scrollbar-track { background: transparent; }
-    .strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-    .strip img {
-      height: 320px; width: auto; flex-shrink: 0;
-      border-radius: 6px; display: block;
-      cursor: pointer; transition: transform .3s ease;
-    }
-    .strip img:hover { transform: scale(1.02); }
-
-    /* Grid — 3 col */
-    .grid-3 {
-      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 100px;
-    }
-    .grid-3 img {
-      width: 100%; aspect-ratio: 1/1; object-fit: cover;
-      border-radius: 6px; display: block;
-      cursor: pointer; transition: transform .3s ease;
-    }
-    .grid-3 img:hover { transform: scale(1.02); }
-
-    /* Stat row */
-    .stat-row {
-      display: flex; gap: 0; margin-bottom: 80px;
-      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
-    }
-    .stat-block {
-      flex: 1; padding: 18px 20px; text-align: center;
-      border-right: 1px solid var(--border);
-    }
-    .stat-block:last-child { border-right: none; }
-    .stat-num {
-      font-family: var(--f-display); font-size: 26px; font-weight: 400;
-      color: var(--accent); line-height: 1.1; margin-bottom: 3px;
-    }
-    .stat-label {
-      font-family: var(--f-mono); font-size: 10px; letter-spacing: .06em; color: var(--fg-3);
-    }
-
-    .page-bottom { padding-bottom: 100px; }
+    .page-bottom { height: 60vh; }
 
     .lightbox {
       display: none; position: fixed; inset: 0; z-index: 1000;
@@ -183,22 +119,11 @@
       font-family: var(--f-mono);
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 680px) {
       .topbar { padding: 20px 20px; }
-      main { padding: 0 20px; }
-      .page-title { font-size: 36px; }
-      .page-header-wrap { padding: 64px 0 60px; }
-      .asym-row, .asym-row.reverse { flex-direction: column; gap: 14px; margin-bottom: 64px; }
-      .asym-img { width: 100% !important; height: auto !important; }
-      .grid-3 { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 480px) {
-      .page-title { font-size: 32px; }
-      .page-header-wrap { padding: 56px 0 48px; }
-      .stat-row { flex-direction: column; }
-      .stat-block { border-right: none; border-bottom: 1px solid var(--border); }
-      .stat-block:last-child { border-bottom: none; }
-      .grid-3 { grid-template-columns: 1fr; }
+      .page-head { top: 60px; }
+      .page-head h1 { font-size: 32px; }
+      .reel-img { max-width: calc(100vw - 40px); }
     }
   </style>
 </head>
@@ -218,36 +143,32 @@
   </div>
 </div>
 
-<main class="page-enter">
+<div class="page-head">
+  <h1>Darts</h1>
+  <p class="sub">Got in by accident. Stayed because it made me better.</p>
+</div>
 
-  <div class="page-header-wrap">
-    <h1 class="page-title">Darts</h1>
-    <p class="page-subtitle">Got in by accident. Stayed because it made me better.</p>
-  </div>
+<div class="reel">
 
-  <!-- 1. Polaroid -- standalone -->
-  <img class="full-img" style="margin-bottom:100px;" loading="lazy" src="darts/微信图片_20260429164744_429_10.jpg" alt="Polaroid shots from club nights" onclick="openLightbox(this.src)">
+  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164744_429_10.jpg" alt="Polaroid shots from school competition" onclick="openLightbox(this.src)">
+  <p class="cap">The school team. Only photo I kept from the league days.</p>
 
-  <!-- 2. Dartslive photos -->
-  <img class="full-img" loading="lazy" src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive tournament" onclick="openLightbox(this.src)">
-  <img class="full-img" loading="lazy" src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive competition" onclick="openLightbox(this.src)">
-  <img class="full-img" loading="lazy" src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET" onclick="openLightbox(this.src)">
+  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)">
 
-  <!-- 3. Image right, text left: Dartslive moment -->
-  <div class="asym-row">
-    <div class="asym-text"><p class="cap">Dartslive Shanghai.<br>Real players, way faster<br>on finishes.<br><br>Round one exit most<br>nights. Didn't matter —<br>they dragged in a folding bed.</p></div>
-    <img class="asym-img" style="width:480px; height:340px;" loading="lazy" src="darts/微信图片_20260429164812_434_10.jpg" alt="Late night darts" onclick="openLightbox(this.src)">
-  </div>
+  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)">
 
-  <!-- 4. Full-width: late night noodles -->
-  <img class="full-img" loading="lazy" src="darts/微信图片_20260429164756_432_10.jpg" alt="Late night noodles" onclick="openLightbox(this.src)">
+  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)">
 
-  <!-- 5. Full-width: darts bar -->
-  <img class="full-img" loading="lazy" src="darts/微信图片_20260429164833_435_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)">
+  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164812_434_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)">
 
-  <div class="page-bottom"></div>
+  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164756_432_10.jpg" alt="Late night noodles after competition" onclick="openLightbox(this.src)">
+  <p class="cap">Midnight noodles with people I'd just played against. This was the point.</p>
 
-</main>
+  <img class="reel-img" loading="lazy" src="darts/微信图片_20260429164833_435_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)">
+
+</div>
+
+<div class="page-bottom"></div>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">×</button>
@@ -282,6 +203,46 @@
       setTimeout(function() { window.location.href = href; }, 180);
     });
   }
+
+  // Vertical image conveyor
+  (function() {
+    var imgs = document.querySelectorAll('.reel-img');
+    var caps = document.querySelectorAll('.cap');
+    if (!imgs.length) return;
+
+    function update() {
+      var vh = window.innerHeight;
+      var centerY = vh / 2;
+
+      imgs.forEach(function(img, i) {
+        var rect = img.getBoundingClientRect();
+        var imgCenter = rect.top + rect.height / 2;
+        var dist = Math.abs(imgCenter - centerY);
+        var maxDist = vh * 0.8;
+
+        if (dist < maxDist) {
+          var t = dist / maxDist; // 0 = center, 1 = far
+          var scale = 1 - t * 0.25;           // 1.0 → 0.75
+          var blur = t * 6;                    // 0px → 6px
+          var opacity = 1 - t * 0.5;          // 1.0 → 0.5
+          img.style.transform = 'scale(' + scale + ')';
+          img.style.filter = 'blur(' + blur + 'px)';
+          img.style.opacity = opacity;
+        }
+
+        // Caption: show for the image closest to center
+        if (caps[i]) {
+          caps[i].style.opacity = dist < vh * 0.15 ? '1' : '0';
+        }
+      });
+    }
+
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) { requestAnimationFrame(function() { update(); ticking = false; }); ticking = true; }
+    }, { passive: true });
+    update();
+  })();
 </script>
 </body>
 </html>
