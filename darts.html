@@ -114,6 +114,8 @@
       object-fit: cover; border-radius: 24px;
       box-shadow: 0 2px 24px rgba(0,0,0,0.06);
       transition: transform .4s ease, opacity .4s ease;
+      pointer-events: none; user-select: none;
+      -webkit-user-drag: none; -webkit-touch-callout: none;
     }
 
     .slot img.dim {
@@ -129,20 +131,6 @@
       text-align: center; margin-top: 16px;
       font-family: var(--f-mono); font-size: 11px;
       color: var(--fg-3); letter-spacing: .06em;
-    }
-
-    .lightbox {
-      display: none; position: fixed; inset: 0; z-index: 1000;
-      background: rgba(0,0,0,.92);
-      align-items: center; justify-content: center; padding: 20px;
-    }
-    .lightbox.open { display: flex; }
-    .lightbox img { max-width: 100%; max-height: 90vh; object-fit: contain; border-radius: 4px; }
-    .lightbox-close {
-      position: absolute; top: 20px; right: 24px;
-      background: none; border: none; color: #fff;
-      font-size: 32px; cursor: pointer; line-height: 1;
-      font-family: var(--f-mono);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -191,23 +179,18 @@
 
   <div class="gallery" id="gallery">
     <div class="track" id="track">
-      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222557_452_10.jpg" alt="Polaroid shots from school competition" onclick="openLightbox(this.src)"></div>
-      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222635_453_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)"></div>
-      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222732_454_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)"></div>
-      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222756_455_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)"></div>
-      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222849_457_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)"></div>
-      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222916_458_10.jpg" alt="Late night noodles" onclick="openLightbox(this.src)"></div>
-      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505223344_460_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)"></div>
-      <div class="slot"><img loading="lazy" src="darts/挑选/2/ChatGPT Image May 5, 2026, 10_34_52 PM.png" alt="Darts illustration" onclick="openLightbox(this.src)"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222557_452_10.jpg" alt="Polaroid shots from school competition" draggable="false"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222635_453_10.jpg" alt="Dartslive tournament group" draggable="false"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222732_454_10.jpg" alt="Dartslive competition group" draggable="false"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222756_455_10.jpg" alt="Dartslive TARGET event" draggable="false"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222849_457_10.jpg" alt="Late night darts session" draggable="false"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222916_458_10.jpg" alt="Late night noodles" draggable="false"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505223344_460_10.jpg" alt="Darts bar with friends" draggable="false"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/ChatGPT Image May 5, 2026, 10_34_52 PM.png" alt="Darts illustration" draggable="false"></div>
     </div>
   </div>
 
   <p class="index" id="index">01 / 08</p>
-</div>
-
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">×</button>
-  <img id="lightbox-img" src="" alt="">
 </div>
 
 <script>
@@ -220,14 +203,6 @@
     var t = localStorage.getItem('theme');
     if (t) document.documentElement.dataset.theme = t;
   })();
-
-  function openLightbox(src) {
-    document.getElementById('lightbox-img').src = src;
-    document.getElementById('lightbox').classList.add('open');
-  }
-  function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('open');
-  }
 
   var back = document.querySelector('.topbar-back');
   if (back) {
