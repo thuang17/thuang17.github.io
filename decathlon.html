@@ -478,16 +478,16 @@
 <!-- NAV OVERLAY -->
 <div class="nav-overlay" id="navOverlay" onclick="closeNav(event)">
   <div class="nav-panel" onclick="event.stopPropagation()">
-    <a href="index.html">Homepage</a>
+    <a href="index.html" class="nav-section" style="padding-top:0">Homepage</a>
     <div class="nav-section">Work</div>
     <a href="decathlon.html" class="nav-sub nav-current">Decathlon</a>
     <a href="mayora.html" class="nav-sub">Mayora</a>
-    <span class="nav-sub" style="font-family:var(--f-mono);font-size:12px;color:var(--fg-3);padding:5px 0;display:block;">SynTao</span>
-    <span class="nav-sub" style="font-family:var(--f-mono);font-size:12px;color:var(--fg-3);padding:5px 0;display:block;">Tianfeng Securities</span>
+    <a class="nav-sub" style="color:var(--fg-3);cursor:default;pointer-events:none;">SynTao</a>
+    <a class="nav-sub" style="color:var(--fg-3);cursor:default;pointer-events:none;">Tianfeng Securities</a>
     <hr>
-    <a href="ai.html">Making</a>
-    <a href="darts.html">Stories</a>
-    <button onclick="toggleInfo()" style="font-family:var(--f-mono);font-size:12px;color:var(--fg-2);background:none;border:none;cursor:inherit;padding:5px 0;text-align:left;width:100%;">Info</button>
+    <a href="ai.html" class="nav-section">Making</a>
+    <a href="darts.html" class="nav-section">Stories</a>
+    <button onclick="toggleInfo()" class="nav-section" style="border:none;background:none;cursor:inherit;text-align:left;width:100%;">Info</button>
   </div>
 </div>
 
