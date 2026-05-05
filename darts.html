@@ -134,18 +134,17 @@
     }
     .ruler {
       position: relative;
-      height: 1px; background: var(--fg-3); opacity: 0.3;
-      width: 200px;
+      width: 200px; height: 12px;
     }
     .ruler-tick {
-      position: absolute; top: -3px;
-      width: 1px; height: 7px; background: var(--fg-3);
-      opacity: 0.5;
+      position: absolute; bottom: 0;
+      width: 1px; height: 12px; background: var(--fg-3);
+      opacity: 0.45;
     }
     .dart {
-      position: absolute; top: -12px;
-      width: 16px; height: 20px;
-      transform: translateX(-8px);
+      position: absolute; bottom: 14px;
+      width: 28px; height: 12px;
+      transform: translateX(-50%);
       transition: left .4s ease;
       color: var(--fg);
     }
@@ -206,10 +205,11 @@
   <div class="ruler-wrap">
     <div class="ruler" id="ruler"></div>
     <div class="dart" id="dart">
-      <svg viewBox="0 0 16 20" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="8" y1="3" x2="8" y2="17"/>
-        <path d="M3 4 L8 1 L13 4"/>
-        <path d="M5 5 L8 3 L11 5"/>
+      <svg viewBox="0 0 28 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="6" y1="6" x2="26" y2="6"/>
+        <path d="M2 2 L6 6 L2 10"/>
+        <path d="M5 3 L6 6 L5 9"/>
+        <path d="M24 4 L28 6 L24 8"/>
       </svg>
     </div>
   </div>
