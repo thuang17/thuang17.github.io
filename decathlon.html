@@ -135,12 +135,42 @@
 
     .pull-quote {
       border-left: 1px solid var(--accent);
-      padding-left: 20px; margin: 32px 0;
+      padding-left: 20px; margin: 52px 0;
     }
     .pull-quote p {
       font-family: var(--f-body); font-size: 15px; font-weight: 400;
       line-height: 1.8; color: var(--fg); font-style: italic;
       margin: 0;
+    }
+
+    /* Drop cap */
+    .drop-cap:first-letter {
+      float: left;
+      font-family: var(--f-display); font-size: 64px; font-weight: 400;
+      line-height: 0.85; margin-right: 10px; margin-top: 2px;
+      color: var(--fg);
+    }
+
+    /* Data island */
+    .data-island {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; margin: 56px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .data-item {
+      padding: 28px 0;
+      border-right: 1px solid var(--border);
+    }
+    .data-item:last-child { border-right: none; }
+    .data-num {
+      font-family: var(--f-display); font-size: 40px; font-weight: 400;
+      line-height: 1; color: var(--fg); letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .data-label {
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); line-height: 1.5; letter-spacing: .03em;
     }
 
     .page-bottom { padding-bottom: 120px; }
@@ -174,6 +204,11 @@
       .page-title { font-size: 36px; }
       .section-heading { font-size: 24px; }
       .page-header-wrap { padding: 64px 0 40px; }
+      .drop-cap:first-letter { font-size: 48px; }
+      .data-island { grid-template-columns: 1fr; }
+      .data-item { border-right: none; border-bottom: 1px solid var(--border); padding: 20px 0; }
+      .data-item:last-child { border-bottom: none; }
+      .data-num { font-size: 32px; }
     }
     @media (max-width: 480px) {
       .page-title { font-size: 32px; }
@@ -214,7 +249,7 @@
 
   <!-- Opening -->
   <div class="section">
-    <p class="body-lg">Decathlon's China e-commerce team runs across WeChat Mini Program, Douyin, Tmall, and Taobao Flash Sale simultaneously. The PM team sits between business and IT — they gather requirements, translate them into specs, coordinate development, and manage testing before launch.</p>
+    <p class="body-lg drop-cap">Decathlon's China e-commerce team runs across WeChat Mini Program, Douyin, Tmall, and Taobao Flash Sale simultaneously. The PM team sits between business and IT — they gather requirements, translate them into specs, coordinate development, and manage testing before launch.</p>
     <p class="body-lg">I was embedded in this team for three months. My mentor gave me an open brief — learn the system, find problems, contribute. That turned out to define how the internship went.</p>
   </div>
 
@@ -229,6 +264,21 @@
     <p class="body-text">Identified <strong>16 pain points</strong> in total. Key ones: SKU naming inconsistency between the Mini Program and off-platform content — breaking the seeding-to-conversion flow; missing logistics ETA display — a low-cost fix with high customer confidence impact; no self-service return with courier pickup — customers had to contact customer service manually while competitors had fully automated this.</p>
 
     <p class="body-text">With 16 issues and limited dev bandwidth, I needed a prioritization framework that both I and the team could agree on. Built a <strong>Value-Effort matrix</strong> with dual-dimension weighted scoring — consumer need intensity (0–5) and business value (0–5). Ran two alignment meetings with the team's PM to validate quadrant placements. High-priority items went into the sprint; others into the backlog.</p>
+
+    <div class="data-island">
+      <div class="data-item">
+        <div class="data-num">16</div>
+        <div class="data-label">pain points identified via competitive benchmarking</div>
+      </div>
+      <div class="data-item">
+        <div class="data-num">2</div>
+        <div class="data-label">scoring dimensions — consumer need × business value</div>
+      </div>
+      <div class="data-item">
+        <div class="data-num">6M+</div>
+        <div class="data-label">projected annual GMV from delivery radius expansion to 10km</div>
+      </div>
+    </div>
 
     <div class="pull-quote">
       <p>My mentor initially wanted to prioritize self-service returns with courier pickup. I pushed back — not on the goal, on timing. The feature requires reverse logistics API integration and courier partnership agreements; short-term build cost is high, and adding a frictionless return path would likely spike return rates before those costs are recouped. We agreed it belonged in the long-term roadmap, not the current sprint.</p>
