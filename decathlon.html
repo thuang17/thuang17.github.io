@@ -147,7 +147,7 @@
 
     /* Scroll ruler + reading line */
     .scroll-ruler {
-      position: fixed; left: 48px; top: 0; bottom: 0;
+      position: fixed; left: 48px; top: 25vh; bottom: 25vh;
       width: 1px; z-index: 45; pointer-events: none;
     }
     .ruler-bar {
@@ -155,14 +155,13 @@
       width: 1px; background: var(--border);
     }
     .ruler-tick {
-      position: absolute; left: -6px; width: 13px; height: 1px;
-      background: var(--fg-3); transition: width .3s, background .3s;
+      position: absolute; left: -4px; width: 6px; height: 1px;
+      background: var(--fg-3); transition: width .2s, background .2s;
     }
-    .ruler-tick.active { background: var(--accent); width: 18px; }
     .scroll-line {
       position: fixed; left: 48px; width: calc(100vw - 48px); height: 1px;
-      background: var(--fg-3); z-index: 44; pointer-events: none;
-      opacity: 0.35; transition: transform .15s linear; top: 0;
+      background: var(--accent); z-index: 44; pointer-events: none;
+      opacity: 0.3; transition: transform .12s linear; top: 0;
     }
 
     /* Responsive */
@@ -202,11 +201,6 @@
 
 <div class="scroll-ruler" aria-hidden="true">
   <div class="ruler-bar"></div>
-  <div class="ruler-tick" data-section="0" style="top:10%"></div>
-  <div class="ruler-tick" data-section="1" style="top:30%"></div>
-  <div class="ruler-tick" data-section="2" style="top:50%"></div>
-  <div class="ruler-tick" data-section="3" style="top:70%"></div>
-  <div class="ruler-tick" data-section="4" style="top:90%"></div>
 </div>
 <div class="scroll-line" aria-hidden="true"></div>
 
@@ -312,30 +306,53 @@
     });
   }
 
-  // Scroll ruler + reading line
+  // Scroll ruler + reading line with wave effect
   (function() {
     var ruler = document.querySelector('.scroll-ruler');
     var line = document.querySelector('.scroll-line');
-    var ticks = document.querySelectorAll('.ruler-tick');
     if (!ruler || !line) return;
+
+    // Create 20 tick marks dynamically
+    var NUM_TICKS = 20;
+    var WAVE_RADIUS = 2;
+    var BASE_W = 6;
+    var PEAK_W = 18;
+    var ticks = [];
+    for (var i = 0; i < NUM_TICKS; i++) {
+      var t = document.createElement('div');
+      t.className = 'ruler-tick';
+      t.style.top = (i / (NUM_TICKS - 1) * 100) + '%';
+      ruler.appendChild(t);
+      ticks.push(t);
+    }
 
     function update() {
       var scrollTop = window.scrollY;
       var docH = document.documentElement.scrollHeight - window.innerHeight;
       var progress = docH > 0 ? scrollTop / docH : 0;
 
-      // Line tracks scroll progress via transform for GPU performance
+      // Line position: map scroll progress onto ruler area
       var rulerRect = ruler.getBoundingClientRect();
-      var topMargin = rulerRect.top;
+      var rulerTop = rulerRect.top;
       var rulerH = rulerRect.height;
-      var targetY = topMargin + (progress * rulerH);
+      var targetY = rulerTop + (progress * rulerH);
       line.style.transform = 'translateY(' + targetY + 'px)';
 
-      // Activate nearest tick
-      var activeIdx = Math.round(progress * (ticks.length - 1));
+      // Wave: active position as float index
+      var activeFloat = progress * (NUM_TICKS - 1);
       ticks.forEach(function(t, i) {
-        if (i === activeIdx) t.classList.add('active');
-        else t.classList.remove('active');
+        var dist = Math.abs(i - activeFloat);
+        if (dist <= WAVE_RADIUS) {
+          var factor = 1 - (dist / (WAVE_RADIUS + 1));
+          var w = BASE_W + factor * (PEAK_W - BASE_W);
+          t.style.width = w + 'px';
+          t.style.background = 'var(--accent)';
+          t.style.opacity = 0.4 + factor * 0.6;
+        } else {
+          t.style.width = BASE_W + 'px';
+          t.style.background = 'var(--fg-3)';
+          t.style.opacity = '1';
+        }
       });
     }
 
