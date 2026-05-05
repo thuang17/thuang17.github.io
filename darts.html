@@ -68,41 +68,39 @@
     [data-theme="dark"] #icon-sun  { display: none; }
     [data-theme="dark"] #icon-moon { display: block; }
 
-    /* Canvas — sits between topbar and bottom */
-    .canvas {
-      position: fixed; top: 88px; bottom: 60px; left: 48px; right: 48px;
-      background: var(--canvas); border-radius: 12px;
-      overflow: hidden;
-      transition: background .3s;
-    }
-
-    /* Title — pinned above canvas */
+    /* Title — above the canvas */
     .page-head {
-      position: fixed; top: 96px; left: 50%; transform: translateX(-50%);
+      position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
       z-index: 40; text-align: center; pointer-events: none;
     }
     .page-head h1 {
-      font-family: var(--f-display); font-size: 40px; font-weight: 400;
+      font-family: var(--f-display); font-size: 48px; font-weight: 400;
       line-height: 1.1; letter-spacing: -0.02em; color: var(--fg);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .page-head .sub {
-      font-family: var(--f-body); font-size: 15px; font-weight: 400; color: var(--fg-2);
+      font-family: var(--f-body); font-size: 16px; font-weight: 400; color: var(--fg-2);
+    }
+
+    /* Canvas — sits below title, above bottom */
+    .canvas {
+      position: fixed; top: 180px; bottom: 60px; left: 48px; right: 48px;
+      background: var(--canvas); border-radius: 12px;
+      overflow: hidden;
+      transition: background .3s;
     }
 
     /* Horizontal scroll track */
     .track {
       display: flex; align-items: center;
       height: 100%; padding: 0 calc(50% - 340px); /* center images with 680px max */
-      gap: 60px;
+      gap: 28px;
       overflow-x: auto; overflow-y: hidden;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
-      cursor: grab;
       -webkit-overflow-scrolling: touch;
     }
     .track::-webkit-scrollbar { display: none; }
-    .track.dragging { cursor: grabbing; scroll-snap-type: none; }
 
     /* Image slot */
     .slot {
@@ -110,8 +108,8 @@
       display: flex; flex-direction: column; align-items: center;
     }
     .slot img {
-      display: block; height: 55vh; max-height: 600px; width: auto;
-      max-width: 680px; object-fit: contain;
+      display: block; height: 65vh; max-height: 750px; width: auto;
+      max-width: 780px; object-fit: contain;
       border-radius: 6px; cursor: pointer;
       will-change: transform, filter, opacity;
       transition: transform .4s ease, filter .4s ease, opacity .4s ease;
@@ -152,10 +150,11 @@
 
     @media (max-width: 680px) {
       .canvas { left: 16px; right: 16px; top: 72px; bottom: 48px; border-radius: 8px; }
-      .page-head { top: 78px; }
+      .page-head { top: 70px; }
       .page-head h1 { font-size: 28px; }
-      .slot img { height: 40vh; max-width: calc(100vw - 64px); }
-      .track { padding: 0 calc(50% - 42vw); gap: 32px; }
+      .canvas { top: 140px; }
+      .slot img { height: 45vh; max-width: calc(100vw - 64px); }
+      .track { padding: 0 calc(50% - 42vw); gap: 20px; }
       .hint { bottom: 56px; }
     }
   </style>
@@ -247,7 +246,7 @@
     });
   }
 
-  // Horizontal conveyor
+  // Horizontal conveyor — wheel scroll only
   (function() {
     var track = document.getElementById('track');
     var slots = document.querySelectorAll('.slot');
@@ -259,20 +258,6 @@
       e.preventDefault();
       track.scrollLeft += e.deltaY + e.deltaX;
     }, { passive: false });
-
-    // Drag to scroll
-    var isDown = false, startX, scrollStart;
-    track.addEventListener('mousedown', function(e) {
-      isDown = true; track.classList.add('dragging');
-      startX = e.pageX; scrollStart = track.scrollLeft;
-    });
-    track.addEventListener('mouseleave', function() { isDown = false; track.classList.remove('dragging'); });
-    track.addEventListener('mouseup', function() { isDown = false; track.classList.remove('dragging'); });
-    track.addEventListener('mousemove', function(e) {
-      if (!isDown) return;
-      e.preventDefault();
-      track.scrollLeft = scrollStart - (e.pageX - startX);
-    });
 
     // Hide hint after first interaction
     var hint = document.querySelector('.hint');
