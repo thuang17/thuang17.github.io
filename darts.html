@@ -86,25 +86,22 @@
     .canvas {
       position: fixed; top: 180px; bottom: 60px; left: 48px; right: 48px;
       background: var(--canvas); border-radius: 12px;
-      overflow: hidden;
+      overflow-x: auto; overflow-y: hidden;
       transition: background .3s;
+      scrollbar-width: none;
     }
+    .canvas::-webkit-scrollbar { display: none; }
 
     /* Horizontal scroll track */
     .track {
       display: flex; align-items: center;
-      height: 100%; padding: 0 calc(50% - 340px); /* center images with 680px max */
+      height: 100%; padding: 0 calc(50% - 340px);
       gap: 28px;
-      overflow-x: auto; overflow-y: hidden;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
     }
-    .track::-webkit-scrollbar { display: none; }
 
     /* Image slot */
     .slot {
-      flex: none; scroll-snap-align: center;
+      flex: none;
       display: flex; flex-direction: column; align-items: center;
     }
     .slot img {
@@ -246,23 +243,17 @@
     });
   }
 
-  // Horizontal conveyor — wheel scroll only
+  // Horizontal conveyor — native scroll
   (function() {
-    var track = document.getElementById('track');
+    var canvas = document.querySelector('.canvas');
     var slots = document.querySelectorAll('.slot');
     var mp = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (!track || !slots.length) return;
-
-    // Intercept wheel globally for horizontal scroll
-    window.addEventListener('wheel', function(e) {
-      e.preventDefault();
-      track.scrollLeft += e.deltaY + e.deltaX;
-    }, { passive: false });
+    if (!canvas || !slots.length) return;
 
     // Hide hint after first interaction
     var hint = document.querySelector('.hint');
     var hinted = false;
-    track.addEventListener('scroll', function() {
+    canvas.addEventListener('scroll', function() {
       if (!hinted) { hinted = true; hint.style.opacity = '0'; hint.style.transition = 'opacity .6s ease'; }
     }, { passive: true });
 
@@ -298,7 +289,7 @@
       });
     }
 
-    track.addEventListener('scroll', function() {
+    canvas.addEventListener('scroll', function() {
       requestAnimationFrame(update);
     }, { passive: true });
     update();
