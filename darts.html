@@ -13,7 +13,6 @@
     :root {
       --bg:      #E8E8E8;
       --bg-sub:  #F0EEE8;
-      --bg-foot: #E8E6DE;
       --fg:      #1C1917;
       --fg-2:    #57534E;
       --fg-3:    #A8A29E;
@@ -26,7 +25,6 @@
     [data-theme="dark"] {
       --bg:      #18181B;
       --bg-sub:  #292524;
-      --bg-foot: #292524;
       --fg:      #FAFAFA;
       --fg-2:    #A8A29E;
       --fg-3:    #57534E;
@@ -72,7 +70,8 @@
     [data-theme="dark"] #icon-sun  { display: none; }
     [data-theme="dark"] #icon-moon { display: block; }
 
-    main { max-width: 680px; margin: 0 auto; padding: 0 32px; }
+    /* Content — wider than editorial longform for images */
+    main { max-width: 860px; margin: 0 auto; padding: 0 32px; }
 
     @media (prefers-reduced-motion: no-preference) {
       .page-enter {
@@ -98,132 +97,73 @@
       font-family: var(--f-body); font-size: 16px; font-weight: 400;
       color: var(--fg-2);
     }
-    .page-header-wrap { padding: 80px 0 48px; }
+    .page-header-wrap { padding: 80px 0 60px; }
 
-    .section { margin-bottom: 80px; }
-    .section:last-child { margin-bottom: 0; }
+    /* Photo sections */
+    .moment { margin-bottom: 80px; }
+    .moment:last-child { margin-bottom: 0; }
 
-    .body-text {
-      font-family: var(--f-body); font-size: 16px; font-weight: 400;
-      line-height: 1.8; color: var(--fg-2);
-      margin-bottom: 16px;
+    /* Full-width single photo */
+    .photo-full {
+      width: 100%; border-radius: 8px; display: block;
+      cursor: pointer; transition: transform .4s ease;
     }
-    .body-text:last-child { margin-bottom: 0; }
-    .body-text strong { color: var(--fg); }
+    .photo-full:hover { transform: scale(1.01); }
 
-    /* Chapter */
-    .chapter { margin-bottom: 72px; }
-    .ch-num {
-      font-family: var(--f-display); font-size: 72px; font-weight: 400;
-      line-height: 1; color: var(--border); letter-spacing: -0.04em;
-      margin-bottom: -32px; user-select: none; pointer-events: none;
-    }
-    .ch-title {
-      font-family: var(--f-display); font-size: 22px; font-weight: 400;
-      color: var(--fg); margin-bottom: 16px; letter-spacing: -0.01em;
-    }
-    .chapter p {
-      font-family: var(--f-body); font-size: 16px; font-weight: 400;
-      line-height: 1.8; color: var(--fg-2);
-      margin-bottom: 14px;
-    }
-    .chapter p:last-child { margin-bottom: 0; }
-
-    /* Pull quote */
-    .pull {
-      margin: 56px 0; padding: 40px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .pull p {
-      font-family: var(--f-display); font-size: 22px; font-weight: 400;
-      line-height: 1.4; color: var(--fg); font-style: italic;
-      letter-spacing: -0.01em; margin: 0;
-    }
-
-    /* Stat row */
-    .stat-row {
-      display: flex; gap: 0;
-      margin: 48px 0;
-      border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
-    }
-    .stat-block {
-      flex: 1; padding: 20px 24px; text-align: center;
-      border-right: 1px solid var(--border);
-    }
-    .stat-block:last-child { border-right: none; }
-    .stat-num {
-      font-family: var(--f-display); font-size: 28px; font-weight: 400;
-      color: var(--accent); line-height: 1.1; margin-bottom: 4px;
-    }
-    .stat-label {
-      font-family: var(--f-mono); font-size: 10px; letter-spacing: .08em;
-      color: var(--fg-3);
-    }
-
-    /* Photos */
-    .photo-wide {
-      width: calc(100% + 40px); margin-left: -20px;
-      margin-top: 40px; margin-bottom: 40px;
-      overflow: hidden; border-radius: 10px; cursor: pointer;
-    }
-    .photo-wide img {
-      width: 100%; max-height: 460px; object-fit: cover; display: block;
-      transition: transform .6s ease;
-    }
-    .photo-wide:hover img { transform: scale(1.02); }
-
-    .photo-block {
-      width: calc(100% + 40px); margin-left: -20px;
-      margin-top: 40px; margin-bottom: 40px;
-      border-radius: 10px; overflow: hidden; cursor: pointer;
-    }
-    .photo-block img {
-      width: 100%; height: auto; display: block;
-      transition: transform .4s ease;
-    }
-    .photo-block:hover img { transform: scale(1.02); }
-
-    .photo-grid-2 {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 40px 0;
-    }
-    .photo-grid-2 img {
-      width: 100%; height: 220px; object-fit: cover;
-      border-radius: 10px; display: block;
-      transition: transform .3s ease; cursor: pointer;
-    }
-    .photo-grid-2 img:hover { transform: scale(1.03); }
-
+    /* Horizontal scroll strip */
     .photo-strip {
-      display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px;
-      margin-left: -20px; margin-top: 40px; margin-bottom: 40px;
-      padding-left: 20px; width: calc(100% + 40px);
+      display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px;
       scrollbar-width: thin; scrollbar-color: var(--border) transparent;
     }
     .photo-strip::-webkit-scrollbar { height: 4px; }
     .photo-strip::-webkit-scrollbar-track { background: transparent; }
     .photo-strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
     .photo-strip img {
-      height: 260px; width: auto; flex-shrink: 0;
-      border-radius: 10px; display: block;
-      transition: transform .3s ease; cursor: pointer;
+      height: 340px; width: auto; flex-shrink: 0;
+      border-radius: 8px; display: block;
+      cursor: pointer; transition: transform .3s ease;
     }
     .photo-strip img:hover { transform: scale(1.02); }
 
-    .caption {
+    /* Two-column grid */
+    .photo-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .photo-grid img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      border-radius: 8px; display: block;
+      cursor: pointer; transition: transform .3s ease;
+    }
+    .photo-grid img:hover { transform: scale(1.02); }
+
+    /* Caption */
+    .cap {
       font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); margin-top: -28px; margin-bottom: 40px;
-      padding-left: 4px;
+      color: var(--fg-3); margin-top: 10px; letter-spacing: .03em;
+      line-height: 1.6;
     }
 
-    /* Tags */
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 48px; }
-    .tag {
-      font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); background: var(--bg-sub);
-      border: 1px solid var(--border);
-      padding: 4px 12px; border-radius: 4px;
+    /* Stat row */
+    .stat-row {
+      display: flex; gap: 0;
+      margin: 0 0 12px 0;
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
     }
+    .stat-block {
+      flex: 1; padding: 18px 20px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-block:last-child { border-right: none; }
+    .stat-num {
+      font-family: var(--f-display); font-size: 26px; font-weight: 400;
+      color: var(--accent); line-height: 1.1; margin-bottom: 3px;
+    }
+    .stat-label {
+      font-family: var(--f-mono); font-size: 10px; letter-spacing: .06em;
+      color: var(--fg-3);
+    }
+
+    .page-bottom { padding-bottom: 120px; }
 
     /* Lightbox */
     .lightbox {
@@ -240,23 +180,21 @@
       font-family: var(--f-mono);
     }
 
-    .page-bottom { padding-bottom: 120px; }
-
     @media (max-width: 680px) {
       .topbar { padding: 20px 20px; }
       main { padding: 0 20px; }
       .page-title { font-size: 36px; }
-      .page-header-wrap { padding: 64px 0 40px; }
-      .photo-wide, .photo-block, .photo-strip { margin-left: 0; width: 100%; padding-left: 0; }
+      .page-header-wrap { padding: 64px 0 48px; }
+      .moment { margin-bottom: 56px; }
+      .photo-strip img { height: 240px; }
       .stat-row { flex-direction: column; }
       .stat-block { border-right: none; border-bottom: 1px solid var(--border); }
       .stat-block:last-child { border-bottom: none; }
-      .ch-num { font-size: 56px; margin-bottom: -24px; }
     }
     @media (max-width: 480px) {
       .page-title { font-size: 32px; }
-      .photo-grid-2 img { height: 160px; }
-      .page-header-wrap { padding: 56px 0 36px; }
+      .page-header-wrap { padding: 56px 0 40px; }
+      .photo-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -283,121 +221,59 @@
     <p class="page-subtitle">Got in by accident. Stayed because it made me better.</p>
   </div>
 
-  <div class="chapter" id="lottery">
-    <div class="ch-num">01</div>
-    <h2 class="ch-title">The lottery</h2>
-    <p>First year at SUIBE, I tried to sign up for archery as my PE elective. Didn't get it. Got darts instead. For the first few sessions, it was just something to fill a requirement. Then it wasn't.</p>
-  </div>
-
-  <div class="chapter" id="practice">
-    <div class="ch-num">02</div>
-    <h2 class="ch-title">Deliberate practice</h2>
-    <p>I started staying after sessions to practice alone. Watched professional players — studied their stance, their grip, their follow-through. Then went back to the board and tried to fix one thing at a time.</p>
-    <p>What got me was the precision of it. Every throw is fully repeatable. Every inconsistency is yours to own.</p>
-  </div>
-
-  <div class="pull">
-    <p>Every throw is repeatable. Every inconsistency is yours to own.</p>
-  </div>
-
-  <div class="chapter" id="president">
-    <div class="ch-num">03</div>
-    <h2 class="ch-title">An organization in name only</h2>
-    <p>The SUIBE Darts Association had been nationally ranked in 2019. Then COVID hit, the club went quiet for two years, and by the time things reopened the structure had mostly dissolved.</p>
-    <p>Somehow I became president. I didn't inherit an organization so much as a general idea of one — about 50 people with varying levels of commitment, no formal school team, no event calendar. The first thing I did was rebuild the structure. Added a dedicated events department and a PR/outreach department. People thinking about competitions, people thinking about recruitment, separately.</p>
-  </div>
-
-  <div class="chapter" id="building">
-    <div class="ch-num">04</div>
-    <h2 class="ch-title">From 50 to 100, and a real team</h2>
-    <p>Within two years the club grew from about 50 to nearly 100 members. We rebuilt the school team from scratch — proper selection, regular training sessions, a real lineup at competitions.</p>
-    <p>I also wanted us to look like we belonged when we showed up to compete. So I designed new team uniforms: black base, red and white graphics, "SUIBE DARTS" across the front. Both men's and women's cuts.</p>
-  </div>
-
-  <div class="photo-strip">
-    <img loading="lazy" src="darts/微信图片_20260429164731_425_10.jpg" alt="School team in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
-    <img loading="lazy" src="darts/微信图片_20260429164728_424_10.jpg" alt="Club members in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
-    <img loading="lazy" src="darts/微信图片_20260429164744_429_10.jpg" alt="Polaroid shots from club nights" onclick="openLightbox(this.src)">
-  </div>
-  <p class="caption">The team, in the uniforms · scroll →</p>
-
-  <div class="photo-wide" onclick="openLightbox(this.querySelector('img').src)">
-    <img loading="lazy" src="darts/微信图片_20260429164725_423_10.jpg" alt="Large club group photo with SINCE 2018 banner">
-  </div>
-  <p class="caption">SUIBE Darts Association · the full crew</p>
-
-  <div class="chapter" id="competition">
-    <div class="ch-num">05</div>
-    <h2 class="ch-title">The Shanghai University League</h2>
-    <p>The competition I remember most is the Shanghai University Darts League, hosted at ECUPL. Multiple schools, proper format, individual and team events.</p>
-    <p>I won individual first. Our team finished third. I always get nervous on the finishing throws — hands tighten, everything slows down. That match I was nervous. Threw anyway.</p>
-  </div>
-
-  <div class="stat-row">
-    <div class="stat-block">
-      <div class="stat-num">1st</div>
-      <div class="stat-label">Individual</div>
+  <!-- 1. Team uniforms -->
+  <div class="moment">
+    <div class="photo-strip">
+      <img loading="lazy" src="darts/微信图片_20260429164731_425_10.jpg" alt="School team in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164728_424_10.jpg" alt="Club members in SUIBE Darts uniforms" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164744_429_10.jpg" alt="Polaroid shots from club nights" onclick="openLightbox(this.src)">
     </div>
-    <div class="stat-block">
-      <div class="stat-num">3rd</div>
-      <div class="stat-label">Team</div>
+    <p class="cap">Designed the uniforms. Black, red, white. "SUIBE DARTS" so we looked like we belonged. Both cuts, because we had both.</p>
+  </div>
+
+  <!-- 2. Full crew -->
+  <div class="moment">
+    <img class="photo-full" loading="lazy" src="darts/微信图片_20260429164725_423_10.jpg" alt="Large club group photo with SINCE 2018 banner" onclick="openLightbox(this.src)">
+    <p class="cap">The full crew. ~100 members by the time I left. From 50 and no structure.</p>
+  </div>
+
+  <!-- 3. Competition + stats -->
+  <div class="moment">
+    <div class="stat-row">
+      <div class="stat-block"><div class="stat-num">1st</div><div class="stat-label">Individual</div></div>
+      <div class="stat-block"><div class="stat-num">3rd</div><div class="stat-label">Team</div></div>
+      <div class="stat-block"><div class="stat-num">2 yrs</div><div class="stat-label">President</div></div>
     </div>
-    <div class="stat-block">
-      <div class="stat-num">2 yrs</div>
-      <div class="stat-label">President</div>
+    <img class="photo-full" loading="lazy" src="darts/微信图片_20260429164638_420_10.jpg" alt="Shanghai University Darts Exchange Competition" onclick="openLightbox(this.src)">
+    <p class="cap">Shanghai University Darts League. ECUPL. Hands tight on the finishing throw. Threw anyway.</p>
+  </div>
+
+  <!-- 4. Dartslive -->
+  <div class="moment">
+    <div class="photo-strip">
+      <img loading="lazy" src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164812_434_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164842_436_10.jpg" alt="Champion board" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164710_422_10.jpg" alt="Dartslive venue group" onclick="openLightbox(this.src)">
     </div>
+    <p class="cap">Dartslive Shanghai. Real players, way faster on finishes. Round one exit most nights. Didn't matter — we played until they dragged in a folding bed.</p>
   </div>
 
-  <div class="photo-wide" onclick="openLightbox(this.querySelector('img').src)">
-    <img loading="lazy" src="darts/微信图片_20260429164638_420_10.jpg" alt="Shanghai University Darts Exchange Competition">
-  </div>
-  <p class="caption">Shanghai University Darts Exchange</p>
-
-  <div class="chapter" id="beyond">
-    <div class="ch-num">06</div>
-    <h2 class="ch-title">Try to be a real player</h2>
-    <p>Dartslive is a global network of ranked darts machines with organized tournaments. I registered a card and started competing in their Shanghai events. The players there were in a completely different league — regulars who'd been playing for years, way faster on the finishes. I made it past round one maybe once or twice.</p>
-    <p>That was fine. What I actually looked forward to: finishing a tournament at midnight and heading to a nearby noodle place with people I'd just played against. Or the late-night sessions across town at a venue with more machines, better lighting, and — I'm not making this up — a folding bed someone had dragged in because we kept playing until 11pm.</p>
-    <p>The friends from other schools, the club leaders from across Shanghai — those connections came directly from darts. Without it, university would have been a lot smaller.</p>
+  <!-- 5. Late night noodles -->
+  <div class="moment">
+    <img class="photo-full" loading="lazy" src="darts/微信图片_20260429164756_432_10.jpg" alt="Late night noodles after competition" onclick="openLightbox(this.src)">
+    <p class="cap">Midnight noodles with people I'd just played against. This was the point.</p>
   </div>
 
-  <div class="photo-strip">
-    <img loading="lazy" src="darts/微信图片_20260429164750_430_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)">
-    <img loading="lazy" src="darts/微信图片_20260429164751_431_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)">
-    <img loading="lazy" src="darts/微信图片_20260429164801_433_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)">
-    <img loading="lazy" src="darts/微信图片_20260429164812_434_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)">
-    <img loading="lazy" src="darts/微信图片_20260429164842_436_10.jpg" alt="Champion board" onclick="openLightbox(this.src)">
-    <img loading="lazy" src="darts/微信图片_20260429164710_422_10.jpg" alt="Dartslive venue group" onclick="openLightbox(this.src)">
-  </div>
-  <p class="caption">Dartslive tournaments — most of these end late · scroll →</p>
-
-  <div class="pull">
-    <p>The friends from other schools, the club leaders from across Shanghai — those connections came directly from darts. Without it, university would have been a lot smaller.</p>
-  </div>
-
-  <div class="photo-block" onclick="openLightbox(this.querySelector('img').src)">
-    <img loading="lazy" src="darts/微信图片_20260429164756_432_10.jpg" alt="Late night noodles after competition">
-  </div>
-  <p class="caption">The important part: what happens after the competition</p>
-
-  <div class="photo-grid-2">
-    <img loading="lazy" src="darts/微信图片_20260429164857_438_10.jpg" alt="On the way home with a friend" onclick="openLightbox(this.src)">
-    <img loading="lazy" src="darts/微信图片_20260429164833_435_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)">
-  </div>
-
-  <div class="chapter" id="handoff">
-    <div class="ch-num">07</div>
-    <h2 class="ch-title">Finding the next president</h2>
-    <p>Before I left, I needed to find a successor. I wanted someone who genuinely cared about the game, not just the title.</p>
-    <p>I found a junior who'd been playing seriously since high school — technically strong, good at bringing people together. We competed together, trained together, spent enough time in the same venues that it felt like a real handoff rather than an administrative one. I left knowing the club would be fine.</p>
-  </div>
-
-  <div class="tags">
-    <span class="tag">Club President · 2 yrs</span>
-    <span class="tag">~100 members</span>
-    <span class="tag">Shanghai Uni League · 1st (Individual)</span>
-    <span class="tag">Dartslive Shanghai</span>
-    <span class="tag">SUIBE Darts Association · Since 2018</span>
+  <!-- 6. Friends -->
+  <div class="moment">
+    <div class="photo-grid">
+      <img loading="lazy" src="darts/微信图片_20260429164857_438_10.jpg" alt="On the way home with a friend" onclick="openLightbox(this.src)">
+      <img loading="lazy" src="darts/微信图片_20260429164833_435_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)">
+    </div>
+    <p class="cap">The friends, the club leaders from across Shanghai — without darts, university would have been a lot smaller.</p>
   </div>
 
   <div class="page-bottom"></div>
