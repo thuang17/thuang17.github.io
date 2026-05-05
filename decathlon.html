@@ -202,7 +202,8 @@
     .nav-panel a, .nav-panel button {
       display: block; font-family: var(--f-mono); font-size: 12px;
       color: var(--fg-2); text-decoration: none; background: none; border: none;
-      cursor: inherit; padding: 5px 0; transition: color .15s;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 8 8, pointer;
+      padding: 5px 0; transition: color .15s;
       line-height: 1.6; width: 100%; text-align: left;
     }
     .nav-panel a:hover, .nav-panel button:hover { color: var(--accent); }
