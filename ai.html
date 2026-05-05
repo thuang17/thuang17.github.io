@@ -102,10 +102,8 @@
       border-radius: 50%; background: var(--accent);
       transform: translate(-50%, -50%);
       pointer-events: none; z-index: 5;
-      opacity: 0; will-change: top;
-      transition: opacity .15s;
+      will-change: top;
     }
-    .cursor-dot.visible { opacity: 1; }
     .tl-head {
       font-family: var(--f-display); font-size: 18px; font-weight: 400;
       color: var(--fg); margin-bottom: 4px; letter-spacing: -0.01em;
@@ -244,26 +242,18 @@
     el.dataset.theme = next; localStorage.setItem('theme', next);
   }
   (function(){ var t = localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme = t; })();
-  // Cursor-following dot constrained to timeline rail
+  // Dot always visible, follows mouse Y clamped to timeline bounds
   (function() {
     var dot = document.getElementById('cursorDot');
     var timeline = document.querySelector('.timeline');
     if (!dot || !timeline) return;
-    var mouseY = 0, mouseX = 0;
-    document.addEventListener('mousemove', function(e) { mouseX = e.clientX; mouseY = e.clientY; });
+    var mouseY = 0;
+    document.addEventListener('mousemove', function(e) { mouseY = e.clientY; });
     function frame() {
       var r = timeline.getBoundingClientRect();
       var relY = mouseY - r.top;
       var clampedY = Math.max(0, Math.min(relY, r.height));
-      // Show dot when mouse is within ~150px horizontally of the timeline line
-      var lineCenterX = r.left + 5;
-      var distX = Math.abs(mouseX - lineCenterX);
-      if (distX < 150 && mouseY > 0) {
-        dot.style.top = clampedY + 'px';
-        dot.classList.add('visible');
-      } else {
-        dot.classList.remove('visible');
-      }
+      dot.style.top = clampedY + 'px';
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
