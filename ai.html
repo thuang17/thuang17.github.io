@@ -95,13 +95,14 @@
       background: transparent; border: 1px solid var(--border);
     }
 
-    /* Cursor dot — follows mouse on the timeline line */
+    /* Cursor dot — constrained to timeline line */
     .cursor-dot {
-      position: fixed; left: 0; top: 0;
+      position: absolute; left: 5px; top: 0;
       width: 13px; height: 13px;
       border-radius: 50%; background: var(--accent);
-      pointer-events: none; z-index: 55;
-      opacity: 0; will-change: transform;
+      transform: translate(-50%, -50%);
+      pointer-events: none; z-index: 5;
+      opacity: 0; will-change: top;
       transition: opacity .15s;
     }
     .cursor-dot.visible { opacity: 1; }
@@ -206,10 +207,10 @@
       <div class="tl-body">Personal budget tracker. Idea to shipped in two days. Smaller, messier, faster than any BRD I wrote at Decathlon. It made building feel reachable.</div>
     </div>
 
+    <div class="cursor-dot" id="cursorDot"></div>
   </div>
 
-  <div class="cursor-dot" id="cursorDot"></div>
-<div class="page-bottom"></div>
+  <div class="page-bottom"></div>
 
 </main>
 
@@ -243,19 +244,22 @@
     el.dataset.theme = next; localStorage.setItem('theme', next);
   }
   (function(){ var t = localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme = t; })();
-  // Cursor-following dot on timeline (rAF for smoothness)
+  // Cursor-following dot constrained to timeline rail
   (function() {
     var dot = document.getElementById('cursorDot');
     var timeline = document.querySelector('.timeline');
     if (!dot || !timeline) return;
-    var lineX = 0, mouseY = 0, mouseX = 0;
-    function updateLineX() { var r = timeline.getBoundingClientRect(); lineX = r.left + 5; }
-    updateLineX(); window.addEventListener('resize', updateLineX);
+    var mouseY = 0, mouseX = 0;
     document.addEventListener('mousemove', function(e) { mouseX = e.clientX; mouseY = e.clientY; });
     function frame() {
-      var dist = Math.abs(mouseX - lineX);
-      if (dist < 120 && mouseY > 0) {
-        dot.style.transform = 'translate(' + (lineX - 6.5) + 'px, ' + (mouseY - 6.5) + 'px)';
+      var r = timeline.getBoundingClientRect();
+      var relY = mouseY - r.top;
+      var clampedY = Math.max(0, Math.min(relY, r.height));
+      // Show dot when mouse is within ~150px horizontally of the timeline line
+      var lineCenterX = r.left + 5;
+      var distX = Math.abs(mouseX - lineCenterX);
+      if (distX < 150 && mouseY > 0) {
+        dot.style.top = clampedY + 'px';
         dot.classList.add('visible');
       } else {
         dot.classList.remove('visible');
