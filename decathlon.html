@@ -19,7 +19,6 @@
       --fg-3:    #A8A29E;
       --border:  #E7E5E4;
       --accent:  #7C3AED;
-      --accent-soft: rgba(124, 58, 237, 0.4);
       --f-display: 'Geist', sans-serif;
       --f-body:    'Nunito Sans', sans-serif;
       --f-mono:    'JetBrains Mono', monospace;
@@ -33,7 +32,6 @@
       --fg-3:    #57534E;
       --border:  #44403C;
       --accent:  #A78BFA;
-      --accent-soft: rgba(167, 139, 250, 0.4);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -169,18 +167,29 @@
 
     .page-bottom { padding-bottom: 120px; }
 
-    /* Reading spotlight — subtle left border on paragraph at reading position */
-    .body-text, .body-lg {
-      border-left: 1px solid transparent;
-      padding-left: 12px;
-      transition: border-color .5s ease;
+    /* Scroll ruler + reading line */
+    .scroll-ruler {
+      position: fixed; left: 48px; top: 25vh; bottom: 25vh;
+      width: 1px; z-index: 45; pointer-events: none;
     }
-    .body-text.spotlit, .body-lg.spotlit {
-      border-left-color: var(--accent);
-      border-left-width: 1px;
+    .ruler-bar {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+    .ruler-tick {
+      position: absolute; left: -5px; width: 10px; height: 1px;
+      background: var(--fg-3); transition: width .2s, background .2s, opacity .2s;
+    }
+    .scroll-line {
+      position: fixed; left: 48px; width: calc(100vw - 48px); height: 1.5px;
+      background: var(--accent); z-index: 44; pointer-events: none;
+      opacity: 0.55; transition: transform .12s linear; top: 0;
     }
 
     /* Responsive */
+    @media (max-width: 860px) {
+      .scroll-ruler, .scroll-line { display: none; }
+    }
     @media (max-width: 680px) {
       .topbar { padding: 20px 20px; }
       main { padding: 0 20px; }
@@ -215,6 +224,11 @@
     </button>
   </div>
 </div>
+
+<div class="scroll-ruler" aria-hidden="true">
+  <div class="ruler-bar"></div>
+</div>
+<div class="scroll-line" aria-hidden="true"></div>
 
 <main class="page-enter">
 
@@ -329,24 +343,53 @@
     });
   }
 
-  // Reading spotlight — highlight paragraph nearest viewport center
+  // Scroll ruler + reading line with wave effect
   (function() {
-    var paras = document.querySelectorAll('.body-text, .body-lg');
-    if (!paras.length) return;
+    var ruler = document.querySelector('.scroll-ruler');
+    var line = document.querySelector('.scroll-line');
+    if (!ruler || !line) return;
+
+    // Create 20 tick marks dynamically
+    var NUM_TICKS = 40;
+    var WAVE_RADIUS = 6;
+    var BASE_W = 10;
+    var PEAK_W = 28;
+    var ticks = [];
+    for (var i = 0; i < NUM_TICKS; i++) {
+      var t = document.createElement('div');
+      t.className = 'ruler-tick';
+      t.style.top = (i / (NUM_TICKS - 1) * 100) + '%';
+      ruler.appendChild(t);
+      ticks.push(t);
+    }
 
     function update() {
-      var vh = window.innerHeight;
-      var centerY = vh / 2;
-      var best = null, bestDist = Infinity;
-      paras.forEach(function(p) {
-        var rect = p.getBoundingClientRect();
-        var mid = rect.top + rect.height / 2;
-        var dist = Math.abs(mid - centerY);
-        if (dist < bestDist) { bestDist = dist; best = p; }
-      });
-      paras.forEach(function(p) {
-        if (p === best) p.classList.add('spotlit');
-        else p.classList.remove('spotlit');
+      var scrollTop = window.scrollY;
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      var progress = docH > 0 ? scrollTop / docH : 0;
+
+      // Line position: map scroll progress onto ruler area
+      var rulerRect = ruler.getBoundingClientRect();
+      var rulerTop = rulerRect.top;
+      var rulerH = rulerRect.height;
+      var targetY = rulerTop + (progress * rulerH);
+      line.style.transform = 'translateY(' + targetY + 'px)';
+
+      // Wave: active position as float index
+      var activeFloat = progress * (NUM_TICKS - 1);
+      ticks.forEach(function(t, i) {
+        var dist = Math.abs(i - activeFloat);
+        if (dist <= WAVE_RADIUS) {
+          var factor = 1 - (dist / (WAVE_RADIUS + 1));
+          var w = BASE_W + factor * (PEAK_W - BASE_W);
+          t.style.width = w + 'px';
+          t.style.background = 'var(--accent)';
+          t.style.opacity = 0.4 + factor * 0.6;
+        } else {
+          t.style.width = BASE_W + 'px';
+          t.style.background = 'var(--fg-3)';
+          t.style.opacity = '1';
+        }
       });
     }
 
