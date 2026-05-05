@@ -5,280 +5,265 @@
   <link rel="icon" type="image/png" href="favicon.png?v=2">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Explorer — Trevor Huang</title>
+  <title>Making — Trevor Huang</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})()</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:#FAFAF8; --bg-sub:#F0EEE8; --bg-foot:#E8E6DE;
-      --fg:#1C1917; --fg-2:#57534E; --fg-3:#A8A29E;
-      --border:#E7E5E4; --accent:#7C3AED;
-      --f-display:'Montserrat',sans-serif; --f-body:'Nunito Sans',sans-serif; --f-mono:'JetBrains Mono',monospace;
+      --bg:      #E8E8E8;
+      --fg:      #1C1917;
+      --fg-2:    #57534E;
+      --fg-3:    #A8A29E;
+      --border:  #E7E5E4;
+      --accent:  #7C3AED;
+      --f-display: 'Geist', sans-serif;
+      --f-body:    'Nunito Sans', sans-serif;
+      --f-mono:    'JetBrains Mono', monospace;
     }
     [data-theme="dark"] {
-      --bg:#1C1917; --bg-sub:#292524; --bg-foot:#292524;
-      --fg:#F5F5F4; --fg-2:#A8A29E; --fg-3:#57534E;
-      --border:#44403C; --accent:#A78BFA;
+      --bg:      #18181B;
+      --fg:      #FAFAFA;
+      --fg-2:    #A8A29E;
+      --fg-3:    #57534E;
+      --border:  #44403C;
+      --accent:  #A78BFA;
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{font-family:var(--f-body);background:var(--bg);color:var(--fg);line-height:1.75;transition:background .3s,color .3s}
-    body::before{
-      content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
-      background:
-        radial-gradient(circle at 76% 18%, rgba(124,58,237,.13), transparent 28%),
-        linear-gradient(to bottom, rgba(124,58,237,.035), transparent 520px);
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--f-body); background: var(--bg); color: var(--fg);
+      line-height: 1.75; transition: background .3s, color .3s;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='7' cy='7' r='7' fill='%23E07B5A'/%3E%3C/svg%3E") 7 7, auto;
+    }
+    a, button, [role="button"] {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 8 8, pointer;
     }
 
-    nav{position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 92%,transparent);border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}
-    .nav-inner{max-width:1160px;margin:0 auto;padding:0 48px;height:56px;display:flex;align-items:center;gap:8px}
-    .nav-back{display:flex;align-items:center;gap:5px;font-family:var(--f-mono);font-size:12px;color:var(--fg-2);text-decoration:none;transition:color .2s}
-    .nav-back:hover,.lang-link:hover,.theme-btn:hover{color:var(--accent)}
-    .sep,.nav-crumb,.lang-link{font-family:var(--f-mono);font-size:12px;color:var(--fg-3)}
-    .lang-link{text-decoration:none;transition:color .2s}
-    .nav-right{margin-left:auto;display:flex;align-items:center;gap:16px}
-    .theme-btn{background:none;border:0;cursor:pointer;color:var(--fg-2);padding:4px;display:flex;align-items:center;transition:color .2s}
-    #icon-moon{display:none}[data-theme="dark"] #icon-sun{display:none}[data-theme="dark"] #icon-moon{display:block}
-
-    .hero{border-bottom:1px solid var(--border);padding:70px 48px 64px;overflow:hidden}
-    .hero-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:64px;align-items:center}
-    .eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
-    .hero h1{font-family:var(--f-display);font-size:clamp(42px,7vw,78px);font-weight:800;line-height:.95;letter-spacing:-.02em;margin-bottom:22px}
-    .hero-copy{max-width:600px;color:var(--fg-2);font-size:17px;font-weight:300;line-height:1.75}
-    .hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
-    .chip{font-family:var(--f-mono);font-size:11px;color:var(--accent);background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.2);border-radius:999px;padding:4px 11px}
-
-    .console{position:relative;border:1px solid var(--border);border-radius:18px;background:color-mix(in srgb,var(--bg-sub) 74%,transparent);padding:18px;box-shadow:0 24px 70px rgba(28,25,23,.08)}
-    .console::before{content:"";position:absolute;inset:-50px -36px;z-index:-1;background:radial-gradient(circle,rgba(124,58,237,.16),transparent 60%)}
-    .console-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:16px}
-    .dots{display:flex;gap:6px}.dots span{width:7px;height:7px;border-radius:50%;background:var(--fg-3)}
-    .console-title{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);letter-spacing:.08em;text-transform:uppercase}
-    .flow{display:grid;gap:10px}
-    .flow-row{display:grid;grid-template-columns:82px 1fr;gap:12px;align-items:center}
-    .flow-key{font-family:var(--f-mono);font-size:10px;color:var(--fg-3);text-transform:uppercase}
-    .flow-card{border:1px solid var(--border);border-radius:10px;background:var(--bg);padding:12px 14px;color:var(--fg);font-size:14px}
-    .cursor{display:inline-block;width:7px;height:14px;background:var(--accent);vertical-align:-2px;margin-left:5px;animation:blink 1.1s steps(2,start) infinite}
-    @keyframes blink{50%{opacity:0}}
-
-    .wrap{max-width:1160px;margin:0 auto;padding:0 48px}
-    .section-intro{padding:70px 0 34px;display:grid;grid-template-columns:260px 1fr;gap:56px;border-bottom:1px solid var(--border)}
-    .section-kicker{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3)}
-    .section-intro p{font-family:var(--f-display);font-size:clamp(24px,3.4vw,40px);font-weight:800;line-height:1.18;letter-spacing:-.01em;color:var(--fg)}
-    .section-intro em{color:var(--accent);font-style:normal}
-
-    .story-grid{display:grid;grid-template-columns:220px 1fr;gap:56px;padding:54px 0 72px}
-    .story-rail{position:sticky;top:92px;align-self:start}
-    .rail-label{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3);margin-bottom:12px}
-    .rail-list{list-style:none}
-    .rail-list a{display:block;font-family:var(--f-mono);font-size:12px;color:var(--fg-3);text-decoration:none;border-left:2px solid transparent;padding:5px 0 5px 12px;transition:color .2s,border-color .2s}
-    .rail-list a:hover,.rail-list a.active{color:var(--accent);border-left-color:var(--accent)}
-
-    .module{scroll-margin-top:88px;display:grid;grid-template-columns:92px 1fr;gap:28px;padding:34px 0;border-bottom:1px solid var(--border)}
-    .module-num{font-family:var(--f-display);font-size:56px;font-weight:800;line-height:1;color:var(--border);letter-spacing:-.05em}
-    .module h2{font-family:var(--f-display);font-size:24px;font-weight:800;line-height:1.2;margin-bottom:14px}
-    .module p{color:var(--fg-2);font-size:15.5px;margin-bottom:13px}
-    .module p:last-child{margin-bottom:0}
-    .artifact{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
-    .tool{font-family:var(--f-mono);font-size:11px;color:var(--accent);background:var(--bg-sub);border:1px solid var(--border);border-radius:999px;padding:3px 10px}
-    .quote{margin:44px 0;padding:34px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-    .quote p{font-family:var(--f-display);font-size:clamp(22px,3vw,34px);font-weight:800;line-height:1.25;color:var(--fg)}
-    .quote span{display:block;margin-top:12px;font-family:var(--f-mono);font-size:11px;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em}
-
-    .principles{padding:0 0 82px}
-    .principles-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:22px}
-    .principles h2{font-family:var(--f-display);font-size:24px;font-weight:800}
-    .principles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .principle{border:1px solid var(--border);border-radius:12px;background:var(--bg-sub);padding:20px}
-    .principle b{display:block;font-family:var(--f-display);font-size:16px;margin-bottom:8px}
-    .principle p{font-size:14.5px;color:var(--fg-2);line-height:1.65}
-
-    .next-story{display:flex;align-items:center;justify-content:space-between;padding:24px 28px;background:var(--bg-sub);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--fg);margin:0 0 86px;transition:border-color .2s}
-    .next-story:hover{border-color:var(--accent)}
-    .next-label{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
-    .next-title{font-family:var(--f-display);font-size:17px;font-weight:700}.next-arrow{color:var(--accent);flex-shrink:0}
-
-    footer{background:var(--bg-foot);border-top:1px solid var(--border);padding:28px 48px}
-    .footer-inner{max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-    .footer-copy,.footer-back{font-family:var(--f-mono);font-size:11px;color:var(--fg-3)}
-    .footer-back{font-size:12px;text-decoration:none;transition:color .2s}.footer-back:hover{color:var(--accent)}
-    .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}.vis{opacity:1;transform:none}
-
-    @media(max-width:900px){
-      .hero-inner,.section-intro,.story-grid{grid-template-columns:1fr}
-      .console{max-width:520px}.story-rail{display:none}.principles-grid{grid-template-columns:1fr}
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 32px; pointer-events: none;
     }
-    @media(max-width:640px){
-      .nav-inner,.hero,.wrap{padding-left:20px;padding-right:20px}
-      .hero{padding-top:44px}.module{grid-template-columns:1fr;gap:12px}.module-num{font-size:42px}
-      .section-intro{padding-top:52px}.footer-inner{flex-direction:column;gap:12px;text-align:center}
+    .topbar > * { pointer-events: auto; }
+    .topbar-nav {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-2); background: none; border: none; cursor: inherit;
+      display: flex; align-items: center; gap: 5px; transition: color .2s;
     }
-    @media(prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto}.reveal{opacity:1!important;transform:none!important;transition:none!important}.cursor{animation:none}
+    .topbar-nav:hover { color: var(--accent); }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .lang-link {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-3); text-decoration: none; transition: color .2s;
+    }
+    .lang-link:hover { color: var(--accent); }
+    .theme-btn {
+      background: none; border: none; cursor: inherit;
+      color: var(--fg-2); padding: 4px; display: flex; align-items: center; transition: color .2s;
+    }
+    .theme-btn:hover { color: var(--accent); }
+    #icon-moon { display: none; }
+    [data-theme="dark"] #icon-sun  { display: none; }
+    [data-theme="dark"] #icon-moon { display: block; }
+
+    main { max-width: 680px; margin: 0 auto; padding: 0 32px; }
+
+    .page-header-wrap { padding: 80px 0 64px; }
+    .page-title {
+      font-family: var(--f-display); font-size: 48px; font-weight: 400;
+      line-height: 1.1; letter-spacing: -0.02em; color: var(--fg);
+    }
+    .page-bottom { padding-bottom: 120px; }
+
+    /* Timeline */
+    .timeline {
+      position: relative; padding-left: 36px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 5px; top: 0; bottom: 0;
+      width: 1.5px; background: var(--fg-3); opacity: 0.5;
+    }
+    .tl-item {
+      position: relative; margin-bottom: 56px;
+    }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-dot {
+      position: absolute; left: -36px; top: 6px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: transparent; border: 1px solid var(--border);
+    }
+
+    /* Cursor dot — constrained to timeline line */
+    .cursor-dot {
+      position: absolute; left: 5px; top: 0;
+      width: 13px; height: 13px;
+      border-radius: 50%; background: var(--accent);
+      transform: translate(-50%, -50%);
+      pointer-events: none; z-index: 5;
+      will-change: top;
+    }
+    .tl-head {
+      font-family: var(--f-display); font-size: 18px; font-weight: 400;
+      color: var(--fg); margin-bottom: 4px; letter-spacing: -0.01em;
+      line-height: 1.4;
+    }
+    .tl-body {
+      font-family: var(--f-body); font-size: 15px; font-weight: 400;
+      color: var(--fg-2); line-height: 1.7;
+    }
+
+    .nav-overlay { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,0.2); display: none; align-items: flex-start; justify-content: flex-start; padding: 80px 32px; }
+    .nav-overlay.open { display: flex; }
+    .nav-panel { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 28px 32px; min-width: 220px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+    .nav-panel a, .nav-panel button { display: block; font-family: var(--f-mono); font-size: 12px; color: var(--fg-2); text-decoration: none; background: none; border: none; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 8 8, pointer; padding: 5px 0; transition: color .15s; line-height: 1.6; width: 100%; text-align: left; }
+    .nav-panel a:hover, .nav-panel button:hover { color: var(--accent); }
+    .nav-panel .nav-section { font-family: var(--f-mono); font-size: 12px; color: var(--fg); padding: 8px 0 4px; }
+    .nav-panel .nav-sub { padding-left: 14px; }
+    .nav-panel .nav-current { color: var(--accent); }
+    .nav-panel hr { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+    .info-overlay { position: fixed; inset: 0; z-index: 70; background: color-mix(in srgb, var(--bg) 50%, transparent); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.28s ease; }
+    .info-overlay.open { opacity: 1; pointer-events: auto; }
+    .info-sheet { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 60px 72px; position: relative; max-width: 1060px; width: calc(100% - 48px); display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 44px 56px; box-shadow: 0 24px 72px rgba(28, 25, 23, 0.10); }
+    [data-theme="dark"] .info-sheet { box-shadow: 0 24px 72px rgba(0, 0, 0, 0.30); }
+    .info-col-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 12px; }
+    .info-col-body { font-size: 17px; color: var(--fg-2); line-height: 1.7; }
+    .info-col-body a { color: var(--fg-2); text-decoration: none; }
+    .info-col-body a:hover { color: var(--accent); }
+    .info-close { position: absolute; top: 16px; right: 20px; background: none; border: 0; cursor: inherit; color: var(--fg-3); font-size: 20px; padding: 6px 12px; }
+
+    @media (max-width: 680px) {
+      .topbar { padding: 20px 20px; }
+      main { padding: 0 20px; }
+      .page-title { font-size: 36px; }
+      .page-header-wrap { padding: 64px 0 48px; }
+      .timeline { padding-left: 28px; }
+      .tl-dot { left: -28px; width: 9px; height: 9px; }
+      .tl-item { margin-bottom: 40px; }
+      .info-sheet { grid-template-columns: 1fr; gap: 20px; padding: 28px 24px; }
+    }
+    @media (max-width: 480px) {
+      .page-title { font-size: 32px; }
     }
   </style>
 </head>
 <body>
-<nav>
-  <div class="nav-inner">
-    <a href="index.html" class="nav-back">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      Trevor Huang
-    </a>
-    <span class="sep">/</span><span class="nav-crumb">AI Explorer</span>
-    <div class="nav-right">
-      <a href="zh-ai.html" class="lang-link">中文</a>
-      <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
-        <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-      </button>
-    </div>
+
+<div class="topbar">
+  <button class="topbar-nav" onclick="toggleNav()" aria-label="Open navigation">
+    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <line x1="0" y1="2" x2="14" y2="2"/>
+      <line x1="0" y1="7" x2="14" y2="7"/>
+      <line x1="4" y1="12" x2="14" y2="12"/>
+    </svg>
+  </button>
+  <div class="topbar-right">
+    <a href="zh-ai.html" class="lang-link">中文</a>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
   </div>
-</nav>
+</div>
 
-<header class="hero">
-  <div class="hero-inner">
-    <div class="reveal">
-      <p class="eyebrow">Outside the office / AI Explorer</p>
-      <h1>Learning to build before calling myself technical.</h1>
-      <p class="hero-copy">I did not come from engineering. AI started as a workaround, then became a way to think, organize context, and ship small real products without waiting for permission from my own technical insecurity.</p>
-      <div class="hero-chips">
-        <span class="chip">Claude Code</span><span class="chip">NotebookLM</span><span class="chip">Obsidian</span><span class="chip">Vibe Coding</span>
-      </div>
-    </div>
-    <div class="console reveal" aria-label="AI workflow diagram">
-      <div class="console-top"><div class="dots"><span></span><span></span><span></span></div><p class="console-title">personal stack</p></div>
-      <div class="flow">
-        <div class="flow-row"><span class="flow-key">input</span><div class="flow-card">messy notes, PDFs, product ideas</div></div>
-        <div class="flow-row"><span class="flow-key">context</span><div class="flow-card">Projects, NotebookLM, Obsidian</div></div>
-        <div class="flow-row"><span class="flow-key">loop</span><div class="flow-card">ask, test, correct, ship<span class="cursor"></span></div></div>
-        <div class="flow-row"><span class="flow-key">output</span><div class="flow-card">budget tracker, this website, a better system</div></div>
-      </div>
-    </div>
-  </div>
-</header>
+<main>
 
-<main class="wrap">
-  <section class="section-intro reveal">
-    <p class="section-kicker">The shift</p>
-    <p>AI stopped being a faster search box when I realized it could hold <em>context</em>, not just produce answers.</p>
-  </section>
-
-  <div class="story-grid">
-    <aside class="story-rail">
-      <p class="rail-label">Story map</p>
-      <ul class="rail-list">
-        <li><a href="#access">Access</a></li>
-        <li><a href="#sources">Sources</a></li>
-        <li><a href="#prompts">Prompts</a></li>
-        <li><a href="#claude">Claude</a></li>
-        <li><a href="#build">First build</a></li>
-        <li><a href="#now">Now</a></li>
-      </ul>
-    </aside>
-
-    <article>
-      <section class="module reveal" id="access">
-        <div class="module-num">01</div>
-        <div>
-          <h2>It started with access, not strategy.</h2>
-          <p>First heard about ChatGPT and needed a workaround just to register: IP blocks, account restrictions, the full mainland China experience. Some CS classmates helped me get through the setup.</p>
-          <p>Once I had access, I used it like a smarter search engine. Essays, questions, quick explanations. Useful, but I did not yet see it as anything more serious than that.</p>
-          <div class="artifact"><span class="tool">ChatGPT</span><span class="tool">Search replacement</span></div>
-        </div>
-      </section>
-
-      <section class="module reveal" id="sources">
-        <div class="module-num">02</div>
-        <div>
-          <h2>NotebookLM made the system visible.</h2>
-          <p>During my Decathlon internship, I ended up with a free year of Gemini Pro and started using it for work: drafting, summarizing, and moving between Chinese and English quickly.</p>
-          <p>NotebookLM changed the mental model. Feed it PDFs, documents, and YouTube links, then make it answer from those sources. For research and report writing, that felt different from a chatbot. It was closer to a working memory.</p>
-          <div class="artifact"><span class="tool">Gemini Pro</span><span class="tool">NotebookLM</span><span class="tool">Source-grounded work</span></div>
-        </div>
-      </section>
-
-      <div class="quote reveal">
-        <p>"This was the first time AI felt like a system rather than a feature."</p>
-        <span>Turning point</span>
-      </div>
-
-      <section class="module reveal" id="prompts">
-        <div class="module-num">03</div>
-        <div>
-          <h2>I started treating prompts as thinking tools.</h2>
-          <p>At Sydney, I became more deliberate with ChatGPT. Not just asking for outputs, but studying what changed the quality of the response: context, constraints, examples, tone, and the order of questions.</p>
-          <p>Most people skip that layer. I found it worth learning because the better I got at framing the problem, the more useful the tool became.</p>
-          <div class="artifact"><span class="tool">Prompt engineering</span><span class="tool">Context design</span></div>
-        </div>
-      </section>
-
-      <section class="module reveal" id="claude">
-        <div class="module-num">04</div>
-        <div>
-          <h2>Claude moved it from conversation to execution.</h2>
-          <p>I had heard Claude Code was popular with developers, but assumed it was not for me. I do not write code. I started with Claude as a normal chat assistant, then explored Projects and long-running context.</p>
-          <p>Claude Code was the thing I kept avoiding. Once I used it, I realized the barrier was not "I cannot code." The real barrier was whether I could describe the outcome clearly, review what changed, and keep iterating.</p>
-          <div class="artifact"><span class="tool">Claude</span><span class="tool">Claude Code</span><span class="tool">Projects</span></div>
-        </div>
-      </section>
-
-      <section class="module reveal" id="build">
-        <div class="module-num">05</div>
-        <div>
-          <h2>The first product changed the question.</h2>
-          <p>My first build was a personal budget tracker. I wanted an app. Claude pushed me toward a web version: simpler stack, deployable immediately, usable on any device.</p>
-          <p>I bought an Alibaba Cloud domain and deployed it. The interface was rough. I did not care. What mattered was that I had gone from idea to shipped product in a weekend, on my own.</p>
-          <p>At Decathlon, I had seen product work as BRD, PRD, dev sprints, testing, UAT, and stakeholder sign-off. This was smaller, messier, and much faster. It made building feel reachable.</p>
-          <div class="artifact"><span class="tool">Vibe coding</span><span class="tool">Alibaba Cloud</span><span class="tool">Weekend build</span></div>
-        </div>
-      </section>
-
-      <div class="quote reveal">
-        <p>"I am not a coder. But 'I cannot build things' is no longer how I think."</p>
-        <span>What changed</span>
-      </div>
-
-      <section class="module reveal" id="now">
-        <div class="module-num">06</div>
-        <div>
-          <h2>Now I am building a personal operating system.</h2>
-          <p>This website is the second thing I have built with Claude Code. Same principle: describe the intent, inspect the result, correct the parts that feel wrong, and deploy.</p>
-          <p>I am also building a personal knowledge base in Obsidian because too many useful observations have disappeared after I failed to capture them. The goal is not to become a software engineer overnight. It is to understand these tools deeply enough that the technical side does not stop a good idea before it starts.</p>
-          <div class="artifact"><span class="tool">Personal website</span><span class="tool">Obsidian</span><span class="tool">Knowledge base</span></div>
-        </div>
-      </section>
-    </article>
+  <div class="page-header-wrap">
+    <h1 class="page-title">Making</h1>
   </div>
 
-  <section class="principles reveal">
-    <div class="principles-head">
-      <p class="section-kicker">Operating principles</p>
-      <h2>How I use AI now</h2>
-    </div>
-    <div class="principles-grid">
-      <div class="principle"><b>Context first</b><p>I try to feed the model the right source material before asking for output. Bad context makes confident noise.</p></div>
-      <div class="principle"><b>Iterate in public</b><p>I do not expect a perfect first answer. I inspect, correct, and keep the loop tight until the thing works.</p></div>
-      <div class="principle"><b>Ship small</b><p>The point is not to make a grand product immediately. It is to keep converting vague ideas into real artifacts.</p></div>
-    </div>
-  </section>
+  <div class="timeline">
 
-  <a href="darts.html" class="next-story reveal">
-    <div><p class="next-label">Other story</p><p class="next-title">Darts</p></div>
-    <svg class="next-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-  </a>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-head">ChatGPT as a workaround</div>
+      <div class="tl-body">IP blocks, account restrictions, the full mainland China experience. Used it like a smarter search engine. Useful, nothing more.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-head">NotebookLM made the system visible</div>
+      <div class="tl-body">Feed it PDFs and documents, make it answer from sources. For research and report writing, that felt closer to working memory than a chatbot.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-head">Prompts as thinking tools</div>
+      <div class="tl-body">Context, constraints, examples, tone, order of questions. Most people skip that layer. I found it worth learning.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-head">Claude moved it to execution</div>
+      <div class="tl-body">The barrier wasn't "I can't code." It was whether I could describe the outcome clearly, review what changed, and keep iterating.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-head">First product in a weekend</div>
+      <div class="tl-body">Personal budget tracker. Idea to shipped in two days. Smaller, messier, faster than any BRD I wrote at Decathlon. It made building feel reachable.</div>
+    </div>
+
+    <div class="cursor-dot" id="cursorDot"></div>
+  </div>
+
+  <div class="page-bottom"></div>
+
 </main>
 
-<footer><div class="footer-inner"><span class="footer-copy">© 2026 Trevor Huang</span><a href="index.html" class="footer-back">← Back to home</a></div></footer>
+<div class="nav-overlay" id="navOverlay" onclick="closeNav(event)">
+  <div class="nav-panel" onclick="event.stopPropagation()">
+    <a href="index.html" class="nav-section" style="padding-top:0">Homepage</a>
+    <a href="work.html" class="nav-section">Work</a>
+    <a href="decathlon.html" class="nav-sub">Decathlon</a>
+    <a href="mayora.html" class="nav-sub">Mayora</a>
+    <a class="nav-sub" style="color:var(--fg-3);cursor:default;pointer-events:none;">SynTao</a>
+    <a class="nav-sub" style="color:var(--fg-3);cursor:default;pointer-events:none;">Tianfeng Securities</a>
+    <hr>
+    <a href="ai.html" class="nav-section nav-current">Making</a>
+    <a href="stories.html" class="nav-section">Stories</a>
+    <button onclick="toggleInfo()" class="nav-section" style="border:none;background:none;cursor:inherit;text-align:left;width:100%;">Info</button>
+  </div>
+</div>
+<div class="info-overlay" id="infoOverlay" aria-hidden="true" onclick="closeInfo(event)">
+  <div class="info-sheet" onclick="event.stopPropagation()">
+    <button class="info-close" onclick="closeInfo()" aria-label="Close info">&times;</button>
+    <div><div class="info-col-label">Education</div><div class="info-col-body"><strong>University of Sydney</strong><br><span style="color:var(--fg-3);font-size:14px">2025–2027 · Master of Project Management</span><br><br><strong>Shanghai University of International Business and Trade</strong><br><span style="color:var(--fg-3);font-size:14px">2020–2024 · Bachelor of International Economics and Trade</span></div></div>
+    <div><div class="info-col-label">Contact &amp; Social</div><div class="info-col-body"><a href="mailto:trevor.tw.huang@outlook.com">trevor.tw.huang@outlook.com</a><br><a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener">LinkedIn</a> &nbsp;·&nbsp; <a href="https://www.instagram.com/t.huang17/" target="_blank" rel="noopener">Instagram</a><br><a href="https://x.com/H3art128943" target="_blank" rel="noopener">X</a> &nbsp;·&nbsp; <a href="https://www.xiaohongshu.com/user/profile/6150a3e2000000001f03501f" target="_blank" rel="noopener">Xiaohongshu</a></div></div>
+    <div style="grid-column:1/-1"><div class="info-col-label">Toolkit</div><div class="info-col-body">Python · SQL · Tableau · Excel · Jira · Feishu · MS Project<br>Agile Methodologies<br><br><span style="color:var(--fg-3);font-size:13px">Chinese — Native · English — Professional</span></div></div>
+  </div>
+</div>
 
 <script>
-  function toggleTheme(){const el=document.documentElement;const next=el.dataset.theme==='dark'?'light':'dark';el.dataset.theme=next;localStorage.setItem('theme',next);}
-  const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}})},{threshold:.08});
-  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-  const sections=document.querySelectorAll('.module');const links=document.querySelectorAll('.rail-list a');
-  const tocObs=new IntersectionObserver((items)=>{items.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.remove('active'));const a=document.querySelector(`.rail-list a[href="#${e.target.id}"]`);if(a)a.classList.add('active');}})},{rootMargin:'-20% 0px -70% 0px'});
-  sections.forEach(s=>tocObs.observe(s));
+  function toggleTheme() {
+    var el = document.documentElement;
+    var next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+    el.dataset.theme = next; localStorage.setItem('theme', next);
+  }
+  (function(){ var t = localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme = t; })();
+  // Dot always visible, follows mouse Y clamped to timeline bounds
+  (function() {
+    var dot = document.getElementById('cursorDot');
+    var timeline = document.querySelector('.timeline');
+    if (!dot || !timeline) return;
+    var mouseY = 0;
+    document.addEventListener('mousemove', function(e) { mouseY = e.clientY; });
+    function frame() {
+      var r = timeline.getBoundingClientRect();
+      var relY = mouseY - r.top;
+      var clampedY = Math.max(0, Math.min(relY, r.height));
+      dot.style.top = clampedY + 'px';
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  function toggleNav() { document.getElementById('navOverlay').classList.toggle('open'); }
+  function closeNav(e) { if (!e || e.target === document.getElementById('navOverlay')) { document.getElementById('navOverlay').classList.remove('open'); } }
+  function toggleInfo() { document.getElementById('navOverlay').classList.remove('open'); document.getElementById('infoOverlay').classList.toggle('open'); }
+  function closeInfo(e) { if (!e || e.target === document.getElementById('infoOverlay')) { document.getElementById('infoOverlay').classList.remove('open'); } }
 </script>
 </body>
 </html>

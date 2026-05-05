@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="favicon.png?v=2">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Work — Trevor Huang</title>
-  <meta name="description" content="Trevor Huang 工作经历与项目。" />
+  <title>Stories — Trevor Huang</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@700;800&family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,500;6..12,600&family=JetBrains+Mono:wght@300;400&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@700;800&family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,500;6..12,600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
   <script>(function(){var t=localStorage.getItem('theme')||(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.dataset.theme=t;})()</script>
 
   <style>
@@ -27,7 +25,7 @@
       --tag-bg:    rgba(124,58,237,0.07);
       --tag-bd:    rgba(124,58,237,0.20);
 
-      --f-body:    'Nunito Sans', 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
+      --f-body:    'Nunito Sans', 'Helvetica Neue', Arial, sans-serif;
       --f-display: 'Montserrat', sans-serif;
       --f-mono:    'JetBrains Mono', ui-monospace, 'Courier New', monospace;
       --t:         0.16s ease;
@@ -114,7 +112,7 @@
     }
     .entry-row .row-unit.revealed{opacity:1;transform:translateY(0)}
     .entry-row .name{
-      font-family: Geist, 'Noto Sans SC', sans-serif; font-size:15px; font-weight:500;
+      font-family: Geist, sans-serif; font-size:15px; font-weight:500;
       color:var(--fg); white-space:nowrap; flex-shrink:0;
       text-decoration:none;
       transition:color var(--t);
@@ -154,10 +152,10 @@
 
   <!-- ═══════════ TOPBAR ═══════════ -->
   <header class="topbar">
-    <a href="zh.html" class="back-link">首页</a>
+    <a href="index.html" class="back-link">Home</a>
     <div class="topbar-right">
-      <a href="work.html" class="lang-link">EN</a>
-      <button class="tbtn" id="tbtn" aria-label="切换主题">
+      <a href="zh-stories.html" class="lang-link">中文</a>
+      <button class="tbtn" id="tbtn" aria-label="Toggle theme">
         <svg id="i-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         <svg id="i-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
@@ -171,33 +169,11 @@
 
     <div class="entry-row">
       <div class="row-unit">
-        <a class="name" href="decathlon.html">迪卡侬</a>
+        <a class="name" href="darts.html">Darts</a>
         <div class="dot-leader"></div>
-        <span class="year">2025–2026</span>
+        <span class="year">2021–Now</span>
       </div>
     </div>
-    <div class="entry-row">
-      <div class="row-unit">
-        <a class="name" href="mayora.html">迈大食品</a>
-        <div class="dot-leader"></div>
-        <span class="year">2024–2025</span>
-      </div>
-    </div>
-    <div class="entry-row">
-      <div class="row-unit">
-        <span class="name">商道纵横</span>
-        <div class="dot-leader"></div>
-        <span class="year">2024</span>
-      </div>
-    </div>
-    <div class="entry-row">
-      <div class="row-unit">
-        <span class="name">天风证券</span>
-        <div class="dot-leader"></div>
-        <span class="year">2022</span>
-      </div>
-    </div>
-
 
   </div>
 </main>
@@ -230,8 +206,6 @@
 
   function playEntry() {
     const units = document.querySelectorAll('.entry-row .row-unit');
-    const dotLeaders = document.querySelectorAll('.entry-row .dot-leader');
-
     units.forEach((unit, i) => {
       setTimeout(() => {
         unit.classList.add('revealed');

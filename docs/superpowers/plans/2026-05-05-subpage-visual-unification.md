@@ -1,9 +1,45 @@
+# Sub-page Visual Unification — Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Rewrite decathlon.html as an editorial longform page matching the new design language, establishing the template for all subsequent sub-page rewrites.
+
+**Architecture:** Single static HTML file, no build step. Inline CSS with shared design tokens (from work.html). Fixed topbar matching work.html layout. Single-column centered content (680px). Geist + Nunito Sans + JetBrains Mono fonts. Coral custom cursor. Dark mode via localStorage + data-theme.
+
+**Tech Stack:** Pure HTML + CSS + vanilla JS. Google Fonts. No Tailwind, no framework.
+
+---
+
+## File Structure
+
+| File | Action | Purpose |
+|------|--------|---------|
+| `decathlon.html` | Rewrite | Full editorial longform page |
+| `work.html` | Modify (later phase) | Remove Projects rows |
+| `zh-work.html` | Modify (later phase) | Remove Projects rows |
+| `mayora.html` | Rewrite (later phase) | Same editorial pattern |
+| `ai.html` | Rewrite (later phase) | Same editorial pattern |
+| `darts.html` | Rewrite (later phase) | Same editorial pattern |
+
+---
+
+## Phase 1: decathlon.html Rewrite
+
+### Task 1: Write the complete CSS
+
+**Files:**
+- Create: `decathlon.html` (entire file)
+
+- [ ] **Step 1: Write the full decathlon.html**
+
+Write the complete file at `/Users/h3art/Documents/github/personal-website/.claude/worktrees/bold-mahavira-f48b76/decathlon.html`:
+
+```html
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="favicon.png?v=2">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Decathlon — Trevor Huang</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})()</script>
@@ -53,12 +89,12 @@
       pointer-events: none;
     }
     .topbar > * { pointer-events: auto; }
-    .topbar-nav {
+    .topbar-back {
       font-family: var(--f-mono); font-size: 12px;
-      color: var(--fg-2); background: none; border: none; cursor: inherit;
-      display: flex; align-items: center; gap: 5px; transition: color .2s;
+      color: var(--fg-2); text-decoration: none; transition: color .2s;
+      display: flex; align-items: center; gap: 5px;
     }
-    .topbar-nav:hover { color: var(--accent); }
+    .topbar-back:hover { color: var(--accent); }
     .topbar-right { display: flex; align-items: center; gap: 16px; }
     .lang-link {
       font-family: var(--f-mono); font-size: 12px;
@@ -136,7 +172,7 @@
 
     .pull-quote {
       border-left: 1px solid var(--accent);
-      padding-left: 20px; margin: 52px 0;
+      padding-left: 20px; margin: 32px 0;
     }
     .pull-quote p {
       font-family: var(--f-body); font-size: 15px; font-weight: 400;
@@ -144,129 +180,15 @@
       margin: 0;
     }
 
-    /* Data island */
-    .data-island {
-      display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 0; margin: 56px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .data-item {
-      padding: 28px 0;
-      border-right: 1px solid var(--border);
-    }
-    .data-item:last-child { border-right: none; }
-    .data-num {
-      font-family: var(--f-display); font-size: 40px; font-weight: 400;
-      line-height: 1; color: var(--fg); letter-spacing: -0.02em;
-      margin-bottom: 6px;
-    }
-    .data-label {
-      font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); line-height: 1.5; letter-spacing: .03em;
-    }
-
     .page-bottom { padding-bottom: 120px; }
 
-    /* Scroll ruler + reading line */
-    .scroll-ruler {
-      position: fixed; left: 48px; top: 25vh; bottom: 25vh;
-      width: 1px; z-index: 45; pointer-events: none;
-    }
-    .ruler-bar {
-      position: absolute; left: 0; top: 0; bottom: 0;
-      width: 1px; background: var(--border);
-    }
-    .ruler-tick {
-      position: absolute; left: -5px; width: 10px; height: 1px;
-      background: var(--fg-3); transition: width .2s, background .2s, opacity .2s;
-    }
-    .scroll-line {
-      position: fixed; left: 48px; width: calc(100vw - 48px); height: 1.5px;
-      background: var(--accent); z-index: 44; pointer-events: none;
-      opacity: 0.55; transition: transform .12s linear; top: 0;
-    }
-
-    /* Nav overlay */
-    .nav-overlay {
-      position: fixed; inset: 0; z-index: 60;
-      background: rgba(0,0,0,0.2);
-      display: none; align-items: flex-start; justify-content: flex-start;
-      padding: 80px 32px;
-    }
-    .nav-overlay.open { display: flex; }
-    .nav-panel {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 10px; padding: 28px 32px;
-      min-width: 220px; box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-    }
-    .nav-panel a, .nav-panel button {
-      display: block; font-family: var(--f-mono); font-size: 12px;
-      color: var(--fg-2); text-decoration: none; background: none; border: none;
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 8 8, pointer;
-      padding: 5px 0; transition: color .15s;
-      line-height: 1.6; width: 100%; text-align: left;
-    }
-    .nav-panel a:hover, .nav-panel button:hover { color: var(--accent); }
-    .nav-panel .nav-section { font-family: var(--f-mono); font-size: 12px; color: var(--fg); padding: 8px 0 4px; }
-    .nav-panel .nav-sub { padding-left: 14px; }
-    .nav-panel .nav-current { color: var(--accent); }
-    .nav-panel hr { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
-
-    /* Info overlay — from homepage */
-    .info-overlay {
-      position: fixed; inset: 0; z-index: 70;
-      background: color-mix(in srgb, var(--bg) 50%, transparent);
-      backdrop-filter: blur(12px);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.28s ease;
-    }
-    .info-overlay.open { opacity: 1; pointer-events: auto; }
-    .info-sheet {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 20px; padding: 60px 72px;
-      max-width: 1060px; width: calc(100% - 48px);
-      display: grid; grid-template-columns: 1.25fr 0.75fr;
-      gap: 44px 56px;
-      box-shadow: 0 24px 72px rgba(28, 25, 23, 0.10);
-    }
-    [data-theme="dark"] .info-sheet {
-      box-shadow: 0 24px 72px rgba(0, 0, 0, 0.30);
-    }
-    .info-col-label {
-      font-family: var(--f-mono); font-size: 12px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--fg-3); margin-bottom: 12px;
-    }
-    .info-col-body {
-      font-size: 17px; color: var(--fg-2); line-height: 1.7;
-    }
-    .info-col-body a { color: var(--fg-2); text-decoration: none; }
-    .info-col-body a:hover { color: var(--accent); }
-    .info-close {
-      position: absolute; top: 16px; right: 20px;
-      background: none; border: 0; cursor: inherit;
-      color: var(--fg-3); font-size: 20px; padding: 6px 12px;
-    }
-    @media (max-width: 640px) {
-      .info-sheet { grid-template-columns: 1fr; gap: 20px; padding: 28px 24px; }
-    }
-
     /* Responsive */
-    @media (max-width: 860px) {
-      .scroll-ruler, .scroll-line { display: none; }
-    }
     @media (max-width: 680px) {
       .topbar { padding: 20px 20px; }
       main { padding: 0 20px; }
       .page-title { font-size: 36px; }
       .section-heading { font-size: 24px; }
       .page-header-wrap { padding: 64px 0 40px; }
-      .data-island { grid-template-columns: 1fr; }
-      .data-item { border-right: none; border-bottom: 1px solid var(--border); padding: 20px 0; }
-      .data-item:last-child { border-bottom: none; }
-      .data-num { font-size: 32px; }
     }
     @media (max-width: 480px) {
       .page-title { font-size: 32px; }
@@ -279,13 +201,10 @@
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <button class="topbar-nav" onclick="toggleNav()" aria-label="Open navigation">
-    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-      <line x1="0" y1="2" x2="14" y2="2"/>
-      <line x1="0" y1="7" x2="14" y2="7"/>
-      <line x1="4" y1="12" x2="14" y2="12"/>
-    </svg>
-  </button>
+  <a href="work.html" class="topbar-back">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Work
+  </a>
   <div class="topbar-right">
     <a href="zh-decathlon.html" class="lang-link">中文</a>
     <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
@@ -294,11 +213,6 @@
     </button>
   </div>
 </div>
-
-<div class="scroll-ruler" aria-hidden="true">
-  <div class="ruler-bar"></div>
-</div>
-<div class="scroll-line" aria-hidden="true"></div>
 
 <main class="page-enter">
 
@@ -326,22 +240,11 @@
 
     <p class="body-text">With 16 issues and limited dev bandwidth, I needed a prioritization framework that both I and the team could agree on. Built a <strong>Value-Effort matrix</strong> with dual-dimension weighted scoring — consumer need intensity (0–5) and business value (0–5). Ran two alignment meetings with the team's PM to validate quadrant placements. High-priority items went into the sprint; others into the backlog.</p>
 
-    <div class="data-island">
-      <div class="data-item">
-        <div class="data-num">16</div>
-        <div class="data-label">pain points identified via competitive benchmarking</div>
-      </div>
-      <div class="data-item">
-        <div class="data-num">2</div>
-        <div class="data-label">scoring dimensions — consumer need × business value</div>
-      </div>
-    </div>
-
     <div class="pull-quote">
       <p>My mentor initially wanted to prioritize self-service returns with courier pickup. I pushed back — not on the goal, on timing. The feature requires reverse logistics API integration and courier partnership agreements; short-term build cost is high, and adding a frictionless return path would likely spike return rates before those costs are recouped. We agreed it belonged in the long-term roadmap, not the current sprint.</p>
     </div>
 
-
+    <p class="body-text">Also drafted a BRD for a separate initiative: expanding Mini Program delivery radius from 3km to 10km, with a projected annual GMV uplift of 6M+ RMB.</p>
   </div>
 
   <!-- UAT Coordination -->
@@ -365,7 +268,7 @@
 
     <p class="body-text">Benchmarked against Jira, Trello, Monday, DingTalk, and Feishu. Identified <strong>13 pain points</strong> in the internal tool. Key ones: no project progress visibility without clicking through to an external Jira link; no clear owner mapping — could not tell who was responsible for a project without asking around; dashboard number cards lacking context — just a number, no trend or comparison; milestone hover states not showing detail; filter logic inconsistencies across select-all, reset, and multi-select.</p>
 
-    <p class="body-text">Wrote up a complete requirements iteration document and aligned it with my manager. Separately noticed the team was using Notion for team-level task tracking and finding it insufficient — free tier limitations, not designed for kanban workflows. Proposed Trello as a lightweight complement — not a replacement for the internal tool, just the right tool for the team's day-to-day. The team adopted it and continued using it.</p>
+    <p class="body-text">Wrote up a complete requirements iteration document and aligned it with my manager. Separately, I noticed the team was using Notion for team-level task tracking and finding it insufficient — free tier limitations, not designed for kanban workflows. I proposed Trello as a lightweight complement — not a replacement for the internal tool, just the right tool for the team's day-to-day. The team adopted it and continued using it.</p>
   </div>
 
   <!-- Reflection -->
@@ -393,145 +296,110 @@
     if (t) document.documentElement.dataset.theme = t;
   })();
 
-  // Nav overlay
-  function toggleNav() {
-    document.getElementById('navOverlay').classList.toggle('open');
-  }
-  function closeNav(e) {
-    if (!e || e.target === document.getElementById('navOverlay')) {
-      document.getElementById('navOverlay').classList.remove('open');
-    }
-  }
-  function toggleInfo() {
-    document.getElementById('navOverlay').classList.remove('open');
-    document.getElementById('infoOverlay').classList.toggle('open');
-  }
-  function closeInfo(e) {
-    if (!e || e.target === document.getElementById('infoOverlay')) {
-      document.getElementById('infoOverlay').classList.remove('open');
-    }
-  }
-
-  // Exit transition for lang link
-  var lang = document.querySelector('.lang-link');
-  if (lang) {
-    lang.addEventListener('click', function(e) {
-      e.preventDefault();
-      var href = this.getAttribute('href');
-      document.body.classList.add('page-out');
-      setTimeout(function() { window.location.href = href; }, 180);
-    });
-  }
-
-  // Scroll ruler + reading line with wave effect
-  (function() {
-    var ruler = document.querySelector('.scroll-ruler');
-    var line = document.querySelector('.scroll-line');
-    if (!ruler || !line) return;
-
-    // Create 20 tick marks dynamically
-    var NUM_TICKS = 40;
-    var WAVE_RADIUS = 6;
-    var BASE_W = 10;
-    var PEAK_W = 28;
-    var ticks = [];
-    for (var i = 0; i < NUM_TICKS; i++) {
-      var t = document.createElement('div');
-      t.className = 'ruler-tick';
-      t.style.top = (i / (NUM_TICKS - 1) * 100) + '%';
-      ruler.appendChild(t);
-      ticks.push(t);
-    }
-
-    function update() {
-      var scrollTop = window.scrollY;
-      var docH = document.documentElement.scrollHeight - window.innerHeight;
-      var progress = docH > 0 ? scrollTop / docH : 0;
-
-      // Line position: map scroll progress onto ruler area
-      var rulerRect = ruler.getBoundingClientRect();
-      var rulerTop = rulerRect.top;
-      var rulerH = rulerRect.height;
-      var targetY = rulerTop + (progress * rulerH);
-      line.style.transform = 'translateY(' + targetY + 'px)';
-
-      // Wave: active position as float index
-      var activeFloat = progress * (NUM_TICKS - 1);
-      ticks.forEach(function(t, i) {
-        var dist = Math.abs(i - activeFloat);
-        if (dist <= WAVE_RADIUS) {
-          var factor = 1 - (dist / (WAVE_RADIUS + 1));
-          var w = BASE_W + factor * (PEAK_W - BASE_W);
-          t.style.width = w + 'px';
-          t.style.background = 'var(--accent)';
-          t.style.opacity = 0.4 + factor * 0.6;
-        } else {
-          t.style.width = BASE_W + 'px';
-          t.style.background = 'var(--fg-3)';
-          t.style.opacity = '1';
-        }
-      });
-    }
-
-    var ticking = false;
-    window.addEventListener('scroll', function() {
-      if (!ticking) { requestAnimationFrame(function() { update(); ticking = false; }); ticking = true; }
-    }, { passive: true });
-    update();
-  })();
+  // Exit transition
+  document.querySelector('.topbar-back').addEventListener('click', function(e) {
+    e.preventDefault();
+    var href = this.getAttribute('href');
+    document.body.classList.add('page-out');
+    setTimeout(function() { window.location.href = href; }, 180);
+  });
+  document.querySelector('.lang-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    var href = this.getAttribute('href');
+    document.body.classList.add('page-out');
+    setTimeout(function() { window.location.href = href; }, 180);
+  });
 </script>
-<!-- NAV OVERLAY -->
-<div class="nav-overlay" id="navOverlay" onclick="closeNav(event)">
-  <div class="nav-panel" onclick="event.stopPropagation()">
-    <a href="index.html" class="nav-section" style="padding-top:0">Homepage</a>
-    <a href="work.html" class="nav-section">Work</a>
-    <a href="decathlon.html" class="nav-sub nav-current">Decathlon</a>
-    <a href="mayora.html" class="nav-sub">Mayora</a>
-    <a class="nav-sub" style="color:var(--fg-3);cursor:default;pointer-events:none;">SynTao</a>
-    <a class="nav-sub" style="color:var(--fg-3);cursor:default;pointer-events:none;">Tianfeng Securities</a>
-    <hr>
-    <a href="ai.html" class="nav-section">Making</a>
-    <a href="stories.html" class="nav-section">Stories</a>
-    <button onclick="toggleInfo()" class="nav-section" style="border:none;background:none;cursor:inherit;text-align:left;width:100%;">Info</button>
-  </div>
-</div>
-
-<!-- INFO OVERLAY -->
-<div class="info-overlay" id="infoOverlay" aria-hidden="true" onclick="closeInfo(event)">
-  <div class="info-sheet" style="position:relative" onclick="event.stopPropagation()">
-    <button class="info-close" onclick="closeInfo()" aria-label="Close info">&times;</button>
-    <div>
-      <div class="info-col-label">Education</div>
-      <div class="info-col-body">
-        <strong>University of Sydney</strong><br>
-        <span style="color:var(--fg-3);font-size:14px">2025–2027 · Master of Project Management</span>
-        <br><br>
-        <strong>Shanghai University of International Business and Trade</strong><br>
-        <span style="color:var(--fg-3);font-size:14px">2020–2024 · Bachelor of International Economics and Trade</span>
-      </div>
-    </div>
-    <div>
-      <div class="info-col-label">Contact &amp; Social</div>
-      <div class="info-col-body">
-        <a href="mailto:trevor.tw.huang@outlook.com">trevor.tw.huang@outlook.com</a><br>
-        <a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener">LinkedIn</a>
-        &nbsp;·&nbsp;
-        <a href="https://www.instagram.com/t.huang17/" target="_blank" rel="noopener">Instagram</a><br>
-        <a href="https://x.com/H3art128943" target="_blank" rel="noopener">X</a>
-        &nbsp;·&nbsp;
-        <a href="https://www.xiaohongshu.com/user/profile/6150a3e2000000001f03501f" target="_blank" rel="noopener">Xiaohongshu</a>
-      </div>
-    </div>
-    <div style="grid-column:1/-1">
-      <div class="info-col-label">Toolkit</div>
-      <div class="info-col-body">
-        Python · SQL · Tableau · Excel · Jira · Feishu · MS Project<br>
-        Agile Methodologies<br><br>
-        <span style="color:var(--fg-3);font-size:13px">Chinese — Native · English — Professional</span>
-      </div>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
+```
+
+- [ ] **Step 2: Open in browser and verify**
+
+Open `decathlon.html` in Chrome. Check:
+- Topbar: `← Work` left, `中文` + theme toggle right, pointer-events work
+- Dark mode toggle works, persists across refreshes
+- Coral cursor visible on page and changes on hover over links
+- Geist title "Decathlon" renders correctly
+- All body text is Nunito Sans, readable
+- Pull quotes have left accent border + italic
+- Page entrance animates (400ms fade + rise)
+- No TOC, no footer, no next link
+- Responsive: shrink to 375px, layout holds
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add decathlon.html
+git commit -m "feat: rewrite decathlon.html as editorial longform with new design system"
+```
+
+---
+
+## Phase 2: mayora.html Rewrite
+
+After decathlon.html is verified, follow the same pattern for mayora.html. Key differences:
+- Content: Mayora management trainee + CNY campaign merged in
+- Title: "Mayora"
+- Subtitle: "Management Trainee · 2024–2025"
+- Back link: `← Work` → `work.html`
+- Lang link: `中文` → `zh-mayora.html`
+- Sections: Opening → O2O Platform Operations → CNY Campaign (merged from cny-campaign.html) → Product Matrix → Reflection
+- CNY campaign data: ROI 7.22, 600% growth, budget optimization story
+- Same CSS structure as decathlon.html (topbar, tokens, typography, cursor, responsive)
+
+---
+
+## Phase 3: work.html / zh-work.html Update
+
+Remove Projects section rows:
+
+### work.html changes
+Remove two rows:
+```html
+<!-- REMOVE this entry -->
+<div class="entry-row">
+  ...
+  <span class="name"><a href="cny-campaign.html" ...>O2O CNY Promotion</a></span>
+  ...
+</div>
+<!-- REMOVE this entry -->
+<div class="entry-row">
+  ...
+  <span class="name"><a href="decathlon-ux.html" ...>WeChat Mini Program UX Optimization</a></span>
+  ...
+</div>
+```
+
+Update 48px gap between Experience and Projects → remove the gap CSS since only one section remains. Or keep the single `entry-list` wrapper without the gap class.
+
+### zh-work.html changes
+Same removal for:
+- 即时零售CNY大促 (→ cny-campaign.html)
+- 微信小程序用户体验优化 (→ decathlon-ux.html)
+
+---
+
+## Phase 4: ai.html + darts.html Rewrite
+
+Follow same editorial pattern. Each keeps its unique layout needs but adopts:
+- Same topbar (← Stories → stories.html anchor or dedicated index)
+- Same design tokens (colors, fonts, cursor)
+- Same Geist + Nunito Sans + JetBrains Mono
+- Same dark mode toggle
+- Same page-enter animation
+- No footer
+
+### ai.html specifics
+- Topbar back: `← Stories` or `← Making` (TBD based on what nav context makes sense)
+- Title: "AI Explorer"
+- Content sections preserved from current layout (timeline style can stay, but fonts/tokens updated)
+
+### darts.html specifics
+- Topbar back: `← Stories`
+- Title: "Darts"
+- Photo strips preserved but restyled with new tokens
+
+---
+
+*Plan generated: 2026-05-05*
