@@ -8,39 +8,36 @@
   <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})()</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:      #E8E8E8;
-      --canvas:  #F5F3EF;
+      --bg:      #F6F4EF;
       --fg:      #1C1917;
       --fg-2:    #57534E;
       --fg-3:    #A8A29E;
       --accent:  #7C3AED;
       --f-display: 'Geist', sans-serif;
-      --f-body:    'Nunito Sans', sans-serif;
       --f-mono:    'JetBrains Mono', monospace;
     }
     [data-theme="dark"] {
-      --bg:      #18181B;
-      --canvas:  #242424;
+      --bg:      #1A1A1C;
       --fg:      #FAFAFA;
       --fg-2:    #A8A29E;
       --fg-3:    #57534E;
       --accent:  #A78BFA;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; height: 100%; }
+    html { height: 100%; }
     body {
-      font-family: var(--f-body); background: var(--bg); color: var(--fg);
-      height: 100%;
-      transition: background .3s, color .3s;
+      font-family: var(--f-display); background: var(--bg); color: var(--fg);
+      height: 100%; transition: background .3s, color .3s;
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='7' cy='7' r='7' fill='%23E07B5A'/%3E%3C/svg%3E") 7 7, auto;
     }
     a, button, [role="button"] {
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 8 8, pointer;
     }
 
+    /* Topbar */
     .topbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 50;
       display: flex; align-items: center; justify-content: space-between;
@@ -68,64 +65,88 @@
     [data-theme="dark"] #icon-sun  { display: none; }
     [data-theme="dark"] #icon-moon { display: block; }
 
-    /* Title — above the canvas */
-    .page-head {
-      position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
-      z-index: 40; text-align: center; pointer-events: none;
+    /* Page wrapper — full viewport, flex column */
+    .page {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100%; padding: 64px 0 48px;
     }
-    .page-head h1 {
-      font-family: var(--f-display); font-size: 48px; font-weight: 400;
+
+    /* Title */
+    .title {
+      text-align: center; margin-bottom: 20px;
+    }
+    .title h1 {
+      font-family: var(--f-display); font-size: 36px; font-weight: 400;
       line-height: 1.1; letter-spacing: -0.02em; color: var(--fg);
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
-    .page-head .sub {
-      font-family: var(--f-body); font-size: 16px; font-weight: 400; color: var(--fg-2);
-    }
-
-    /* Canvas — sits below title, above bottom */
-    .canvas {
-      position: fixed; top: 160px; bottom: 40px; left: 48px; right: 48px;
-      background: var(--canvas); border-radius: 12px;
-      overflow-x: auto; overflow-y: hidden;
-      transition: background .3s;
-      scrollbar-width: none;
-    }
-    .canvas::-webkit-scrollbar { display: none; }
-
-    /* Horizontal scroll track */
-    .track {
-      display: flex; align-items: center;
-      height: 100%; padding: 0 calc(50% - 340px);
-      gap: 28px;
-    }
-
-    /* Image slot */
-    .slot {
-      flex: none;
-      display: flex; flex-direction: column; align-items: center;
-    }
-    .slot img {
-      display: block; width: 78vw; max-width: 960px;
-      max-height: calc(100vh - 280px);
-      aspect-ratio: 16 / 9; object-fit: cover;
-      border-radius: 6px; cursor: pointer;
-      will-change: transform, filter, opacity;
-      transition: transform .4s ease, filter .4s ease, opacity .4s ease;
-    }
-    .slot .cap {
+    .title .sub {
       font-family: var(--f-mono); font-size: 11px;
-      color: var(--fg-3); letter-spacing: .03em;
-      margin-top: 10px; text-align: center;
-      opacity: 0; transition: opacity .3s ease;
-      white-space: nowrap;
+      color: var(--fg-3); letter-spacing: .04em;
     }
 
-    /* Hint */
-    .hint {
-      position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%);
-      font-family: var(--f-mono); font-size: 10px; color: var(--fg-3);
-      letter-spacing: .06em; pointer-events: none; z-index: 40;
-      opacity: 0.6;
+    /* Gallery area */
+    .gallery {
+      position: relative; flex: 1; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Scroll track */
+    .track {
+      display: flex; align-items: center; gap: 0;
+      height: 100%;
+      overflow-x: auto; overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      padding: 0 calc(50% - 38vw);
+    }
+    .track::-webkit-scrollbar { display: none; }
+
+    .slot {
+      flex: none; scroll-snap-align: center;
+      display: flex; align-items: center; justify-content: center;
+      width: 76vw; max-width: 960px; padding: 0 12px;
+    }
+
+    .slot img {
+      display: block; width: 100%; aspect-ratio: 16 / 9;
+      object-fit: cover; border-radius: 24px;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+      transition: transform .4s ease, opacity .4s ease;
+    }
+
+    .slot img.dim {
+      opacity: 0.4; transform: scale(0.88);
+    }
+
+    [data-theme="dark"] .slot img {
+      box-shadow: 0 2px 24px rgba(0,0,0,0.3);
+    }
+
+    /* Arrows */
+    .arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      z-index: 30; background: var(--bg); border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 50%; width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--fg-2); transition: color .2s, border-color .2s;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+    }
+    .arrow:hover { color: var(--fg); border-color: rgba(0,0,0,0.15); }
+    .arrow.left  { left: max(calc((100vw - 76vw) / 2 - 52px), 32px); }
+    .arrow.right { right: max(calc((100vw - 76vw) / 2 - 52px), 32px); }
+    [data-theme="dark"] .arrow {
+      border-color: rgba(255,255,255,0.08);
+      box-shadow: 0 1px 8px rgba(0,0,0,0.2);
+    }
+    [data-theme="dark"] .arrow:hover { border-color: rgba(255,255,255,0.15); }
+
+    /* Index indicator */
+    .index {
+      text-align: center; margin-top: 16px;
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); letter-spacing: .06em;
     }
 
     .lightbox {
@@ -146,14 +167,21 @@
       .slot img { transition: none !important; }
     }
 
-    @media (max-width: 680px) {
-      .canvas { left: 16px; right: 16px; top: 72px; bottom: 48px; border-radius: 8px; }
-      .page-head { top: 70px; }
-      .page-head h1 { font-size: 28px; }
-      .canvas { top: 140px; }
-      .slot img { height: 45vh; max-width: calc(100vw - 64px); }
-      .track { padding: 0 calc(50% - 42vw); gap: 20px; }
-      .hint { bottom: 56px; }
+    @media (max-width: 900px) {
+      .slot { width: 88vw; max-width: none; }
+      .track { padding: 0 calc(50% - 44vw); }
+      .arrow.left  { left: 12px; }
+      .arrow.right { right: 12px; }
+    }
+    @media (max-width: 600px) {
+      .topbar { padding: 16px 20px; }
+      .page { padding: 56px 0 32px; }
+      .title h1 { font-size: 28px; }
+      .slot { width: calc(100vw - 40px); padding: 0; }
+      .track { padding: 0 20px; scroll-snap-type: none; }
+      .slot img { border-radius: 16px; }
+      .slot img.dim { opacity: 1; transform: none; }
+      .arrow, .index { display: none; }
     }
   </style>
 </head>
@@ -173,40 +201,33 @@
   </div>
 </div>
 
-<div class="page-head">
-  <h1>Darts</h1>
-  <p class="sub">Got in by accident. Stayed because it made me better.</p>
-</div>
-
-<div class="canvas">
-  <div class="track" id="track">
-
-    <div class="slot">
-      <img loading="lazy" src="darts/挑选/2/微信图片_20260505222557_452_10.jpg" alt="Polaroid shots from school competition" onclick="openLightbox(this.src)">
-    </div>
-    <div class="slot">
-      <img loading="lazy" src="darts/挑选/2/微信图片_20260505222635_453_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)">
-    </div>
-    <div class="slot">
-      <img loading="lazy" src="darts/挑选/2/微信图片_20260505222732_454_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)">
-    </div>
-    <div class="slot">
-      <img loading="lazy" src="darts/挑选/2/微信图片_20260505222756_455_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)">
-    </div>
-    <div class="slot">
-      <img loading="lazy" src="darts/挑选/2/微信图片_20260505222849_457_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)">
-    </div>
-    <div class="slot">
-      <img loading="lazy" src="darts/挑选/2/微信图片_20260505222916_458_10.jpg" alt="Late night noodles after competition" onclick="openLightbox(this.src)">
-    </div>
-    <div class="slot">
-      <img loading="lazy" src="darts/挑选/2/微信图片_20260505223344_460_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)">
-    </div>
-    <div class="slot">
-      <img loading="lazy" src="darts/挑选/2/ChatGPT Image May 5, 2026, 10_34_52 PM.png" alt="Darts illustration" onclick="openLightbox(this.src)">
-    </div>
-
+<div class="page">
+  <div class="title">
+    <h1>Darts</h1>
+    <p class="sub">Got in by accident. Stayed because it made me better.</p>
   </div>
+
+  <div class="gallery" id="gallery">
+    <button class="arrow left" onclick="prevImage()" aria-label="Previous image">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="arrow right" onclick="nextImage()" aria-label="Next image">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+    <div class="track" id="track">
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222557_452_10.jpg" alt="Polaroid shots from school competition" onclick="openLightbox(this.src)"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222635_453_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222732_454_10.jpg" alt="Dartslive competition group" onclick="openLightbox(this.src)"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222756_455_10.jpg" alt="Dartslive TARGET event" onclick="openLightbox(this.src)"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222849_457_10.jpg" alt="Late night darts session" onclick="openLightbox(this.src)"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222916_458_10.jpg" alt="Late night noodles" onclick="openLightbox(this.src)"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505223344_460_10.jpg" alt="Darts bar with friends" onclick="openLightbox(this.src)"></div>
+      <div class="slot"><img loading="lazy" src="darts/挑选/2/ChatGPT Image May 5, 2026, 10_34_52 PM.png" alt="Darts illustration" onclick="openLightbox(this.src)"></div>
+    </div>
+  </div>
+
+  <p class="index" id="index">01 / 08</p>
 </div>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
@@ -243,55 +264,57 @@
     });
   }
 
-  // Horizontal conveyor — native scroll
+  // Gallery
   (function() {
-    var canvas = document.querySelector('.canvas');
+    var track = document.getElementById('track');
     var slots = document.querySelectorAll('.slot');
+    var idxEl = document.getElementById('index');
+    var imgs = document.querySelectorAll('.slot img');
     var mp = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (!canvas || !slots.length) return;
+    if (!track || !slots.length) return;
 
-    // Hide hint after first interaction
-    var hint = document.querySelector('.hint');
-    var hinted = false;
-    canvas.addEventListener('scroll', function() {
-      if (!hinted) { hinted = true; hint.style.opacity = '0'; hint.style.transition = 'opacity .6s ease'; }
-    }, { passive: true });
+    var total = slots.length;
+    var current = 0;
+
+    function goTo(i) {
+      current = Math.max(0, Math.min(i, total - 1));
+      var slot = slots[current];
+      track.scrollTo({ left: slot.offsetLeft - track.offsetWidth / 2 + slot.offsetWidth / 2, behavior: mp.matches ? 'auto' : 'smooth' });
+    }
+
+    window.prevImage = function() { goTo(current - 1); };
+    window.nextImage = function() { goTo(current + 1); };
 
     function update() {
       var centerX = window.innerWidth / 2;
-      var maxDist = window.innerWidth * 0.5;
-
-      slots.forEach(function(slot) {
-        var img = slot.querySelector('img');
-        var cap = slot.querySelector('.cap');
-        if (!img) return;
+      var best = 0, bestDist = Infinity;
+      imgs.forEach(function(img, i) {
         var rect = img.getBoundingClientRect();
-        var imgCenterX = rect.left + rect.width / 2;
-        var dist = Math.abs(imgCenterX - centerX);
-        var t = Math.min(dist / maxDist, 1);
+        var dist = Math.abs(rect.left + rect.width / 2 - centerX);
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      });
 
-        var scale, blur, opacity;
-        if (mp.matches) {
-          scale = 1; blur = 0; opacity = 1;
-        } else {
-          scale = 1 - t * 0.3;
-          blur = t * 5;
-          opacity = 1 - t * 0.6;
-        }
+      if (best !== current) {
+        current = best;
+        idxEl.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
 
-        img.style.transform = 'scale(' + scale + ')';
-        img.style.filter = 'blur(' + blur + 'px)';
-        img.style.opacity = opacity;
-
-        if (cap) {
-          cap.style.opacity = t < 0.15 ? '1' : '0';
-        }
+      imgs.forEach(function(img, i) {
+        if (i === current) img.classList.remove('dim');
+        else img.classList.add('dim');
       });
     }
 
-    canvas.addEventListener('scroll', function() {
+    track.addEventListener('scroll', function() {
       requestAnimationFrame(update);
     }, { passive: true });
+
+    // Arrow key navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current + 1); }
+    });
+
     update();
   })();
 </script>
