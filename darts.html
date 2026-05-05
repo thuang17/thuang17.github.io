@@ -86,11 +86,17 @@
     }
 
     .reel-img {
-      display: block; margin: 0 auto;
+      display: block; margin: 20vh auto;
       width: 100%; max-width: 680px;
       border-radius: 6px; cursor: pointer;
-      transition: transform .35s ease, filter .35s ease, opacity .35s ease;
-      /* Start: small + blurred — JS will override */
+      will-change: transform, filter, opacity;
+      transition: transform .4s ease, filter .4s ease, opacity .4s ease, box-shadow .4s ease;
+    }
+    .reel-img.active {
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    }
+    [data-theme="dark"] .reel-img.active {
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
     }
 
     /* Caption — appears below the active image */
@@ -98,9 +104,9 @@
       text-align: center;
       font-family: var(--f-mono); font-size: 11px;
       color: var(--fg-3); letter-spacing: .03em;
-      margin: 0 auto 0 auto;
+      margin: -12vh auto 20vh auto;
       max-width: 680px;
-      transition: opacity .35s ease;
+      transition: opacity .4s ease;
     }
 
     .page-bottom { height: 60vh; }
@@ -204,35 +210,45 @@
     });
   }
 
-  // Vertical image conveyor
+  // Vertical image conveyor with depth
   (function() {
     var imgs = document.querySelectorAll('.reel-img');
     var caps = document.querySelectorAll('.cap');
     if (!imgs.length) return;
 
+    var mp = window.matchMedia('(prefers-reduced-motion: reduce)');
+
     function update() {
       var vh = window.innerHeight;
       var centerY = vh / 2;
+      var maxDist = vh * 0.7;
 
       imgs.forEach(function(img, i) {
         var rect = img.getBoundingClientRect();
         var imgCenter = rect.top + rect.height / 2;
         var dist = Math.abs(imgCenter - centerY);
-        var maxDist = vh * 0.8;
+        var t = Math.min(dist / maxDist, 1);
 
-        if (dist < maxDist) {
-          var t = dist / maxDist; // 0 = center, 1 = far
-          var scale = 1 - t * 0.25;           // 1.0 → 0.75
-          var blur = t * 6;                    // 0px → 6px
-          var opacity = 1 - t * 0.5;          // 1.0 → 0.5
-          img.style.transform = 'scale(' + scale + ')';
-          img.style.filter = 'blur(' + blur + 'px)';
-          img.style.opacity = opacity;
+        var scale, blur, opacity;
+        if (mp.matches) {
+          scale = 1; blur = 0; opacity = 1;
+        } else {
+          scale = 1 - t * 0.22;
+          blur = t * 4;
+          opacity = 1 - t * 0.45;
         }
 
-        // Caption: show for the image closest to center
+        img.style.transform = 'scale(' + scale + ')';
+        img.style.filter = 'blur(' + blur + 'px)';
+        img.style.opacity = opacity;
+
+        // Active image gets shadow for depth layering
+        if (t < 0.2) img.classList.add('active');
+        else img.classList.remove('active');
+
+        // Caption: visible only near center
         if (caps[i]) {
-          caps[i].style.opacity = dist < vh * 0.15 ? '1' : '0';
+          caps[i].style.opacity = dist < vh * 0.12 ? '1' : '0';
         }
       });
     }
