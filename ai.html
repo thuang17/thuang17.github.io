@@ -83,7 +83,7 @@
     .timeline::before {
       content: '';
       position: absolute; left: 5px; top: 8px; bottom: 0;
-      width: 1px; background: var(--border);
+      width: 1.5px; background: var(--fg-3); opacity: 0.5;
     }
     .tl-item {
       position: relative; margin-bottom: 56px;
@@ -94,7 +94,17 @@
       width: 11px; height: 11px; border-radius: 50%;
       background: var(--bg); border: 1px solid var(--border);
     }
-    .tl-item:first-child .tl-dot { background: var(--accent); border-color: var(--accent); }
+
+    /* Cursor dot — follows mouse on the timeline line */
+    .cursor-dot {
+      position: fixed; width: 13px; height: 13px;
+      border-radius: 50%; background: var(--accent);
+      transform: translate(-50%, -50%);
+      pointer-events: none; z-index: 55;
+      transition: opacity .2s;
+      opacity: 0;
+    }
+    .cursor-dot.visible { opacity: 1; }
     .tl-head {
       font-family: var(--f-display); font-size: 18px; font-weight: 400;
       color: var(--fg); margin-bottom: 4px; letter-spacing: -0.01em;
@@ -198,7 +208,8 @@
 
   </div>
 
-  <div class="page-bottom"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+<div class="page-bottom"></div>
 
 </main>
 
@@ -232,6 +243,26 @@
     el.dataset.theme = next; localStorage.setItem('theme', next);
   }
   (function(){ var t = localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme = t; })();
+  // Cursor-following dot on timeline
+  (function() {
+    var dot = document.getElementById('cursorDot');
+    var timeline = document.querySelector('.timeline');
+    if (!dot || !timeline) return;
+    var lineX = 0;
+    function updateLineX() { var r = timeline.getBoundingClientRect(); lineX = r.left + 5; }
+    updateLineX(); window.addEventListener('resize', updateLineX);
+    document.addEventListener('mousemove', function(e) {
+      var dist = Math.abs(e.clientX - lineX);
+      if (dist < 120) {
+        dot.style.left = lineX + 'px';
+        dot.style.top = e.clientY + 'px';
+        dot.classList.add('visible');
+      } else {
+        dot.classList.remove('visible');
+      }
+    });
+  })();
+
   function toggleNav() { document.getElementById('navOverlay').classList.toggle('open'); }
   function closeNav(e) { if (!e || e.target === document.getElementById('navOverlay')) { document.getElementById('navOverlay').classList.remove('open'); } }
   function toggleInfo() { document.getElementById('navOverlay').classList.remove('open'); document.getElementById('infoOverlay').classList.toggle('open'); }
