@@ -155,11 +155,11 @@
       width: 1px; background: var(--border);
     }
     .ruler-tick {
-      position: absolute; left: -4px; width: 6px; height: 1px;
-      background: var(--fg-3); transition: width .2s, background .2s;
+      position: absolute; left: -3px; width: 5px; height: 1px;
+      background: var(--fg-3); transition: width .2s, background .2s, opacity .2s;
     }
     .scroll-line {
-      position: fixed; left: 48px; width: calc(100vw - 48px); height: 1px;
+      position: fixed; left: 48px; width: calc(100vw - 48px); height: 1.5px;
       background: var(--accent); z-index: 44; pointer-events: none;
       opacity: 0.3; transition: transform .12s linear; top: 0;
     }
@@ -313,10 +313,10 @@
     if (!ruler || !line) return;
 
     // Create 20 tick marks dynamically
-    var NUM_TICKS = 20;
-    var WAVE_RADIUS = 2;
-    var BASE_W = 6;
-    var PEAK_W = 18;
+    var NUM_TICKS = 40;
+    var WAVE_RADIUS = 3;
+    var BASE_W = 5;
+    var PEAK_W = 16;
     var ticks = [];
     for (var i = 0; i < NUM_TICKS; i++) {
       var t = document.createElement('div');
