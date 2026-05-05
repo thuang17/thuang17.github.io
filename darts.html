@@ -124,24 +124,6 @@
       box-shadow: 0 2px 24px rgba(0,0,0,0.3);
     }
 
-    /* Arrows */
-    .arrow {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      z-index: 30; background: var(--bg); border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 50%; width: 40px; height: 40px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: var(--fg-2); transition: color .2s, border-color .2s;
-      box-shadow: 0 1px 8px rgba(0,0,0,0.04);
-    }
-    .arrow:hover { color: var(--fg); border-color: rgba(0,0,0,0.15); }
-    .arrow.left  { left: max(calc((100vw - 76vw) / 2 - 52px), 32px); }
-    .arrow.right { right: max(calc((100vw - 76vw) / 2 - 52px), 32px); }
-    [data-theme="dark"] .arrow {
-      border-color: rgba(255,255,255,0.08);
-      box-shadow: 0 1px 8px rgba(0,0,0,0.2);
-    }
-    [data-theme="dark"] .arrow:hover { border-color: rgba(255,255,255,0.15); }
-
     /* Index indicator */
     .index {
       text-align: center; margin-top: 16px;
@@ -208,13 +190,6 @@
   </div>
 
   <div class="gallery" id="gallery">
-    <button class="arrow left" onclick="prevImage()" aria-label="Previous image">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <button class="arrow right" onclick="nextImage()" aria-label="Next image">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-    </button>
-
     <div class="track" id="track">
       <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222557_452_10.jpg" alt="Polaroid shots from school competition" onclick="openLightbox(this.src)"></div>
       <div class="slot"><img loading="lazy" src="darts/挑选/2/微信图片_20260505222635_453_10.jpg" alt="Dartslive tournament group" onclick="openLightbox(this.src)"></div>
