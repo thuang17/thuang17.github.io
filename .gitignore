@@ -1,2 +1,6 @@
 .DS_Store
 Anime Image Avatar.png
+
+# Astro
+dist/
+.env

@@ -1,0 +1,93 @@
+/* ── FONTS ── */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@400;500;600;700;800&family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,500;6..12,600&family=JetBrains+Mono:wght@300;400&display=swap');
+
+/* ── TOKENS ── */
+:root {
+  --bg:        #E8E8E8;
+  --bg-sub:    #F0EEE8;
+  --bg-foot:   #E8E6DE;
+  --fg:        #1C1917;
+  --fg-2:      #57534E;
+  --fg-3:      #A8A29E;
+  --border:    #E7E5E4;
+  --border-2:  #C9C8C4;
+  --accent:    #7C3AED;
+  --accent-2:  #6D28D9;
+  --tag-bg:    rgba(124,58,237,0.07);
+  --tag-bd:    rgba(124,58,237,0.20);
+
+  --f-body:    'Nunito Sans', 'Helvetica Neue', Arial, sans-serif;
+  --f-display: 'Montserrat', sans-serif;
+  --f-mono:    'JetBrains Mono', ui-monospace, 'Courier New', monospace;
+  --t:         0.16s ease;
+}
+
+[data-theme="dark"] {
+  --bg:        #18181B;
+  --bg-sub:    #27272A;
+  --bg-foot:   #09090B;
+  --fg:        #FAFAFA;
+  --fg-2:      #A1A1AA;
+  --fg-3:      #71717A;
+  --border:    #3F3F46;
+  --border-2:  #52525B;
+  --accent:    #A78BFA;
+  --accent-2:  #C4B5FD;
+  --tag-bg:    rgba(167,139,250,0.09);
+  --tag-bd:    rgba(167,139,250,0.24);
+}
+
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:var(--f-body);font-size:16px;line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+  transition:background var(--t),color var(--t);
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='7' fill='%23E07B5A'/%3E%3C/svg%3E") 9 9, auto;
+}
+a, button, .panel-standard, .tbtn, .tbtn * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 12 12, auto;
+}
+a{color:inherit;text-decoration:none}
+.link{color:var(--accent);text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;transition:text-decoration-color var(--t),color var(--t)}
+.link:hover{color:var(--accent-2);text-decoration-color:var(--accent-2)}
+.muted{color:var(--fg-2);transition:color var(--t)}
+.muted:hover{color:var(--fg)}
+
+/* ── TYPOGRAPHY ── */
+.label{font-family:var(--f-mono);font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-3);margin-bottom:6px}
+.h2{font-family:var(--f-display);font-size:clamp(21px,3.5vw,27px);font-weight:700;letter-spacing:-.02em;color:var(--fg);margin-bottom:30px}
+.tag{font-family:var(--f-mono);font-size:11px;color:var(--accent);background:var(--tag-bg);border:1px solid var(--tag-bd);padding:2px 10px;border-radius:20px;letter-spacing:.03em;white-space:nowrap;transition:background var(--t)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.wrap, .wrap-w { max-width:1080px; margin:0 auto; padding:0 48px; }
+
+/* ── FOOTER ── */
+footer{
+  background:var(--bg-foot);border-top:1px solid var(--border);
+  padding:36px 0;transition:background var(--t),border-color var(--t);
+}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.reveal.vis{opacity:1;transform:none}
+.stagger>*{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+.stagger.vis>*:nth-child(1){opacity:1;transform:none;transition-delay:0ms}
+.stagger.vis>*:nth-child(2){opacity:1;transform:none;transition-delay:65ms}
+.stagger.vis>*:nth-child(3){opacity:1;transform:none;transition-delay:130ms}
+.stagger.vis>*:nth-child(4){opacity:1;transform:none;transition-delay:195ms}
+.stagger.vis>*:nth-child(5){opacity:1;transform:none;transition-delay:260ms}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+@media(max-width:480px){
+  nav.compact{background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom-color:var(--border)}
+  nav.compact .nav-inner{
+    height:52px;max-width:1080px;margin:0 auto;padding:0 48px;
+    transform:none;border-color:transparent;border-radius:0;background:transparent;box-shadow:none;
+  }
+}

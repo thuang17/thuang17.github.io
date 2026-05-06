@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="favicon.png?v=2">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Darts — Trevor Huang</title>
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})()</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #E8E8E8;
+      --fg:      #1C1917;
+      --fg-2:    #57534E;
+      --fg-3:    #A8A29E;
+      --accent:  #7C3AED;
+      --f-display: 'Geist', sans-serif;
+      --f-mono:    'JetBrains Mono', monospace;
+    }
+    [data-theme="dark"] {
+      --bg:      #1A1A1C;
+      --fg:      #FAFAFA;
+      --fg-2:    #A8A29E;
+      --fg-3:    #57534E;
+      --accent:  #A78BFA;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
+    body {
+      font-family: var(--f-display); background: var(--bg); color: var(--fg);
+      height: 100%; transition: background .3s, color .3s;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='7' cy='7' r='7' fill='%23E07B5A'/%3E%3C/svg%3E") 7 7, auto;
+    }
+    a, button, [role="button"] {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 8 8, pointer;
+    }
+
+    /* Topbar */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 32px; pointer-events: none;
+    }
+    .topbar > * { pointer-events: auto; }
+    .topbar-nav {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-2); background: none; border: none; cursor: inherit;
+      display: flex; align-items: center; gap: 5px; transition: color .2s;
+    }
+    .topbar-nav:hover { color: var(--accent); }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .lang-link {
+      font-family: var(--f-mono); font-size: 12px;
+      color: var(--fg-3); text-decoration: none; transition: color .2s;
+    }
+    .lang-link:hover { color: var(--accent); }
+    .theme-btn {
+      background: none; border: none; cursor: inherit;
+      color: var(--fg-2); padding: 4px; display: flex; align-items: center; transition: color .2s;
+    }
+    .theme-btn:hover { color: var(--accent); }
+    #icon-moon { display: none; }
+    [data-theme="dark"] #icon-sun  { display: none; }
+    [data-theme="dark"] #icon-moon { display: block; }
+
+    /* Page wrapper — full viewport, flex column */
+    .page {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100%; padding: 64px 0 48px;
+    }
+
+    /* Title */
+    .title {
+      text-align: center; margin-bottom: 20px;
+    }
+    .title h1 {
+      font-family: var(--f-display); font-size: 36px; font-weight: 400;
+      line-height: 1.1; letter-spacing: -0.02em; color: var(--fg);
+      margin-bottom: 4px;
+    }
+    .title .sub {
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); letter-spacing: .04em;
+    }
+
+    /* Gallery area */
+    .gallery {
+      position: relative; flex: 1; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Scroll track */
+    .track {
+      display: flex; align-items: center; gap: 0;
+      height: 100%;
+      overflow-x: auto; overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      padding: 0 calc(50% - 38vw);
+    }
+    .track::-webkit-scrollbar { display: none; }
+
+    .slot {
+      flex: none; scroll-snap-align: center;
+      display: flex; align-items: center; justify-content: center;
+      width: 76vw; max-width: 960px; padding: 0 12px;
+    }
+
+    .slot img {
+      display: block; width: 100%; aspect-ratio: 16 / 9;
+      object-fit: cover; border-radius: 24px;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+      transition: transform .4s ease, opacity .4s ease;
+      pointer-events: none; user-select: none;
+      -webkit-user-drag: none; -webkit-touch-callout: none;
+    }
+
+    .slot img.dim {
+      opacity: 0.4; transform: scale(0.88);
+    }
+
+    [data-theme="dark"] .slot img {
+      box-shadow: 0 2px 24px rgba(0,0,0,0.3);
+    }
+
+    /* Ruler + dart indicator */
+    .ruler-wrap {
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 8px; gap: 0;
+      position: relative;
+    }
+    .ruler {
+      position: relative;
+      width: 200px; height: 24px;
+    }
+    .ruler-tick {
+      position: absolute; bottom: 0;
+      width: 1.5px; height: 24px; background: var(--fg-3);
+      opacity: 0.4; border-radius: 1px;
+    }
+    .dart {
+      position: absolute; bottom: 0;
+      width: 40px; height: 32px;
+      transform: translateX(-50%);
+      color: var(--fg); z-index: 2;
+    }
+    .dart svg {
+      display: block; width: 100%; height: 100%;
+    }
+
+    /* Index indicator */
+    .index {
+      text-align: center; margin-top: 16px;
+      font-family: var(--f-mono); font-size: 11px;
+      color: var(--fg-3); letter-spacing: .06em;
+    }
+
+    .nav-overlay { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,0.2); display: none; align-items: flex-start; justify-content: flex-start; padding: 80px 32px; }
+    .nav-overlay.open { display: flex; }
+    .nav-panel { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 28px 32px; min-width: 220px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+    .nav-panel a, .nav-panel button { display: block; font-family: var(--f-mono); font-size: 12px; color: var(--fg-2); text-decoration: none; background: none; border: none; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23E07B5A'/%3E%3C/svg%3E") 8 8, pointer; padding: 5px 0; transition: color .15s; line-height: 1.6; width: 100%; text-align: left; }
+    .nav-panel a:hover, .nav-panel button:hover { color: var(--accent); }
+    .nav-panel .nav-section { font-family: var(--f-mono); font-size: 12px; color: var(--fg); padding: 8px 0 4px; }
+    .nav-panel .nav-sub { padding-left: 14px; }
+    .nav-panel .nav-current { color: var(--accent); }
+    .nav-panel hr { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+    .info-overlay { position: fixed; inset: 0; z-index: 70; background: color-mix(in srgb, var(--bg) 50%, transparent); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.28s ease; }
+    .info-overlay.open { opacity: 1; pointer-events: auto; }
+    .info-sheet { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 60px 72px; position: relative; max-width: 1060px; width: calc(100% - 48px); display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 44px 56px; box-shadow: 0 24px 72px rgba(28, 25, 23, 0.10); }
+    [data-theme="dark"] .info-sheet { box-shadow: 0 24px 72px rgba(0, 0, 0, 0.30); }
+    .info-col-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 12px; }
+    .info-col-body { font-size: 17px; color: var(--fg-2); line-height: 1.7; }
+    .info-col-body a { color: var(--fg-2); text-decoration: none; }
+    .info-col-body a:hover { color: var(--accent); }
+    .info-close { position: absolute; top: 16px; right: 20px; background: none; border: 0; cursor: inherit; color: var(--fg-3); font-size: 20px; padding: 6px 12px; }
+    @media (max-width: 640px) { .info-sheet { grid-template-columns: 1fr; gap: 20px; padding: 28px 24px; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .slot img { transition: none !important; }
+    }
+
+    @media (max-width: 900px) {
+      .slot { width: 88vw; max-width: none; }
+      .track { padding: 0 calc(50% - 44vw); }
+      .arrow.left  { left: 12px; }
+      .arrow.right { right: 12px; }
+    }
+    @media (max-width: 600px) {
+      .topbar { padding: 16px 20px; }
+      .page { padding: 56px 0 32px; }
+      .title h1 { font-size: 28px; }
+      .slot { width: calc(100vw - 40px); padding: 0; }
+      .track { padding: 0 20px; scroll-snap-type: none; }
+      .slot img { border-radius: 16px; }
+      .slot img.dim { opacity: 1; transform: none; }
+      .arrow, .index { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="topbar-nav" onclick="toggleNav()" aria-label="Open navigation">
+    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <line x1="0" y1="2" x2="14" y2="2"/>
+      <line x1="0" y1="7" x2="14" y2="7"/>
+      <line x1="4" y1="12" x2="14" y2="12"/>
+    </svg>
+  </button>
+  <div class="topbar-right">
+    <a href="zh-darts.html" class="lang-link">中文</a>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="page">
+  <div class="title">
+    <h1>Darts</h1>
+  </div>
+
+  <div class="ruler-wrap">
+    <div class="ruler" id="ruler"></div>
+    <div class="dart" id="dart">
+      <svg viewBox="0 0 32 14" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="8" y1="7" x2="18" y2="7"/>
+        <line x1="18" y1="7" x2="29" y2="7"/>
+        <path d="M4 3 L8 7 L4 11"/>
+        <path d="M6 4 L8 7 L6 10"/>
+        <path d="M24 4 L29 7 L24 10"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="gallery" id="gallery">
+    <div class="track" id="track">
+      <div class="slot"><img loading="eager" src="darts/挑选/2/微信图片_20260505221633_446_10.jpg" alt="Darts photo" draggable="false"></div>
+      <div class="slot"><img loading="eager" src="darts/挑选/2/微信图片_20260505222557_452_10.jpg" alt="Polaroid shots from school competition" draggable="false"></div>
+      <div class="slot"><img loading="eager" src="darts/挑选/2/微信图片_20260505222635_453_10.jpg" alt="Dartslive tournament group" draggable="false"></div>
+      <div class="slot"><img loading="eager" src="darts/挑选/2/微信图片_20260505222732_454_10.jpg" alt="Dartslive competition group" draggable="false"></div>
+      <div class="slot"><img loading="eager" src="darts/挑选/2/微信图片_20260505222756_455_10.jpg" alt="Dartslive TARGET event" draggable="false"></div>
+      <div class="slot"><img loading="eager" src="darts/挑选/2/微信图片_20260505222849_457_10.jpg" alt="Late night darts session" draggable="false"></div>
+      <div class="slot"><img loading="eager" src="darts/挑选/2/微信图片_20260505222916_458_10.jpg" alt="Late night noodles" draggable="false"></div>
+      <div class="slot"><img loading="eager" src="darts/挑选/2/微信图片_20260505223344_460_10.jpg" alt="Darts bar with friends" draggable="false"></div>
+      <div class="slot"><img loading="eager" src="darts/挑选/2/ChatGPT Image May 5, 2026, 10_34_52 PM.png" alt="Darts illustration" draggable="false"></div>
+    </div>
+  </div>
+
+  <p class="index" id="index">01 / 09</p>
+</div>
+
+<script>
+  function toggleTheme() {
+    var el = document.documentElement;
+    var next = el.dataset.theme === 'dark' ? 'light' : 'dark';
+    el.dataset.theme = next; localStorage.setItem('theme', next);
+  }
+  (function() {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.dataset.theme = t;
+  })();
+
+  function toggleNav() { document.getElementById('navOverlay').classList.toggle('open'); }
+  function closeNav(e) { if (!e || e.target === document.getElementById('navOverlay')) { document.getElementById('navOverlay').classList.remove('open'); } }
+  function toggleInfo() { document.getElementById('navOverlay').classList.remove('open'); document.getElementById('infoOverlay').classList.toggle('open'); }
+  function closeInfo(e) { if (!e || e.target === document.getElementById('infoOverlay')) { document.getElementById('infoOverlay').classList.remove('open'); } }
+
+  // Gallery
+  (function() {
+    var track = document.getElementById('track');
+    var slots = document.querySelectorAll('.slot');
+    var idxEl = document.getElementById('index');
+    var imgs = document.querySelectorAll('.slot img');
+    var mp = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!track || !slots.length) return;
+
+    var total = slots.length;
+    var current = 0;
+
+    function goTo(i) {
+      current = Math.max(0, Math.min(i, total - 1));
+      var slot = slots[current];
+      track.scrollTo({ left: slot.offsetLeft - track.offsetWidth / 2 + slot.offsetWidth / 2, behavior: mp.matches ? 'auto' : 'smooth' });
+    }
+
+    window.prevImage = function() { goTo(current - 1); };
+    window.nextImage = function() { goTo(current + 1); };
+
+    // Build ruler ticks
+    var ruler = document.getElementById('ruler');
+    var dart = document.getElementById('dart');
+    for (var i = 0; i < total; i++) {
+      var tick = document.createElement('div');
+      tick.className = 'ruler-tick';
+      tick.style.left = (i / (total - 1) * 100) + '%';
+      ruler.appendChild(tick);
+    }
+
+    function update() {
+      var centerX = window.innerWidth / 2;
+      var best = 0, bestDist = Infinity;
+      imgs.forEach(function(img, i) {
+        var rect = img.getBoundingClientRect();
+        var dist = Math.abs(rect.left + rect.width / 2 - centerX);
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      });
+
+      if (best !== current) {
+        current = best;
+        idxEl.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+
+      // Dart follows scroll progress, not image index
+      var maxScroll = track.scrollWidth - track.clientWidth;
+      var progress = maxScroll > 0 ? track.scrollLeft / maxScroll : 0;
+      dart.style.left = (progress * 100) + '%';
+      dart.style.transition = 'none';
+
+      imgs.forEach(function(img, i) {
+        if (i === current) img.classList.remove('dim');
+        else img.classList.add('dim');
+      });
+    }
+
+    track.addEventListener('scroll', function() {
+      requestAnimationFrame(update);
+    }, { passive: true });
+
+    // Arrow key navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current + 1); }
+    });
+
+    update();
+  })();
+</script>
+<div class="nav-overlay" id="navOverlay" onclick="closeNav(event)">
+  <div class="nav-panel" onclick="event.stopPropagation()">
+    <a href="index.html" class="nav-section" style="padding-top:0">Homepage</a>
+    <a href="work.html" class="nav-section">Work</a>
+    <a href="decathlon.html" class="nav-sub">Decathlon</a>
+    <a href="mayora.html" class="nav-sub">Mayora</a>
+    <a class="nav-sub" style="color:var(--fg-3);cursor:default;pointer-events:none;">SynTao</a>
+    <a class="nav-sub" style="color:var(--fg-3);cursor:default;pointer-events:none;">Tianfeng Securities</a>
+    <hr>
+    <a href="ai.html" class="nav-section">Making</a>
+    <a href="stories.html" class="nav-section nav-current">Stories</a>
+    <button onclick="toggleInfo()" class="nav-section" style="border:none;background:none;cursor:inherit;text-align:left;width:100%;">Info</button>
+  </div>
+</div>
+<div class="info-overlay" id="infoOverlay" aria-hidden="true" onclick="closeInfo(event)">
+  <div class="info-sheet" onclick="event.stopPropagation()">
+    <button class="info-close" onclick="closeInfo()" aria-label="Close info">&times;</button>
+    <div><div class="info-col-label">Education</div><div class="info-col-body"><strong>University of Sydney</strong><br><span style="color:var(--fg-3);font-size:14px">2025–2027 · Master of Project Management</span><br><br><strong>Shanghai University of International Business and Trade</strong><br><span style="color:var(--fg-3);font-size:14px">2020–2024 · Bachelor of International Economics and Trade</span></div></div>
+    <div><div class="info-col-label">Contact &amp; Social</div><div class="info-col-body"><a href="mailto:trevor.tw.huang@outlook.com">trevor.tw.huang@outlook.com</a><br><a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener">LinkedIn</a> &nbsp;·&nbsp; <a href="https://www.instagram.com/t.huang17/" target="_blank" rel="noopener">Instagram</a><br><a href="https://x.com/H3art128943" target="_blank" rel="noopener">X</a> &nbsp;·&nbsp; <a href="https://www.xiaohongshu.com/user/profile/6150a3e2000000001f03501f" target="_blank" rel="noopener">Xiaohongshu</a></div></div>
+    <div style="grid-column:1/-1"><div class="info-col-label">Toolkit</div><div class="info-col-body">Python · SQL · Tableau · Excel · Jira · Feishu · MS Project<br>Agile Methodologies<br><br><span style="color:var(--fg-3);font-size:13px">Chinese — Native · English — Professional</span></div></div>
+  </div>
+</div>
+
+</body>
+</html>

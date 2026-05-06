@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductGrid from '../../components/ProductGrid';
+import { getCollection } from 'astro:content';
+
+const products = await getCollection('products');
+const productList = products
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .map(entry => ({
+    title: entry.data.title,
+    description: entry.data.description,
+    tags: entry.data.tags,
+    status: entry.data.status,
+    slug: entry.slug,
+  }));
+---
+
+<BaseLayout title="Making — Trevor Huang" description="Experiments, tools, and self-directed building.">
+
+<style>
+  .making-page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 64px 48px;
+  }
+  .making-page h1 {
+    font-family: 'Geist', sans-serif;
+    font-size: clamp(72px, 10vw, 120px);
+    font-weight: 600;
+    line-height: 0.9;
+    margin-bottom: 12px;
+  }
+  .making-page .subtitle {
+    font-size: 18px;
+    color: var(--fg-2);
+    margin-bottom: 48px;
+    max-width: 480px;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--fg-3);
+  }
+  .empty-state p {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .empty-state .hint {
+    font-family: var(--f-mono);
+    font-size: 12px;
+  }
+</style>
+
+<div class="making-page">
+  <h1>Making</h1>
+  <p class="subtitle">
+    Experiments, tools, and self-directed building. Each product has its own case study with design decisions, architecture, and lessons learned.
+  </p>
+
+  {
+    productList.length > 0
+      ? <ProductGrid products={productList} />
+      : (
+        <div class="empty-state">
+          <p>Nothing built yet.</p>
+          <p class="hint">First product coming soon.</p>
+        </div>
+      )
+  }
+</div>
+
+</BaseLayout>

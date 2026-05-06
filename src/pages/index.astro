@@ -1,0 +1,861 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Trevor Huang"
+  description="Trevor Huang — MPM candidate at University of Sydney. FMCG O2O operations and e-commerce tech background."
+>
+
+<style>
+  /* ── HORIZONTAL SURFACE ────────────────────────── */
+  .demo-shell {
+    min-height: 100vh;
+    padding: 0 32px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .demo-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 32px 0;
+    flex-shrink: 0;
+  }
+
+  .topbar-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .scrubber-track {
+    width: 100%;
+    max-width: 200px;
+    height: 20px;
+    background: transparent;
+    border-radius: 1.5px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  .scrubber-track::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 3px;
+    background: #D6D3D1;
+    border-radius: 1.5px;
+  }
+
+  :global([data-theme="dark"]) .scrubber-track::before {
+    background: #52525B;
+  }
+
+  .scrubber-pill {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 14px;
+    border-radius: 7px;
+    background: #78716C;
+    transition: left 120ms linear, transform 0.2s ease;
+    cursor: grab;
+    z-index: 1;
+  }
+
+  .scrubber-pill:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  .scrubber-pill:active {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  :global([data-theme="dark"]) .scrubber-pill {
+    background: #A1A1AA;
+  }
+
+  .surface-viewport {
+    height: min(72vh, 780px);
+    overflow: hidden;
+    position: relative;
+    margin-top: 100px;
+    margin-bottom: auto;
+    margin-left: -32px;
+    width: calc(100% + 32px);
+  }
+
+  .surface-scaler {
+    height: 100%;
+    transform-origin: left center;
+    will-change: transform;
+  }
+
+  .surface-track {
+    display: flex;
+    align-items: stretch;
+    gap: 28px;
+    height: 100%;
+    will-change: transform;
+    transform: translate3d(calc(var(--track-x, 0px) * -1), 0, 0);
+    padding-left: calc(20vw - 32px);
+    padding-right: calc(30vw - 32px);
+  }
+
+  /* ── PANELS ──────────────────────────────────────── */
+  .panel {
+    flex: 0 0 auto;
+    border: 1px solid var(--border);
+    background: #f9f9f9;
+    position: relative;
+    overflow: hidden;
+    width: min(80vw, 1240px);
+    border-radius: 28px;
+  }
+
+  :global([data-theme="dark"]) .panel {
+    background: #1c1c1c;
+  }
+
+  .panel-hero {
+    padding: 48px 48px 40px;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+  }
+
+  .panel-standard {
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+
+  .panel-standard:hover {
+    transform: scale(1.02);
+    box-shadow: 0 18px 48px rgba(28, 25, 23, 0.10);
+  }
+
+  /* Light mode: non-Stories panels — subtle darken */
+  .panel-standard:not([data-panel="stories"]):hover {
+    background: #f3f3f3;
+  }
+
+  /* Stories panel hover: need !important to override inline style */
+  [data-panel="stories"]:hover {
+    background: #2a2a2a !important;
+  }
+
+  /* Dark mode: all panels — subtle brighten, need !important for Stories inline */
+  :global([data-theme="dark"]) .panel-standard:hover {
+    background: #2a2a2a !important;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.30);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel-standard:hover {
+      transform: none;
+    }
+  }
+
+  .panel-kicker {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--fg-3);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .panel-copy h1 {
+    font-family: var(--f-display);
+    font-size: clamp(72px, 8vw, 126px);
+    line-height: 0.94;
+    margin: 18px 0 24px;
+    font-weight: 700;
+  }
+
+  .panel-lede {
+    font-size: clamp(22px, 2.2vw, 36px);
+    line-height: 1.18;
+    max-width: 18ch;
+    color: var(--fg);
+  }
+
+  .panel-standard h2 {
+    font-family: 'Geist', 'Helvetica Neue', helvetica, arial, sans-serif;
+    font-size: clamp(120px, 16vw, 220px);
+    font-weight: 600;
+    line-height: 0.85;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .panel-standard p {
+    font-family: 'Geist', 'Helvetica Neue', helvetica, arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--fg-2);
+    text-align: left;
+  }
+
+  /* ── INFO OVERLAY ───────────────────────────────── */
+  .info-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: color-mix(in srgb, var(--bg) 94%, transparent);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+  }
+
+  .info-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .info-sheet {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 60px 72px;
+    max-width: 1060px;
+    width: calc(100% - 48px);
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 44px 56px;
+    box-shadow: 0 24px 72px rgba(28, 25, 23, 0.10);
+  }
+
+  :global([data-theme="dark"]) .info-sheet {
+    box-shadow: 0 24px 72px rgba(0, 0, 0, 0.30);
+  }
+
+  .info-col-label {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin-bottom: 12px;
+  }
+
+  .info-col-body {
+    font-size: 17px;
+    color: var(--fg-2);
+    line-height: 1.7;
+  }
+
+  .info-col-body a {
+    color: var(--fg-2);
+    text-decoration: none;
+  }
+
+  .info-col-body a:hover {
+    color: var(--accent);
+  }
+
+  .info-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    color: var(--fg-3);
+    font-size: 20px;
+    padding: 6px 12px;
+  }
+
+  @media (max-width: 640px) {
+    .info-sheet {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding: 28px 24px;
+    }
+  }
+
+  /* ── META PILLS ─────────────────────────────────── */
+  .meta-pill {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--fg-2);
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+  }
+
+  /* ── HERO PANEL ─────────────────────────────────── */
+  .panel-hero {
+    background: #f9f9f9;
+  }
+
+  :global([data-theme="dark"]) .panel-hero {
+    background: #1c1c1c;
+  }
+
+  .hero-text {
+    font-family: 'Geist', 'Helvetica Neue', helvetica, arial, sans-serif;
+    font-size: clamp(56px, 8vw, 96px);
+    font-weight: 500;
+    line-height: 1.1;
+    color: #111;
+    position: relative;
+    z-index: 2;
+  }
+
+  :global([data-theme="dark"]) .hero-text {
+    color: #f5f5f4;
+  }
+
+  .hero-circle {
+    position: absolute;
+    right: -8vw;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(300px, 55vw, 700px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #D0C4F0;
+    z-index: 1;
+  }
+
+  :global([data-theme="dark"]) .hero-circle {
+    background: #5B4A8C;
+  }
+
+  /* ── ENTRY ANIMATION ────────────────────────────── */
+  .entry-hero-scale {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: center center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .entry-accent-a {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #D0C4F0;
+    opacity: 0.85;
+    transform-origin: center center;
+  }
+
+  :global([data-theme="dark"]) .entry-accent-a {
+    background: #5B4A8C;
+  }
+
+  .entry-line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .entry-line > span {
+    display: inline-block;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .entry-hero {
+      transform: scale(0);
+      transform-origin: center center;
+      animation: entryHeroScale 1200ms cubic-bezier(.2,.8,.2,1) forwards;
+    }
+
+    .entry-hero-scale {
+      transform: scale(0);
+      animation: entryHeroScale 700ms cubic-bezier(.2,.8,.2,1) 100ms forwards;
+    }
+
+    .entry-accent-a {
+      transform: translateY(-50%) scale(0);
+      animation: entryAccentScale 700ms cubic-bezier(.2,.8,.2,1) 400ms forwards;
+    }
+
+    .entry-line > span {
+      transform: translateY(105%);
+      animation: entryLineReveal 640ms cubic-bezier(.2,.8,.2,1) forwards;
+    }
+
+    .entry-line:nth-child(1) > span { animation-delay: 200ms; }
+    .entry-line:nth-child(2) > span { animation-delay: 290ms; }
+    .entry-line:nth-child(3) > span { animation-delay: 380ms; }
+    .entry-line:nth-child(4) > span { animation-delay: 470ms; }
+    .entry-line:nth-child(5) > span { animation-delay: 560ms; }
+
+    .entry-panel {
+      opacity: 0;
+      animation: entryPanelFade 200ms ease-in-out 1100ms forwards;
+    }
+  }
+
+  @keyframes entryHeroScale {
+    to { transform: scale(1); }
+  }
+
+  @keyframes entryAccentScale {
+    to { transform: translateY(-50%) scale(1); }
+  }
+
+  @keyframes entryLineReveal {
+    to { transform: translateY(0); }
+  }
+
+  @keyframes entryPanelFade {
+    to { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .entry-hero,
+    .entry-hero-scale,
+    .entry-accent-wrap {
+      transform: none;
+      animation: none;
+    }
+    .entry-accent-a {
+      transform: translateY(-50%);
+    }
+    .entry-line > span {
+      transform: none;
+      animation: none;
+    }
+    .entry-panel {
+      opacity: 1;
+      animation: none;
+    }
+  }
+
+  /* ── INFO TRIGGER ───────────────────────────────── */
+  .info-trigger {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color var(--t);
+  }
+
+  .info-trigger:hover {
+    color: var(--fg);
+  }
+
+  /* ── NAV COMPACT ────────────────────────────────── */
+  nav.compact{
+    background:transparent;border-bottom-color:transparent;
+  }
+
+  nav.compact .nav-inner{
+    height:46px;max-width:760px;padding:0 18px 0 20px;
+    transform:translateY(10px);
+    border-color:var(--border);border-radius:999px;
+    background:color-mix(in srgb,var(--bg) 88%,transparent);
+    box-shadow:0 14px 36px rgba(28,25,23,.08);
+  }
+
+  :global([data-theme="dark"]) nav.compact .nav-inner{box-shadow:0 14px 36px rgba(0,0,0,.28)}
+
+  /* ── THEME TOGGLE ───────────────────────────────── */
+  .tbtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    border: none;
+    background: transparent;
+    color: var(--fg-2);
+    padding: 4px;
+    transition: color var(--t);
+    margin-left: 6px;
+  }
+
+  .tbtn:hover {
+    color: var(--fg);
+    background: transparent;
+    border: none;
+  }
+
+  /* ── MAIN TRANSITION (page exit) ────────────────── */
+  main{
+    transition:opacity .18s ease, transform .18s ease;
+  }
+
+  body.page-out main{
+    opacity:0;
+    transform:translateY(8px);
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    main{transition:none}
+  }
+
+  /* ── MOBILE OVERRIDES ──────────────────────────── */
+  @media (max-width: 980px) {
+    body {
+      overflow: auto;
+    }
+
+    .surface-viewport {
+      height: auto;
+      overflow: visible;
+      margin-left: 0;
+      width: 100%;
+      margin-top: 28px;
+    }
+
+    .surface-scaler {
+      transform: none !important;
+    }
+
+    .surface-track {
+      transform: none !important;
+      display: grid;
+      gap: 20px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .panel-hero,
+    .panel-standard {
+      width: auto;
+    }
+
+    .panel-hero {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<main>
+  <!-- ═══════════ TOP BAR: SCRUBBER + CONTROLS ═══════════ -->
+  <header class="demo-topbar" aria-label="Horizontal progress">
+    <div></div>
+    <div class="scrubber-track" aria-hidden="true">
+      <div class="scrubber-pill"></div>
+    </div>
+    <div class="topbar-controls">
+      <a href="/zh" style="font-size:12px;letter-spacing:.04em;color:var(--fg-2);text-decoration:none">中文</a>
+      <button class="tbtn" id="tbtn" aria-label="Toggle theme">
+        <svg id="i-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg id="i-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════ PANEL SURFACE ═══════════ -->
+  <section class="surface-viewport" aria-label="Homepage panels">
+    <div class="surface-scaler">
+    <div class="surface-track">
+
+      <!-- Hero panel -->
+      <article class="panel panel-hero entry-hero" data-panel="hero" style="display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:0">
+        <div class="entry-hero-scale">
+          <div class="hero-text" style="padding:clamp(32px,8vw,120px)">
+            <span class="entry-line" style="margin-left:-0.3em"><span>Trevor Huang</span></span>
+            <span class="entry-line" style="margin-left:0.1em"><span>is a student</span></span>
+            <span class="entry-line" style="margin-left:-0.3em"><span>at USyd</span></span>
+            <span class="entry-line" style="margin-left:0.1em"><span>working on</span></span>
+            <span class="entry-line" style="margin-left:-0.3em"><span>figuring things out</span></span>
+          </div>
+        </div>
+        <div class="entry-accent-a"></div>
+      </article>
+
+      <!-- Work panel — bottom-left, cropped left -->
+      <a class="panel panel-standard entry-panel" data-panel="work" href="work.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-start;padding:0 0 28px 0">
+        <h2 style="margin-left:-0.08em">WORK</h2>
+        <p style="padding-left:28px">Selected proof from real operating environments.</p>
+      </a>
+
+      <!-- Making panel — top-left, cropped top -->
+      <a class="panel panel-standard entry-panel" data-panel="aimaking" href="ai.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-start;align-items:flex-start;padding:28px 0 0 0">
+        <h2 style="margin-top:-0.1em;margin-left:-0.04em">MAKING</h2>
+        <p style="padding-left:28px">Experiments, tools, and self-directed building.</p>
+      </a>
+
+      <!-- Stories panel — dark bg, bottom-right, white text -->
+      <a class="panel panel-standard entry-panel" data-panel="stories" href="stories.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-end;background:#1c1c1c;border-color:#333;padding:0 0 28px 0">
+        <h2 style="color:#f5f5f4;margin-right:-0.04em;text-align:right;width:100%">STORIES</h2>
+        <p style="color:#a1a1aa;padding-right:28px;text-align:right;width:100%">Personal material around repetition, pressure, and recovering from failure.</p>
+      </a>
+
+      <!-- Info panel -->
+      <article class="panel panel-standard entry-panel" data-panel="info" onclick="openInfo()" style="display:flex;justify-content:flex-end;align-items:flex-end;overflow:hidden;padding:0 0 0 0">
+        <span style="font-family:'Geist','Helvetica Neue',helvetica,arial,sans-serif;font-size:clamp(240px,32vw,500px);font-weight:600;color:var(--fg);line-height:0.9;transform:translateX(0.32em);margin-bottom:-0.05em">Info</span>
+      </article>
+
+    </div>
+    </div>
+  </section>
+</main>
+
+<!-- ═══════════ INFO OVERLAY ═══════════ -->
+<div class="info-overlay" id="info-overlay" aria-hidden="true">
+  <div class="info-sheet" style="position:relative">
+    <button class="info-close" onclick="closeInfo()" aria-label="Close info">&times;</button>
+    <div>
+      <div class="info-col-label">Education</div>
+      <div class="info-col-body">
+        <strong>University of Sydney</strong><br>
+        <span style="color:var(--fg-3);font-size:14px">2025–2027 · Master of Project Management</span>
+        <br><br>
+        <strong>Shanghai University of International Business and Trade</strong><br>
+        <span style="color:var(--fg-3);font-size:14px">2020–2024 · Bachelor of International Economics and Trade</span>
+      </div>
+    </div>
+    <div>
+      <div class="info-col-label">Contact &amp; Social</div>
+      <div class="info-col-body">
+        <a href="mailto:trevor.tw.huang@outlook.com">trevor.tw.huang@outlook.com</a><br>
+        <a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener">LinkedIn</a>
+        &nbsp;·&nbsp;
+        <a href="https://www.instagram.com/t.huang17/" target="_blank" rel="noopener">Instagram</a><br>
+        <a href="https://x.com/H3art128943" target="_blank" rel="noopener">X</a>
+        &nbsp;·&nbsp;
+        <a href="https://www.xiaohongshu.com/user/profile/6150a3e2000000001f03501f" target="_blank" rel="noopener">Xiaohongshu</a>
+      </div>
+    </div>
+    <div style="grid-column:1/-1">
+      <div class="info-col-label">Toolkit</div>
+      <div class="info-col-body">
+        Python · SQL · Tableau · Excel · Jira · Feishu · MS Project<br>
+        Agile Methodologies<br><br>
+        <span style="color:var(--fg-3);font-size:13px">Chinese — Native · English — Professional</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Theme ──
+  const html = document.documentElement;
+  const btn  = document.getElementById('tbtn');
+  const sun  = document.getElementById('i-sun');
+  const moon = document.getElementById('i-moon');
+
+  function setTheme(t) {
+    html.setAttribute('data-theme', t);
+    sun.style.display  = t === 'dark' ? 'none' : 'block';
+    moon.style.display = t === 'dark' ? 'block': 'none';
+  }
+
+  // Sync icons with theme already set by BaseLayout's inline script
+  setTheme(html.getAttribute('data-theme'));
+
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', next);
+    setTheme(next);
+  });
+
+  // ── Info overlay ──
+  const infoOverlay = document.getElementById('info-overlay');
+  function openInfo() {
+    infoOverlay.classList.add('open');
+    infoOverlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeInfo() {
+    infoOverlay.classList.remove('open');
+    infoOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  infoOverlay.addEventListener('click', function(e) {
+    if (e.target === infoOverlay) closeInfo();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && infoOverlay.classList.contains('open')) closeInfo();
+  });
+
+  // ── Horizontal surface controller ──
+  (function() {
+    const viewport = document.querySelector('.surface-viewport');
+    const scaler = document.querySelector('.surface-scaler');
+    const track = document.querySelector('.surface-track');
+    const scrubberTrack = document.querySelector('.scrubber-track');
+    const scrubberPill = document.querySelector('.scrubber-pill');
+    const panels = Array.from(document.querySelectorAll('.panel'));
+
+    if (!viewport || !scaler || !track || !scrubberTrack || !scrubberPill || panels.length === 0) return;
+
+    var HERO_TRAVEL = function() { return Math.min(window.innerWidth * 0.72, 920); };
+    var SCALE_MIN = 40 / 72;
+    var WHEEL_ACCELERATION = 0.16;
+    var FRICTION = 0.9;
+    var MAX_VELOCITY = 120;
+    var STOP_THRESHOLD = 0.08;
+
+    var state = { x: 0, velocity: 0, maxX: 0, ticking: false };
+
+    function updateMaxX() {
+      var lastPanel = panels[panels.length - 1];
+      var lastPanelRight = lastPanel.offsetLeft + lastPanel.offsetWidth;
+      var rightPadding = window.innerWidth * 0.4 - 32;
+      state.maxX = Math.max(0, lastPanelRight + rightPadding - viewport.clientWidth / SCALE_MIN);
+    }
+
+    function measure() {
+      updateMaxX();
+      state.x = Math.min(state.x, state.maxX);
+      if (state.x === 0 || state.x === state.maxX) state.velocity = 0;
+    }
+
+    function onWheel(event) {
+      if (window.innerWidth <= 980 || state.maxX <= 0) return;
+      var dominantDelta = Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+      if (dominantDelta === 0) return;
+      event.preventDefault();
+      updateMaxX();
+      state.velocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, state.velocity + dominantDelta * WHEEL_ACCELERATION));
+      requestTick();
+    }
+
+    function requestTick() {
+      if (state.ticking) return;
+      state.ticking = true;
+      requestAnimationFrame(updateFrame);
+    }
+
+    function updateFrame() {
+      updateMaxX();
+      state.x += state.velocity;
+
+      if (state.x <= 0) { state.x = 0; state.velocity = 0; }
+      else if (state.x >= state.maxX) { state.x = state.maxX; state.velocity = 0; }
+      else { state.velocity *= FRICTION; if (Math.abs(state.velocity) < STOP_THRESHOLD) state.velocity = 0; }
+
+      track.style.setProperty('--track-x', state.x + 'px');
+      renderHeroState();
+      renderProgress();
+
+
+      if (Math.abs(state.velocity) >= STOP_THRESHOLD) requestAnimationFrame(updateFrame);
+      else state.ticking = false;
+    }
+
+    function renderHeroState() {
+      var progress = Math.min(1, state.x / HERO_TRAVEL());
+      var scale = 1 - progress * (1 - SCALE_MIN);
+      var radius = 28 - progress * 4;
+      scaler.style.transform = 'scale(' + scale + ')';
+      panels.forEach(function(p) { p.style.borderRadius = radius + 'px'; });
+    }
+
+    function renderProgress() {
+      if (state.maxX <= 0) { scrubberPill.style.left = '0px'; return; }
+      var trackWidth = scrubberTrack.clientWidth;
+      var pillWidth = scrubberPill.offsetWidth;
+      var usable = trackWidth - pillWidth;
+      var ratio = state.x / state.maxX;
+      scrubberPill.style.left = (ratio * usable + pillWidth / 2) + 'px';
+    }
+
+    window.addEventListener('wheel', onWheel, { passive: false });
+
+    // ── Scrubber drag ──
+    var dragging = false;
+
+    function onDragStart(e) {
+      if (window.innerWidth <= 980 || state.maxX <= 0) return;
+      e.preventDefault();
+      dragging = true;
+      state.velocity = 0;
+      updatePositionFromEvent(e);
+    }
+
+    function onDragMove(e) {
+      if (!dragging) return;
+      e.preventDefault();
+      updatePositionFromEvent(e);
+    }
+
+    function onDragEnd(e) {
+      if (!dragging) return;
+      dragging = false;
+    }
+
+    function updatePositionFromEvent(e) {
+      var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      var trackRect = scrubberTrack.getBoundingClientRect();
+      var pillWidth = scrubberPill.offsetWidth;
+      var usable = trackRect.width - pillWidth;
+      var relativeX = clientX - trackRect.left - pillWidth / 2;
+      var ratio = Math.max(0, Math.min(1, relativeX / usable));
+      state.x = ratio * state.maxX;
+      requestTick();
+    }
+
+    scrubberTrack.addEventListener('mousedown', onDragStart);
+    scrubberTrack.addEventListener('touchstart', onDragStart, { passive: false });
+    window.addEventListener('mousemove', onDragMove);
+    window.addEventListener('touchmove', onDragMove, { passive: false });
+    window.addEventListener('mouseup', onDragEnd);
+    window.addEventListener('touchend', onDragEnd);
+    window.addEventListener('resize', function() {
+      measure();
+      renderHeroState();
+      renderProgress();
+
+      track.style.setProperty('--track-x', state.x + 'px');
+    });
+
+    measure();
+    renderHeroState();
+    renderProgress();
+    renderPanelFocus();
+    track.style.setProperty('--track-x', '0px');
+  })();
+
+  // ── Page exit transition ──
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('a[data-transition="page"]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var href = link.getAttribute('href');
+        if (!href || href.charAt(0) === '#') return;
+        if (link.target === '_blank' || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        document.body.classList.add('page-out');
+        setTimeout(function() { window.location.href = href; }, 160);
+      });
+    });
+  }
+
+  // ── Scroll reveal (for any remaining .reveal elements) ──
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.07, rootMargin: '0px 0px -24px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+</script>
+</BaseLayout>
