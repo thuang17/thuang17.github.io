@@ -34,35 +34,70 @@ Current homepage role:
 
 ## Tech Stack
 
-- Pure HTML + CSS + vanilla JS (no framework, no build step)
-- index.html uses Tailwind CDN — detail pages use pure CSS only
-- All icons are inline SVGs — no external icon CDN
-- Dark mode via `data-theme="dark"` on `<html>`, persisted to localStorage
-- Zero build steps — deploy by pushing to GitHub
+- **Astro v5 + React 19 + TypeScript** (migrated from pure HTML in May 2026)
+- Build: `npm run build` → output to `dist/`
+- Dev server: `npm run dev`
+- Deploy: GitHub Actions auto-builds and pushes to GitHub Pages
+- CSS: `src/styles/global.css` for design system tokens, per-page `<style>` blocks for page-specific CSS
+- Icons: inline SVGs only (no icon CDN)
+- Dark mode: `data-theme="dark"` on `<html>`, persisted via localStorage
 
 ---
 
 ## File Structure
 
 ```
-index.html           — English main page (primary)
-zh.html              — Chinese main page
-
-decathlon.html       — Decathlon full work case study
-mayora.html          — Mayora full work case study
-cny-campaign.html    — CNY campaign project deep-dive
-decathlon-ux.html    — Decathlon UX project deep-dive
-darts.html           — Darts story (About section)
-ai.html              — AI Explorer story (About section)
-zh-darts.html        — Chinese darts story
-zh-ai.html           — Chinese AI story
-
-context/             — Shared context files (read before any task)
-darts/               — Photo assets for darts story page
-CLAUDE.md            — Context file for Claude Code
-AGENTS.md            — This file (for Codex)
-ROADMAP.md           — Project roadmap and decisions log
+src/
+├── pages/                  # All website pages (.astro files)
+│   ├── index.astro         # EN homepage
+│   ├── zh.astro            # ZH homepage
+│   ├── work.astro          # Work index
+│   ├── zh-work.astro       # ZH Work index
+│   ├── stories.astro       # Stories index
+│   ├── zh-stories.astro    # ZH Stories index
+│   ├── ai.astro            # AI / Making story
+│   ├── zh-ai.astro         # ZH AI / Making story
+│   ├── darts.astro         # Darts story
+│   ├── zh-darts.astro      # ZH Darts story
+│   ├── decathlon.astro     # Decathlon case study
+│   ├── mayora.astro        # Mayora case study
+│   ├── cny-campaign.astro  # CNY campaign deep-dive
+│   ├── decathlon-ux.astro  # Decathlon UX deep-dive
+│   ├── making/             # Product listing (auto-generated)
+│   └── products/           # Product detail pages (auto-generated)
+├── components/             # React/TSX components
+│   ├── ProductCard.tsx
+│   └── ProductGrid.tsx
+├── content/
+│   └── products/           # ⭐ Product markdown files go here
+│       └── product1.md     # Add product2.md, product3.md, etc.
+├── layouts/
+│   └── BaseLayout.astro    # Shared layout (head, theme, nav, footer)
+└── styles/
+    └── global.css          # Design system tokens and global styles
+public/                     # Static assets (images, favicon, etc.)
+context/                    # Shared context files
+CLAUDE.md                   # Context for Claude Code
+AGENTS.md                   # This file (for Codex)
+ROADMAP.md                  # Project roadmap
 ```
+
+### ⭐ Product Content System
+
+To add a new product/project, create a `.md` file in `src/content/products/`:
+
+```markdown
+---
+title: "Product Name"
+description: "One-line description"
+pubDate: 2026-05-06
+tags: ["tag1", "tag2"]
+status: building          # building | live | archived
+---
+## Body content (markdown)
+```
+
+The product automatically appears on the `/making/` listing page and gets its own detail page at `/products/product-name/`.
 
 ---
 

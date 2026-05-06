@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Stories — Trevor Huang"
+  description="Stories — Trevor Huang"
+>
+
+<style>
+  /* ── TOPBAR ──────────────────────────────────── */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:24px 32px;
+    pointer-events:none;
+  }
+  .topbar > *{pointer-events:auto}
+  .back-link{
+    font-size:13px; font-weight:500; color:var(--fg-2);
+    font-family:var(--f-body); text-decoration:none;
+    transition:color var(--t);
+  }
+  .back-link:hover{color:var(--fg)}
+  .topbar-right{display:flex; align-items:center; gap:2px}
+  .lang-link{
+    font-size:12px; letter-spacing:.04em; color:var(--fg-2);
+    text-decoration:none; padding:5px 9px; border-radius:6px;
+    transition:color var(--t),background var(--t);
+  }
+  .lang-link:hover{color:var(--fg);background:var(--bg-sub)}
+  .tbtn{
+    display:flex; align-items:center; justify-content:center;
+    width:auto; height:auto; border:none; background:transparent;
+    color:var(--fg-2); padding:4px;
+    transition:color var(--t);
+  }
+  .tbtn:hover{color:var(--fg);background:transparent;border:none}
+
+  /* ── ENTRY LIST ──────────────────────────────── */
+  .entry-row{
+    overflow:hidden; padding:14px 0;
+  }
+  .entry-row .row-unit{
+    display:flex; justify-content:space-between; align-items:center;
+    width:100%;
+    opacity:0; transform:translateY(12px);
+    transition: opacity 700ms ease-out, transform 700ms cubic-bezier(.22,1,.36,1);
+  }
+  .entry-row .row-unit.revealed{opacity:1;transform:translateY(0)}
+  .entry-row .name{
+    font-family: Geist, sans-serif; font-size:15px; font-weight:500;
+    color:var(--fg); white-space:nowrap; flex-shrink:0;
+    text-decoration:none;
+    transition:color var(--t);
+  }
+  a.name:hover{color:var(--accent)}
+  .entry-row .year{
+    font-family:var(--f-mono); font-size:11px; color:var(--fg-3);
+    white-space:nowrap; flex-shrink:0; transition:color var(--t);
+  }
+  .dot-leader{
+    border-bottom:2px dotted rgba(0,0,0,0.12); height:0;
+    margin:0 12px; flex:1; min-width:24px;
+    clip-path:inset(0 50% 0 50%);
+    transition:clip-path 900ms cubic-bezier(.22,1,.36,1);
+  }
+  :global([data-theme="dark"]) .dot-leader{border-bottom-color:rgba(255,255,255,0.12)}
+  .dot-leader.revealed{clip-path:inset(0 0% 0 0%)}
+
+  .section-gap{height:48px}
+
+  /* ── FOCUS EFFECT (active after entry animation) ── */
+  .entry-list.ready .row-unit{transition:opacity 300ms ease}
+  .entry-list.ready:hover .row-unit{opacity:0.35}
+  .entry-list.ready .row-unit:hover{opacity:1}
+
+  /* ── MAIN TRANSITION (page exit) ────────────────── */
+  main{
+    max-width:680px; margin:0 auto; padding:0 32px;
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  body.page-out main{opacity:0;transform:translateY(8px)}
+
+  @media(prefers-reduced-motion:reduce){
+    main{transition:none}
+  }
+
+  /* ── MOBILE ──────────────────────────────────── */
+  @media(max-width:600px){
+    main{padding:0 20px}
+    .topbar{padding:18px 20px}
+    @media(hover:none){
+      .entry-list.ready:hover .row-unit{opacity:1}
+    }
+  }
+</style>
+
+<!-- ═══════════ TOPBAR ═══════════ -->
+<header class="topbar">
+  <a href="/" class="back-link">Home</a>
+  <div class="topbar-right">
+    <a href="/zh-stories" class="lang-link">中文</a>
+    <button class="tbtn" id="tbtn" aria-label="Toggle theme">
+      <svg id="i-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg id="i-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ═══════════ ENTRY LIST ═══════════ -->
+  <div class="entry-list">
+
+    <div class="entry-row">
+      <div class="row-unit">
+        <a class="name" href="/darts">Darts</a>
+        <div class="dot-leader"></div>
+        <span class="year">2021–Now</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  // ── Theme ──
+  const html = document.documentElement;
+  const btn  = document.getElementById('tbtn');
+  const sun  = document.getElementById('i-sun');
+  const moon = document.getElementById('i-moon');
+
+  function setTheme(t) {
+    html.setAttribute('data-theme', t);
+    sun.style.display  = t === 'dark' ? 'none' : 'block';
+    moon.style.display = t === 'dark' ? 'block': 'none';
+  }
+
+  // Sync icons with theme already set by BaseLayout's inline script
+  setTheme(html.getAttribute('data-theme'));
+
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', next);
+    setTheme(next);
+  });
+
+  // ── Entry animation (v9 — Rise + Fade) ──
+  const ROW_STAGGER = 100;
+
+  function playEntry() {
+    const units = document.querySelectorAll('.entry-row .row-unit');
+    units.forEach((unit, i) => {
+      setTimeout(() => {
+        unit.classList.add('revealed');
+        unit.querySelector('.dot-leader').classList.add('revealed');
+      }, i * ROW_STAGGER);
+    });
+  }
+
+  setTimeout(playEntry, 200);
+
+  const totalRows = document.querySelectorAll('.entry-row .row-unit').length;
+  const animEnd = 200 + (totalRows - 1) * ROW_STAGGER + 700;
+  setTimeout(() => {
+    document.querySelector('.entry-list').classList.add('ready');
+  }, animEnd);
+
+  // ── Page exit transition ──
+  document.querySelectorAll('a.name[href]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const href = this.getAttribute('href');
+      document.body.classList.add('page-out');
+      setTimeout(() => {
+        window.location.href = href;
+      }, 180);
+    });
+  });
+</script>
+</BaseLayout>

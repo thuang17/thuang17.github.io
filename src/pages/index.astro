@@ -592,19 +592,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </article>
 
       <!-- Work panel — bottom-left, cropped left -->
-      <a class="panel panel-standard entry-panel" data-panel="work" href="work.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-start;padding:0 0 28px 0">
+      <a class="panel panel-standard entry-panel" data-panel="work" href="/work" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-start;padding:0 0 28px 0">
         <h2 style="margin-left:-0.08em">WORK</h2>
         <p style="padding-left:28px">Selected proof from real operating environments.</p>
       </a>
 
       <!-- Making panel — top-left, cropped top -->
-      <a class="panel panel-standard entry-panel" data-panel="aimaking" href="ai.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-start;align-items:flex-start;padding:28px 0 0 0">
+      <a class="panel panel-standard entry-panel" data-panel="aimaking" href="/ai" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-start;align-items:flex-start;padding:28px 0 0 0">
         <h2 style="margin-top:-0.1em;margin-left:-0.04em">MAKING</h2>
         <p style="padding-left:28px">Experiments, tools, and self-directed building.</p>
       </a>
 
       <!-- Stories panel — dark bg, bottom-right, white text -->
-      <a class="panel panel-standard entry-panel" data-panel="stories" href="stories.html" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-end;background:#1c1c1c;border-color:#333;padding:0 0 28px 0">
+      <a class="panel panel-standard entry-panel" data-panel="stories" href="/stories" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-end;background:#1c1c1c;border-color:#333;padding:0 0 28px 0">
         <h2 style="color:#f5f5f4;margin-right:-0.04em;text-align:right;width:100%">STORIES</h2>
         <p style="color:#a1a1aa;padding-right:28px;text-align:right;width:100%">Personal material around repetition, pressure, and recovering from failure.</p>
       </a>
@@ -656,7 +656,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </div>
 </div>
 
-<script>
+<script is:inline>
   // ── Theme ──
   const html = document.documentElement;
   const btn  = document.getElementById('tbtn');

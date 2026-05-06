@@ -1,4 +1,6 @@
 ---
+import '../styles/global.css';
+
 export interface Props {
   title: string;
   description?: string;
@@ -26,8 +28,6 @@ const { title, description, lang = 'en' } = Astro.props;
       document.documentElement.dataset.theme = t;
     })();
   </script>
-
-  <link rel="stylesheet" href="/src/styles/global.css" />
 </head>
 <body>
   <slot />

@@ -4,3 +4,14 @@ Anime Image Avatar.png
 # Astro
 dist/
 .env
+.astro/
+
+# Dependencies
+node_modules/
+
+# Worktrees
+.claude/worktrees/
+.worktrees/
+
+# Superpowers
+.superpowers/
