@@ -87,7 +87,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-top: 8px; gap: 0; position: relative;
   }
   .ruler { position: relative; width: 200px; height: 24px; }
-  .ruler-tick {
+  :global(.ruler-tick) {
     position: absolute; bottom: 0;
     width: 1.5px; height: 24px; background: var(--fg-3);
     opacity: 0.4; border-radius: 1px;

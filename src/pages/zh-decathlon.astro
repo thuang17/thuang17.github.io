@@ -140,7 +140,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     position: absolute; left: 0; top: 0; bottom: 0;
     width: 1px; background: var(--border);
   }
-  .ruler-tick {
+  :global(.ruler-tick) {
     position: absolute; left: -5px; width: 10px; height: 1px;
     background: var(--fg-3); transition: width .2s, background .2s, opacity .2s;
   }
