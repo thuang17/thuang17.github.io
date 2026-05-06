@@ -161,10 +161,9 @@ markdown 格式写内容。
 详见 `ROADMAP.md`。
 
 ### 下一阶段优先级
-1. 子页面统一视觉风格— Geist 字体 + coral cursor + 新设计 tokens 应用到所有子页面
-2. `Now` 页面 / 区块（需 Trevor 提供内容）
-3. Writing 区块占位（内容后续填充）
-4. 中文文案重写 — 去掉 AI 味
+1. `Now` 页面 / 区块（需 Trevor 提供内容）
+2. Writing 区块占位（内容后续填充）
+3. 中文文案重写 — 去掉 AI 味
 
 ### 暂缓事项
 - 点击涟漪效果
