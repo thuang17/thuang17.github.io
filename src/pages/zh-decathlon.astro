@@ -1,0 +1,497 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="迪卡侬 — 黄拓文"
+  description="迪卡侬 — 黄拓文"
+  lang="zh"
+>
+
+<style>
+  /* ── TOPBAR ──────────────────────────────────── */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 32px; pointer-events: none;
+  }
+  .topbar > * { pointer-events: auto; }
+  .topbar-nav {
+    font-family: var(--f-mono); font-size: 12px;
+    color: var(--fg-2); background: none; border: none;
+    display: flex; align-items: center; gap: 5px; transition: color .2s;
+  }
+  .topbar-nav:hover { color: var(--accent); }
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+  .lang-link {
+    font-family: var(--f-mono); font-size: 12px;
+    color: var(--fg-3); text-decoration: none; transition: color .2s;
+  }
+  .lang-link:hover { color: var(--accent); }
+  .theme-btn {
+    background: none; border: none;
+    color: var(--fg-2); padding: 4px; display: flex; align-items: center; transition: color .2s;
+  }
+  .theme-btn:hover { color: var(--accent); }
+  #icon-moon { display: none; }
+  :global([data-theme="dark"]) #icon-sun  { display: none; }
+  :global([data-theme="dark"]) #icon-moon { display: block; }
+
+  /* ── MAIN CONTENT ────────────────────────────── */
+  main {
+    max-width: 680px; margin: 0 auto; padding: 0 32px;
+  }
+
+  /* ── ENTRY ANIMATION ─────────────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    .page-enter {
+      opacity: 0; transform: translateY(6px);
+      animation: page-in 400ms ease-out forwards;
+    }
+    @keyframes page-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .page-enter { opacity: 1; transform: none; }
+  }
+
+  /* ── PAGE OUT TRANSITION ─────────────────────── */
+  body.page-out main {
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
+
+  /* ── TYPOGRAPHY ──────────────────────────────── */
+  .page-title {
+    font-family: var(--f-display); font-size: 48px; font-weight: 400;
+    line-height: 1.1; letter-spacing: -0.02em; color: var(--fg);
+    margin-bottom: 12px;
+  }
+  .page-subtitle {
+    font-family: var(--f-body); font-size: 16px; font-weight: 400;
+    color: var(--fg-2); margin-bottom: 0;
+  }
+  .page-header-wrap { padding: 80px 0 48px; }
+
+  .section { margin-bottom: 80px; }
+  .section:last-child { margin-bottom: 0; }
+  .section-heading {
+    font-family: var(--f-display); font-size: 28px; font-weight: 400;
+    line-height: 1.2; letter-spacing: -0.01em; color: var(--fg);
+    margin-bottom: 24px;
+  }
+
+  .body-lg {
+    font-family: var(--f-body); font-size: 18px; font-weight: 400;
+    line-height: 1.8; color: var(--fg);
+    margin-bottom: 16px;
+  }
+  .body-lg:last-child { margin-bottom: 0; }
+
+  .body-text {
+    font-family: var(--f-body); font-size: 16px; font-weight: 400;
+    line-height: 1.8; color: var(--fg-2);
+    margin-bottom: 16px;
+  }
+  .body-text:last-child { margin-bottom: 0; }
+  .body-text strong { color: var(--fg); }
+
+  .pull-quote {
+    border-left: 1px solid var(--accent);
+    padding-left: 20px; margin: 52px 0;
+  }
+  .pull-quote p {
+    font-family: var(--f-body); font-size: 15px; font-weight: 400;
+    line-height: 1.8; color: var(--fg); font-style: italic;
+    margin: 0;
+  }
+
+  /* ── DATA ISLAND ─────────────────────────────── */
+  .data-island {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0; margin: 56px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .data-item {
+    padding: 28px 0;
+    border-right: 1px solid var(--border);
+  }
+  .data-item:last-child { border-right: none; }
+  .data-num {
+    font-family: var(--f-display); font-size: 40px; font-weight: 400;
+    line-height: 1; color: var(--fg); letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .data-label {
+    font-family: var(--f-mono); font-size: 11px;
+    color: var(--fg-3); line-height: 1.5; letter-spacing: .03em;
+  }
+
+  .page-bottom { padding-bottom: 120px; }
+
+  /* ── SCROLL RULER + READING LINE ─────────────── */
+  .scroll-ruler {
+    position: fixed; left: 48px; top: 25vh; bottom: 25vh;
+    width: 1px; z-index: 45; pointer-events: none;
+  }
+  .ruler-bar {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+  .ruler-tick {
+    position: absolute; left: -5px; width: 10px; height: 1px;
+    background: var(--fg-3); transition: width .2s, background .2s, opacity .2s;
+  }
+  .scroll-line {
+    position: fixed; left: 48px; width: calc(100vw - 48px); height: 1.5px;
+    background: var(--accent); z-index: 44; pointer-events: none;
+    opacity: 0.55; transition: transform .12s linear; top: 0;
+  }
+
+  /* ── NAV OVERLAY ─────────────────────────────── */
+  .nav-overlay {
+    position: fixed; inset: 0; z-index: 60;
+    background: rgba(0,0,0,0.2);
+    display: none; align-items: flex-start; justify-content: flex-start;
+    padding: 80px 32px;
+  }
+  .nav-overlay.open { display: flex; }
+  .nav-panel {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 28px 32px;
+    min-width: 220px; box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .nav-panel a, .nav-panel button {
+    display: block; font-family: var(--f-mono); font-size: 12px;
+    color: var(--fg-2); text-decoration: none; background: none; border: none;
+    padding: 5px 0; transition: color .15s;
+    line-height: 1.6; width: 100%; text-align: left;
+  }
+  .nav-panel a:hover, .nav-panel button:hover { color: var(--accent); }
+  .nav-panel .nav-section { font-family: var(--f-mono); font-size: 12px; color: var(--fg); padding: 8px 0 4px; }
+  .nav-panel .nav-sub { padding-left: 14px; }
+  .nav-panel .nav-current { color: var(--accent); }
+  .nav-panel hr { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+
+  /* ── INFO OVERLAY ────────────────────────────── */
+  .info-overlay {
+    position: fixed; inset: 0; z-index: 70;
+    background: color-mix(in srgb, var(--bg) 50%, transparent);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.28s ease;
+  }
+  .info-overlay.open { opacity: 1; pointer-events: auto; }
+  .info-sheet {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 20px; padding: 60px 72px;
+    max-width: 1060px; width: calc(100% - 48px);
+    display: grid; grid-template-columns: 1.25fr 0.75fr;
+    gap: 44px 56px;
+    box-shadow: 0 24px 72px rgba(28, 25, 23, 0.10);
+  }
+  :global([data-theme="dark"]) .info-sheet {
+    box-shadow: 0 24px 72px rgba(0, 0, 0, 0.30);
+  }
+  .info-col-label {
+    font-family: var(--f-mono); font-size: 12px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--fg-3); margin-bottom: 12px;
+  }
+  .info-col-body {
+    font-size: 17px; color: var(--fg-2); line-height: 1.7;
+  }
+  .info-col-body a { color: var(--fg-2); text-decoration: none; }
+  .info-col-body a:hover { color: var(--accent); }
+  .info-close {
+    position: absolute; top: 16px; right: 20px;
+    background: none; border: 0;
+    color: var(--fg-3); font-size: 20px; padding: 6px 12px;
+  }
+
+  @media (max-width: 640px) {
+    .info-sheet { grid-template-columns: 1fr; gap: 20px; padding: 28px 24px; }
+  }
+
+  /* ── RESPONSIVE ──────────────────────────────── */
+  @media (max-width: 860px) {
+    .scroll-ruler, .scroll-line { display: none; }
+  }
+  @media (max-width: 680px) {
+    .topbar { padding: 20px 20px; }
+    main { padding: 0 20px; }
+    .page-title { font-size: 36px; }
+    .section-heading { font-size: 24px; }
+    .page-header-wrap { padding: 64px 0 40px; }
+    .data-island { grid-template-columns: 1fr; }
+    .data-item { border-right: none; border-bottom: 1px solid var(--border); padding: 20px 0; }
+    .data-item:last-child { border-bottom: none; }
+    .data-num { font-size: 32px; }
+  }
+  @media (max-width: 480px) {
+    .page-title { font-size: 32px; }
+    .body-lg { font-size: 16px; }
+    .page-header-wrap { padding: 56px 0 36px; }
+  }
+</style>
+
+<!-- ═══════════ TOPBAR ═══════════ -->
+<header class="topbar">
+  <button class="topbar-nav" aria-label="打开导航">
+    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <line x1="0" y1="2" x2="14" y2="2"/>
+      <line x1="0" y1="7" x2="14" y2="7"/>
+      <line x1="4" y1="12" x2="14" y2="12"/>
+    </svg>
+  </button>
+  <div class="topbar-right">
+    <a href="/decathlon" class="lang-link">EN</a>
+    <button class="theme-btn" aria-label="切换主题">
+      <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="scroll-ruler" aria-hidden="true">
+  <div class="ruler-bar"></div>
+</div>
+<div class="scroll-line" aria-hidden="true"></div>
+
+<main class="page-enter">
+
+  <!-- ── HEADER ──────────────────────────────── -->
+  <div class="page-header-wrap">
+    <h1 class="page-title">迪卡侬</h1>
+    <p class="page-subtitle">电商技术项目管理实习生 · 2025–2026</p>
+  </div>
+
+  <!-- ── OPENING ─────────────────────────────── -->
+  <div class="section">
+    <p class="body-lg">迪卡侬中国的电商团队同时在微信小程序、抖音、天猫和淘宝闪购上运营。项目管理团队夹在业务和 IT 之间——收集需求、转化为技术规格、协调开发、管理上线前的测试。</p>
+    <p class="body-lg">我在这个团队里待了三个月。我的导师给了我一个开放的方向：了解系统、发现问题、在你能贡献的地方做出贡献。这恰好定义了这段实习最有趣的部分。</p>
+  </div>
+
+  <!-- ── WECHAT MINI PROGRAM UX ─────────────── -->
+  <div class="section">
+    <h2 class="section-heading">微信小程序用户体验优化</h2>
+
+    <p class="body-text">没人给我分配这个任务。前几周，我像普通用户一样使用迪卡侬的微信小程序——浏览、加购、查物流、走退货流程。有些地方一直让我很不舒服，于是我开始记录下来。当我有了足够的观察整理出一个结构化的案例后，我拿给了我的导师。他的回应是：如果你觉得值得做，就把分析做出来，我们看看是否够格立项。</p>
+
+    <p class="body-text">没有内部用户行为数据可用——没有热图，没有转化漏斗数据。我向导师提出了这个顾虑；他的判断是痛点足够明显，可以不用等数据。于是我用竞品对标来代替：对京东自营、京东第三方和天猫做了全链路的走查，覆盖商品详情页、物流追踪、售后和退货流程。全部用截图和文字记录下来。</p>
+
+    <p class="body-text">总共识别出 <strong>16 个痛点</strong>。关键的有：SKU 命名不一致——小程序上的产品名称和站外内容创作者使用的名字对不上，打断了种草到转化的链路；缺少物流预计到达时间——一个低成本、高体验影响的改进；没有自助退货上门取件——用户必须手动联系客服，而竞品早已实现自动化。</p>
+
+    <p class="body-text">16 个问题摆在面前，开发资源又有限，我需要一个我和团队都能认同的优先级框架。我做了一个 <strong>Value-Effort 矩阵</strong>，用双维度加权评分——用户需求强度（0–5）和商业价值（0–5）。和团队的项目经理开了两次对齐会来验证象限划分。高优先级的需求推进了迭代；其他的进入了 backlog。</p>
+
+    <div class="data-island">
+      <div class="data-item">
+        <div class="data-num">16</div>
+        <div class="data-label">通过竞品对标识别出的用户痛点</div>
+      </div>
+      <div class="data-item">
+        <div class="data-num">2</div>
+        <div class="data-label">评分维度——用户需求 × 商业价值</div>
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      <p>我的导师最初想优先做自助退货上门取件。我反对了——不是反对目标本身，而是时机。这个功能需要逆向物流 API 集成和快递合作谈判；短期开发成本很高，而在短期内增加一个无障碍退货通道很可能在收回成本之前先推高退货率。我们一致同意把它放在长期路线图中，而不是当前迭代里。</p>
+    </div>
+
+  </div>
+
+  <!-- ── UAT COORDINATION ────────────────────── -->
+  <div class="section">
+    <h2 class="section-heading">UAT 协调</h2>
+
+    <p class="body-text">在做 UX 项目的同时，我还在协调大约 8 个并发项目的 UAT 测试——涵盖 DTC 手动退款、两个新的抖音店铺（童装+服装鞋履）、天猫和淘宝闪购。说白了就是信息中转：追踪什么测试排期了、记录发现的问题、把业务、IT、财务和客服对齐、跟进到每个问题关闭为止。</p>
+
+    <p class="body-text">DTC 手动退款项目上，第一轮测试做完后 IT 完成了修复。客服团队被安排了第二轮重新测试，截止日期到了没有回复微信消息。我判断异步沟通已经行不通了，直接走过去约了个短会——但没有开场就说"你们逾期了"。我先问了他们现在的情况，然后解释这个项目对他们实际意味着什么：标准化退款流程会减少他们的合规风险，也会减少他们处理每一笔差价退款时的手工工作量。他们之前没从这个角度想过。重新测试很快就完成了。</p>
+
+    <div class="pull-quote">
+      <p>跨团队协作停滞的时候，问题通常出在激励结构上，而不是沟通渠道。把异步转成面对面是有用的，但更有用的是用"这能为你带来什么"来开场，而不是用"你们应该在什么时候前完成什么"。</p>
+    </div>
+  </div>
+
+  <!-- ── PM TOOL OPTIMIZATION ────────────────── -->
+  <div class="section">
+    <h2 class="section-heading">PM 工具优化</h2>
+
+    <p class="body-text">我的导师知道我读的是项目管理，就让我去对标团队内部的 PM 工具——迪卡侬选择自建而不是买现成的，理由是他们的工作流程不太能直接映射到 Jira 或 Monday 上。我对标了 Jira、Trello、Monday、钉钉和飞书，在内部工具中识别出 <strong>13 个痛点</strong>。关键问题：不点进外部 Jira 链接就看不到项目进展；没有清晰的责任人映射——不问一圈就不知道谁在负责哪个项目；Dashboard 的数字卡片缺乏上下文——就一个数字，没有趋势也没有对比。</p>
+
+    <p class="body-text">写出了完整的需求迭代文档并和管理层对齐。另外注意到团队在用 Notion 做任务管理但觉得不够用——免费版限制多，不适合看板工作流。我建议引入 Trello 作为轻量级的补充，不是替代内部 PM 工具，而是团队日常任务管理的正确工具。团队采纳了并且一直在用。</p>
+  </div>
+
+  <!-- ── REFLECTION ──────────────────────────── -->
+  <div class="section">
+    <h2 class="section-heading">回顾</h2>
+
+    <p class="body-text">UX 项目是我如果能重来会花更多时间的。竞品对标是有用的，但我应该再用力推一下获取内部数据——哪怕只有部分转化漏斗数据，也会显著增强优先级论证的力度。"痛点够明显了"是一个务实的判断，但这也让优先级排序更容易受到质疑。</p>
+
+    <p class="body-text">UAT 协调工作是另一种意义上的收获。在大组织里同时管理八个项目、跨四五个利益相关方，比甘特图上看起来要乱得多。实际的工作大部分是保持信息流动，确保合适的人知道他们需要知道的内容。当这个机制卡住的时候，修复的方法几乎从来不是"发一条更清晰的消息"，而是改变对方的认知框架。</p>
+  </div>
+
+  <div class="page-bottom"></div>
+
+</main>
+
+<!-- ═══════════ NAV OVERLAY ═══════════ -->
+<div class="nav-overlay" id="navOverlay">
+  <div class="nav-panel">
+    <a href="/zh" class="nav-section" style="padding-top:0">首页</a>
+    <a href="/zh-work" class="nav-section">工作</a>
+    <a href="/zh-decathlon" class="nav-sub nav-current">迪卡侬</a>
+    <a href="/zh-mayora" class="nav-sub">迈大食品</a>
+    <a class="nav-sub" style="color:var(--fg-3);cursor:default;pointer-events:none;">商道纵横</a>
+    <a class="nav-sub" style="color:var(--fg-3);cursor:default;pointer-events:none;">天风证券</a>
+    <hr>
+    <a href="/zh-ai" class="nav-section">创造</a>
+    <a href="/zh-stories" class="nav-section">故事</a>
+    <button class="nav-section">信息</button>
+  </div>
+</div>
+
+<!-- ═══════════ INFO OVERLAY ═══════════ -->
+<div class="info-overlay" id="infoOverlay" aria-hidden="true">
+  <div class="info-sheet" style="position:relative">
+    <button class="info-close" aria-label="关闭">&times;</button>
+    <div>
+      <div class="info-col-label">教育</div>
+      <div class="info-col-body">
+        <strong>悉尼大学</strong><br>
+        <span style="color:var(--fg-3);font-size:14px">2025–2027 · 项目管理硕士</span>
+        <br><br>
+        <strong>上海对外经贸大学</strong><br>
+        <span style="color:var(--fg-3);font-size:14px">2020–2024 · 国际经济与贸易学士</span>
+      </div>
+    </div>
+    <div>
+      <div class="info-col-label">联系方式</div>
+      <div class="info-col-body">
+        <a href="mailto:trevor.tw.huang@outlook.com">trevor.tw.huang@outlook.com</a><br>
+        <a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener">LinkedIn</a>
+        &nbsp;·&nbsp;
+        <a href="https://www.instagram.com/t.huang17/" target="_blank" rel="noopener">Instagram</a><br>
+        <a href="https://x.com/H3art128943" target="_blank" rel="noopener">X</a>
+        &nbsp;·&nbsp;
+        <a href="https://www.xiaohongshu.com/user/profile/6150a3e2000000001f03501f" target="_blank" rel="noopener">小红书</a>
+      </div>
+    </div>
+    <div style="grid-column:1/-1">
+      <div class="info-col-label">工具</div>
+      <div class="info-col-body">
+        Python · SQL · Tableau · Excel · Jira · 飞书 · MS Project<br>
+        敏捷方法论<br><br>
+        <span style="color:var(--fg-3);font-size:13px">中文 — 母语 · 英语 — 职业水平</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Theme ──
+  const html = document.documentElement;
+  const btn  = document.querySelector('.theme-btn');
+  const sun  = document.getElementById('icon-sun');
+  const moon = document.getElementById('icon-moon');
+
+  function setTheme(t) {
+    html.setAttribute('data-theme', t);
+    sun.style.display  = t === 'dark' ? 'none' : 'block';
+    moon.style.display = t === 'dark' ? 'block' : 'none';
+  }
+
+  // Sync icons with theme already set by BaseLayout's inline script
+  setTheme(html.getAttribute('data-theme'));
+
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', next);
+    setTheme(next);
+  });
+
+  // ── Nav & Info overlays ──
+  const navOverlay = document.getElementById('navOverlay');
+  const infoOverlay = document.getElementById('infoOverlay');
+
+  function toggleNav() { navOverlay.classList.toggle('open'); }
+  function closeNav(e) { if (!e || e.target === navOverlay) navOverlay.classList.remove('open'); }
+  function toggleInfo() { navOverlay.classList.remove('open'); infoOverlay.classList.toggle('open'); }
+  function closeInfo(e) { if (!e || e.target === infoOverlay) infoOverlay.classList.remove('open'); }
+
+  document.querySelector('.topbar-nav').addEventListener('click', toggleNav);
+  navOverlay.addEventListener('click', closeNav);
+  infoOverlay.addEventListener('click', closeInfo);
+  document.querySelector('.info-close').addEventListener('click', closeInfo);
+  document.querySelector('.nav-panel button').addEventListener('click', toggleInfo);
+
+  // ── Exit transition for lang link ──
+  var lang = document.querySelector('.lang-link');
+  if (lang) {
+    lang.addEventListener('click', function(e) {
+      e.preventDefault();
+      var href = this.getAttribute('href');
+      document.body.classList.add('page-out');
+      setTimeout(function() { window.location.href = href; }, 180);
+    });
+  }
+
+  // ── Scroll ruler + reading line with wave effect ──
+  (function() {
+    var ruler = document.querySelector('.scroll-ruler');
+    var line = document.querySelector('.scroll-line');
+    if (!ruler || !line) return;
+
+    var NUM_TICKS = 40;
+    var WAVE_RADIUS = 6;
+    var BASE_W = 10;
+    var PEAK_W = 28;
+    var ticks = [];
+    for (var i = 0; i < NUM_TICKS; i++) {
+      var t = document.createElement('div');
+      t.className = 'ruler-tick';
+      t.style.top = (i / (NUM_TICKS - 1) * 100) + '%';
+      ruler.appendChild(t);
+      ticks.push(t);
+    }
+
+    function update() {
+      var scrollTop = window.scrollY;
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      var progress = docH > 0 ? scrollTop / docH : 0;
+
+      var rulerRect = ruler.getBoundingClientRect();
+      var rulerTop = rulerRect.top;
+      var rulerH = rulerRect.height;
+      var targetY = rulerTop + (progress * rulerH);
+      line.style.transform = 'translateY(' + targetY + 'px)';
+
+      var activeFloat = progress * (NUM_TICKS - 1);
+      ticks.forEach(function(t, i) {
+        var dist = Math.abs(i - activeFloat);
+        if (dist <= WAVE_RADIUS) {
+          var factor = 1 - (dist / (WAVE_RADIUS + 1));
+          var w = BASE_W + factor * (PEAK_W - BASE_W);
+          t.style.width = w + 'px';
+          t.style.background = 'var(--accent)';
+          t.style.opacity = 0.4 + factor * 0.6;
+        } else {
+          t.style.width = BASE_W + 'px';
+          t.style.background = 'var(--fg-3)';
+          t.style.opacity = '1';
+        }
+      });
+    }
+
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) { requestAnimationFrame(function() { update(); ticking = false; }); ticking = true; }
+    }, { passive: true });
+    update();
+  })();
+</script>
+</BaseLayout>
