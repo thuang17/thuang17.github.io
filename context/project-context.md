@@ -47,34 +47,55 @@ Full data source: `Trevor_WorkContext_ForWebsite.md` and `Trevor_WorkExperience_
 
 ---
 
+## Tech Stack (updated 2026-05-06)
+
+- **Astro v5 + React 19 + TypeScript** — build step required (`npm run build`)
+- **GitHub Actions** — auto-builds and deploys to Pages on push to `main`
+- **CSS:** `src/styles/global.css` (design system) + scoped `<style>` blocks per page
+- **Icons:** inline SVGs only
+- **No Tailwind CDN** — all CSS is locally bundled
+
 ## Site Structure
 
 ```
-index.html          — English main page (primary)
-zh.html             — Chinese main page
+src/pages/
+├── index.astro          — EN homepage (primary)
+├── zh.astro             — ZH homepage
+├── work.astro           — Work index
+├── zh-work.astro        — ZH Work index
+├── stories.astro        — Stories index
+├── zh-stories.astro     — ZH Stories index
+├── ai.astro             — AI / Making story
+├── zh-ai.astro          — ZH AI / Making story
+├── darts.astro          — Darts story
+├── zh-darts.astro       — ZH Darts story
+├── decathlon.astro      — Decathlon case study
+├── zh-decathlon.astro   — ZH Decathlon case study
+├── mayora.astro         — Mayora case study
+├── zh-mayora.astro      — ZH Mayora case study
+├── cny-campaign.astro   — CNY campaign deep-dive
+├── decathlon-ux.astro   — Decathlon UX research deep-dive
+├── making/              — Product listing (auto-generated)
+└── products/            — Product detail pages (auto-generated)
 
-decathlon.html      — Decathlon full work experience case study
-mayora.html         — Mayora full work experience case study
-cny-campaign.html   — CNY Meituan campaign project deep-dive
-decathlon-ux.html   — Decathlon WeChat Mini Program UX project deep-dive
-
-darts.html          — Darts story (About section detail)
-ai.html             — AI Explorer story (About section detail)
-zh-darts.html       — Chinese version of darts story
-zh-ai.html          — Chinese version of AI story
+src/content/products/    — Product Markdown files
+├── product1.md
+└── ...
 ```
+
+All URLs use clean paths: `work.astro` → `/work`, `zh.astro` → `/zh`, etc.
 
 Homepage information architecture:
 
-- `Work` — strongest evidence of judgment in real operating environments
-- `AI / Making` — experiments, tools, building instinct, and self-directed making
-- `Stories` — personal material that explains discipline, pressure, repetition, and systems
+- `Work` → `/work` — strongest evidence of judgment in real operating environments
+- `AI / Making` → `/ai` — experiments, tools, building instinct, and self-directed making
+- `Stories` → `/stories` — personal material that explains discipline, pressure, repetition, and systems
 
 Important content boundary:
 
 - `darts` belongs in `Stories`
 - `AI` should no longer primarily live in `Stories`
-- the current `ai.html` direction should gradually evolve toward `AI / Making`
+- `ai.astro` direction should gradually evolve toward `AI / Making`
 
 ---
 
@@ -126,4 +147,4 @@ Homepage tone and UX direction:
 
 ---
 
-*Last updated: 2026-05-03*
+*Last updated: 2026-05-07*

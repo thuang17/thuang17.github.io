@@ -3,14 +3,16 @@
 ## Color Tokens
 
 ```css
---bg:       #FAFAF8   /* page background */
+--bg:       #E8E8E8   /* page background */
 --bg-sub:   #F0EEE8   /* hover / card background */
 --bg-foot:  #E8E6DE   /* footer background */
 --fg:       #1C1917   /* primary text */
 --fg-2:     #57534E   /* secondary text */
 --fg-3:     #A8A29E   /* labels / dates / muted */
 --border:   #E7E5E4
+--border-2: #C9C8C4
 --accent:   #7C3AED   /* purple — primary accent */
+--accent-2: #6D28D9
 ```
 
 Dark mode via `data-theme="dark"` on `<html>`, persisted to localStorage.
@@ -21,12 +23,20 @@ Dark mode via `data-theme="dark"` on `<html>`, persisted to localStorage.
 
 | Role | Font | Weight |
 |------|------|--------|
-| Display / headings | Montserrat | 700, 800 |
+| Hero / display | Geist | 400, 500, 600 |
+| Display / headings fallback | Montserrat | 700, 800 |
 | Body text | Nunito Sans | 300, 400, 500, 600 |
 | Labels / dates / mono | JetBrains Mono | 300, 400 |
 | Chinese fallback | Noto Sans SC | added on ZH pages only |
 
 Base font size: 16px. Line height: 1.75 (body), 1.1 (large headings).
+Fonts loaded via `@import` in `src/styles/global.css`.
+
+## CSS Source
+
+Updated 2026-05-06: All design tokens moved to `src/styles/global.css`.
+Page-specific CSS lives in each `.astro` file's `<style>` block (auto-scoped by Astro).
+**Do NOT add `<link rel="stylesheet">` tags** — import CSS in Astro frontmatter instead.
 
 ---
 
@@ -123,8 +133,8 @@ All icons are inline SVGs (Lucide-style, stroke-based). No icon CDN — CDN load
 - No gradients on backgrounds (accent purple only on text/borders/data numbers)
 - No heavy animations (max 300ms transitions)
 - No horizontal scroll on mobile
-- No Tailwind CDN on detail pages (index.html uses it; detail pages use pure CSS)
+- No Tailwind CDN (removed in migration, all styles are local)
 
 ---
 
-*Last updated: 2026-04-30*
+*Last updated: 2026-05-07*

@@ -35,12 +35,19 @@ Rules for any AI working on this project.
 
 ## Code Rules
 
-- Do not use Tailwind CDN on detail pages (decathlon.html, mayora.html, etc.)
-- index.html and zh.html use Tailwind CDN — that's intentional, do not remove
+- **Build before pushing:** You must run `npm run build` before pushing. If the build errors, the site breaks.
 - All icons must be inline SVGs — no external icon CDN
 - Dark mode via `data-theme="dark"` on `<html>` — always test both modes
 - All pages must be mobile-responsive — test at 860px and 480px breakpoints
 - No horizontal scroll on mobile
+
+### Astro-specific rules
+
+- **CSS import:** Always use `import '../styles/global.css'` in Astro frontmatter. NEVER use `<link rel="stylesheet">` — it won't resolve in production.
+- **Script scoping:** Use `<script is:inline>` if the script needs `onclick` to call global functions. Otherwise, Astro bundles scripts as ES modules.
+- **Dynamic elements:** If JS creates DOM elements via `createElement`, wrap their CSS classes with `:global()` in `<style>` blocks.
+- **Dark mode selectors:** Always wrap `[data-theme="dark"]` with `:global()` in scoped `<style>`, because `data-theme` lives on `<html>`.
+- **No Tailwind CDN:** Removed in migration; all CSS is now local.
 
 ---
 
@@ -63,18 +70,23 @@ Rules for any AI working on this project.
 
 ## How Claude Code Uses This
 
-Claude Code (the primary AI for this project) reads the repo directly and does not need files pasted manually. It maintains project memory via CLAUDE.md and session summaries.
+Claude Code reads the repo directly. Key documents:
+- `CLAUDE.md` — project overview, tech stack, design system, file structure in Chinese
+- `AGENTS.md` — English version for OpenAI Codex
+- Project memory at `~/.claude/projects/.../memory/`
 
 ## How ChatGPT / Codex Should Use This
 
 Paste the relevant context files at the start of each conversation:
 - Content task → paste `project-context.md` + `case-studies.md`
 - Design/UI task → paste `project-context.md` + `design-system.md`
-- New page task → paste all three + the most relevant existing HTML page as reference
+- New page task → paste all three + `rules.md`
+
+**Important:** This project now uses Astro. Do NOT suggest adding plain `.html` files. All pages go in `src/pages/`. The build command is `npm run build`.
 
 Always end your prompt with explicit constraints:
 > "Do not modify any other files. Only do X. Do not change the design system."
 
 ---
 
-*Last updated: 2026-04-30*
+*Last updated: 2026-05-07*

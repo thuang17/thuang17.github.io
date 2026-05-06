@@ -103,11 +103,19 @@ The product automatically appears on the `/making/` listing page and gets its ow
 
 ## Critical Rules
 
+- **Build before deploying:** Run `npm run build` before pushing — Astro errors will surface at build time
 - Never change verified data without checking source files (`Trevor_WorkContext_ForWebsite.md`)
-- Do not use Tailwind CDN on detail pages
 - All icons must be inline SVGs
+- Do NOT use Tailwind CDN — removed in migration, all CSS is local
 - Only modify files explicitly mentioned in the task
 - After any change, update `ROADMAP.md` (mark completed items, update date)
+
+### Astro-specific rules
+
+- **CSS import:** Always use `import` in frontmatter, never `<link rel="stylesheet">`
+- **Script scoping:** Use `<script is:inline>` if functions need global access (e.g. `onclick` handlers)
+- **Dynamic elements:** CSS classes added via JS `createElement` need `:global()` wrapper in `<style>` blocks
+- **Dark mode selectors:** Always wrap `[data-theme="dark"]` with `:global()` in scoped `<style>`
 
 Direction rules:
 

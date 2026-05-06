@@ -29,6 +29,21 @@ Lightweight project management file. Update after each meaningful change.
 - [x] Main page Project cards linked to project detail pages
 - [x] /context folder — shared reference files for multi-AI collaboration
 
+**Phase 7 · Framework Migration (completed 2026-05-06)**
+
+- [x] Migrate from pure static HTML to **Astro v5 + React 19 + TypeScript**
+- [x] Initialize Astro project with `@astrojs/react` integration
+- [x] Create shared `BaseLayout.astro` — removes duplicate head/fonts/tokens across all 18 pages
+- [x] Create global CSS design system (`src/styles/global.css`) — design tokens, reset, typography, cursor
+- [x] Migrate homepage (EN/ZH) — preserve horizontal surface, scrubber, entry animation, dark mode
+- [x] Migrate all 14 sub-pages (work, stories, ai, darts, 4 case studies + Chinese mirrors)
+- [x] Migrate 2 remaining Chinese case study pages (zh-decathlon, zh-mayora)
+- [x] Set up products content system — `src/content/products/*.md` → auto-generated listing + detail pages
+- [x] Create React components — `ProductCard.tsx`, `ProductGrid.tsx`
+- [x] Configure GitHub Actions deploy workflow — builds Astro, deploys `dist/` to Pages
+- [x] Remove Tailwind CDN dependency — CSS is now locally bundled
+- [x] Clean up root `.html` files (all deleted, git history preserved)
+
 ---
 
 ## In Progress
@@ -37,65 +52,40 @@ Lightweight project management file. Update after each meaningful change.
 
 - [x] Redesign darts.html and ai.html — both story pages now use stronger editorial / immersive layouts instead of single-column article layouts.
 - [ ] Chinese text rewrite — current Chinese copy has AI-generated patterns, feels unnatural. Trevor writes key sentences, Claude structures around them.
-- [ ] Create Chinese versions of work case study pages (zh-decathlon.html, zh-mayora.html) — optional, lower priority
+- [x] Create Chinese versions of work case study pages (zh-decathlon.astro, zh-mayora.astro) — migrated together with all pages
 
 ---
 
 ## Next
 
-**Phase 3 · Main Narrative**
+**Phase 3 · Main Narrative** *(all complete)*
 
 - [x] Website direction PRD — define "operator with a maker edge" as the next design/narrative direction
-- [x] Homepage direction refresh — reframe hero, selected proof, work scanability, and personal maker bridge around operator judgment
-- [x] Remove duplicated Beyond Work block — maker edge bridge now carries the personal-story entry points
-- [x] Homepage first fold rebuilt as a personal index — the landing surface now foregrounds Work / AI-Making / Stories instead of leading with a resume-style hero
-- [x] Context files synced to personal-index direction — `AGENTS.md`, `CLAUDE.md`, and `context/project-context.md` now reflect the new homepage role and IA
-- [x] Homepage contact anchors repaired after info-strip merge — both locales now point `Contact / 联系` to the contact column, and the Instagram profile link is restored
-- [x] Homepage education strip refined — school names are now standalone links and degree details live on the muted year line in both locales
-- [x] Homepage info strip rebalanced for long education labels — desktop now gives the education column more room while preserving responsive fallback
-- [x] Homepage migrated to horizontal single-surface model — 5 panels (Hero/Work/Making/Stories/Info), Rauno-style hero with Geist typography, velocity+friction scroll, Minimal Scrubber, Info overlay, mobile fallback. Both locales (EN/ZH) migrated.
-- [x] Hero entry animation — panel frame 1200ms scale + circle 700ms scale + text clip reveal + panel fade-in
-- [x] Hero accent refined — single panel-height purple circle (#D0C4F0 / #5B4A8C), replaced double-circle attempt
-- [x] zh.html synced with all latest homepage changes (entry animation, circle, panels)
-- [ ] Click ripple effect — standalone test works, but doesn't render in index.html (likely Tailwind or JS conflict). Debug later.
-- [ ] "Now" section / page — what Trevor is currently doing, thinking, building (Trevor provides content)
-- [ ] Writing section placeholder — no content yet, just structure
+- [x] Homepage direction refresh, context files synced, horizontal surface migration
+- [x] Hero entry animation, accent circle, Chinese version sync
+- [ ] Click ripple effect — deferred, low priority
+- [ ] "Now" section / page — needs Trevor content
+- [ ] Writing section placeholder — needs content
 
-**Phase 3.5 · Sub-page Structure**
+**Phase 3.5 · Sub-page Structure** *(all complete)*
 
-- [x] **Work index page (`work.html` + `zh-work.html`)** — editorial directory with v9 entry animation (rise+fade, 100ms stagger, dot leader center-expand). Centered narrow layout (max-width 680px), fixed topbar with ← Home + lang/theme toggles, focus hover effect (hover list → others dim 0.35), 48px gap between Experience and Projects sections. Chinese mirror with translated company/project names. No titles, no dividers, no footer.
-- [x] **Fix panel navigation logic** — Work panel → work.html (English) / zh-work.html (Chinese). Making → ai.html, Stories → darts.html already correct.
-- [ ] **Unify sub-page visual style** — Apply Geist font + coral cursor + color tokens to all child pages (decathlon, mayora, cny-campaign, decathlon-ux, ai, darts).
+- [x] Work index page (work.astro + zh-work.astro) — editorial directory with v9 entry animation
+- [x] All pages migrated to Astro: work, stories, ai, darts, decathlon, mayora, cny-campaign, decathlon-ux + Chinese mirrors
+- [x] Panel navigation uses clean Astro URLs (/work, /ai, /stories, etc.)
 
 ---
 
 ## Someday
 
 **Phase 4 · Interaction & Polish**
-- [x] Homepage compact floating nav — desktop scroll turns the top bar into a restrained B3-lite floating pill; mobile keeps the stable navigation layout.
-- CSS View Transitions: project card click → detail page animation
-- Subtle scroll-triggered animations on case study pages
-- [x] Custom cursor (coral dot #E07B5A, r=7/8px, CSS url(), no system pointer on interactive elements)
-- [x] Page entry animation (hero scale + text clip reveal + panel fade-in)
-- [x] Scrubber hover + drag interaction
+- [x] Homepage compact floating nav, custom cursor, entry animation, scrubber
+- CSS View Transitions, scroll-triggered animations (deferred)
 
 **Phase 5 · Content Expansion**
-- Writing: actual articles (China O2O market / AI tools / PM thinking)
-- Now page: update every quarter
-- 1–2 English articles
+- Writing, Now page, English articles (deferred, needs content)
 
 **Phase 6 · Deployment & SEO**
-- Custom domain (once content is mature)
-- SEO meta tags optimization
-- Performance optimization (images / font loading)
-
-**Phase 7 · Framework Migration (on-demand, not urgent)**
-- Consider migrating to Next.js or Astro
-- Trigger conditions — evaluate only when one of these becomes true:
-  - Need a CMS (blog posts without editing HTML manually)
-  - Need backend logic (comments, forms, user data)
-  - HTML file count becomes unmanageable
-- Current state: pure static HTML meets all needs, no migration needed
+- Custom domain, SEO meta tags, perf optimization (deferred)
 
 ---
 
@@ -118,7 +108,12 @@ Lightweight project management file. Update after each meaningful change.
 | 2026-05 | Homepage becomes a personal index first | The site should feel like Trevor's entry surface first, with detail moved one layer deeper |
 | 2026-05 | Context files now follow the personal-index direction | Prevent future sessions from drifting back to a recruiter-first homepage interpretation |
 | 2026-05-05 | Work index page: editorial directory over cards | Rauno-inspired restrained list with v9 entry animation, focus hover, no titles/footer. Better matches the personal-index direction and feels more editorial than panel-card layout |
+| 2026-05-06 | Migrate to Astro v5 + React 19 + TypeScript | Pure static HTML no longer sufficient: 18 pages unmanageable, need shared layout + product content system. Astro chosen over Next.js for zero-JS output and gradual migration path |
+| 2026-05-06 | CSS bundling: Astro import instead of `<link>` | `<link rel="stylesheet" href="/src/styles/global.css">` doesn't resolve in production. Must use `import '../styles/global.css'` in Astro frontmatter |
+| 2026-05-06 | Script scoping: `is:inline` for global functions | Astro bundles `<script>` as ES module by default; functions not accessible from `onclick` handlers. Use `is:inline` or convert to `addEventListener` |
+| 2026-05-06 | Dynamic elements need `:global()` CSS | `.ruler-tick` created via JS `createElement` lacks Astro scope attribute. Must use `:global(.ruler-tick)` in scoped `<style>` blocks |
+| 2026-05-07 | Products content system docs in CLAUDE.md + AGENTS.md | Multiple AI tools (Claude Code, Codex) need to know about `src/content/products/*.md` convention. Documented in both project-level context files + memory |
 
 ---
 
-*Last updated: 2026-05-05*
+*Last updated: 2026-05-07*
