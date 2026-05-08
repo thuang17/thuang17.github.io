@@ -72,6 +72,7 @@ Lightweight project management file. Update after each meaningful change.
 - [x] Work index page (work.astro + zh-work.astro) — editorial directory with v9 entry animation
 - [x] All pages migrated to Astro: work, stories, ai, darts, decathlon, mayora, cny-campaign, decathlon-ux + Chinese mirrors
 - [x] Panel navigation uses clean Astro URLs (/work, /ai, /stories, etc.)
+- [x] Info overlay copy synced across homepage and index-linked sub-pages; removed language line from the modal
 
 ---
 
@@ -116,4 +117,4 @@ Lightweight project management file. Update after each meaningful change.
 
 ---
 
-*Last updated: 2026-05-07*
+*Last updated: 2026-05-08*
