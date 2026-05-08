@@ -74,6 +74,7 @@ Lightweight project management file. Update after each meaningful change.
 - [x] Panel navigation uses clean Astro URLs (/work, /ai, /stories, etc.)
 - [x] Info overlay copy synced across homepage and index-linked sub-pages; removed language line from the modal
 - [x] Self-host core Latin fonts in `public/fonts` to remove build-time Google Fonts dependency
+- [x] Correct SUIBE English name in all English info overlays
 
 ---
 
