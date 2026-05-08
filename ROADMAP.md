@@ -73,6 +73,7 @@ Lightweight project management file. Update after each meaningful change.
 - [x] All pages migrated to Astro: work, stories, ai, darts, decathlon, mayora, cny-campaign, decathlon-ux + Chinese mirrors
 - [x] Panel navigation uses clean Astro URLs (/work, /ai, /stories, etc.)
 - [x] Info overlay copy synced across homepage and index-linked sub-pages; removed language line from the modal
+- [x] Self-host core Latin fonts in `public/fonts` to remove build-time Google Fonts dependency
 
 ---
 
@@ -114,6 +115,7 @@ Lightweight project management file. Update after each meaningful change.
 | 2026-05-06 | Script scoping: `is:inline` for global functions | Astro bundles `<script>` as ES module by default; functions not accessible from `onclick` handlers. Use `is:inline` or convert to `addEventListener` |
 | 2026-05-06 | Dynamic elements need `:global()` CSS | `.ruler-tick` created via JS `createElement` lacks Astro scope attribute. Must use `:global(.ruler-tick)` in scoped `<style>` blocks |
 | 2026-05-07 | Products content system docs in CLAUDE.md + AGENTS.md | Multiple AI tools (Claude Code, Codex) need to know about `src/content/products/*.md` convention. Documented in both project-level context files + memory |
+| 2026-05-08 | Self-host fonts instead of Google Fonts `@import` | Local/CI builds should not depend on external font hosts or network DNS availability |
 
 ---
 

@@ -30,7 +30,7 @@ Dark mode via `data-theme="dark"` on `<html>`, persisted to localStorage.
 | Chinese fallback | Noto Sans SC | added on ZH pages only |
 
 Base font size: 16px. Line height: 1.75 (body), 1.1 (large headings).
-Fonts loaded via `@import` in `src/styles/global.css`.
+Fonts are self-hosted from `public/fonts/` and loaded via `@font-face` in `src/styles/global.css`.
 
 ## CSS Source
 
@@ -135,6 +135,4 @@ All icons are inline SVGs (Lucide-style, stroke-based). No icon CDN — CDN load
 - No horizontal scroll on mobile
 - No Tailwind CDN (removed in migration, all styles are local)
 
----
-
-*Last updated: 2026-05-07*
+*Last updated: 2026-05-08*
