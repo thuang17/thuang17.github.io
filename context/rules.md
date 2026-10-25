@@ -29,7 +29,7 @@ Rules for any AI working on this project.
 - No AI-sounding Chinese patterns: 通过...实现了 / 此外 / 综上 / 不仅...而且
 - Every claim needs a specific number or concrete example
 - Do not invent details — only use what Trevor has explicitly provided
-- Trevor has not held a formal "Project Manager" title — do not use that label
+- Trevor has not held a formal "Project Manager" title — do not use that label, except on the ChamberUp page where it is labelled "University of Sydney Capstone" (confirmed 2026-10-23)
 
 ---
 

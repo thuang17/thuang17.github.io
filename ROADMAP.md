@@ -101,7 +101,7 @@ Lightweight project management file. Update after each meaningful change.
 | 2026-04 | No framework, single HTML files | Zero-config GitHub Pages deployment, easy to maintain |
 | 2026-04 | Container width: 1080px unified | Eliminates hero/body misalignment |
 | 2026-04 | github.io for now, no custom domain yet | Wait for content to mature before investing |
-| 2026-04 | No "Project Manager" title | Trevor has not held a formal PM role; avoid misleading |
+| 2026-04 | No "Project Manager" title | Trevor has not held a formal PM role; avoid misleading. **Exception 2026-10-23**: ChamberUp page only, labelled University of Sydney Capstone (real team-appointed role) |
 | 2026-04 | Pain points count: 16 | Verified against source files across both work context documents |
 | 2026-04 | No Next.js migration for now | Static HTML sufficient; migration only when backend/CMS needs arise |
 | 2026-04 | Multi-AI collaboration via /context folder | Claude Code reads repo directly; ChatGPT/Codex require context files to be pasted manually |

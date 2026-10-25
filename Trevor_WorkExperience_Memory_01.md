@@ -59,10 +59,6 @@
 - Result: feature entered backlog at low priority
 - This is Trevor's best example of "using data/logic to persuade others" (P&G Q4 behavior)
 
-**BRD output:**
-- Wrote BRD for delivery radius expansion to 10km
-- Projected annual GMV uplift: 6M+ RMB
-
 #### Project B: DTC Manual Refund Optimization
 **Role:** PM coordinating business, IT, and customer service teams
 

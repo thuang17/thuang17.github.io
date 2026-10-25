@@ -97,7 +97,7 @@ Trevor Huang（黄拓文）的个人网站。GitHub Pages 托管，Astro v5 构�
 
 ### 不出现在英文版的内容
 - 任何中文字符（除了 nav 里的「中文」切换链接）
-- "Project Manager" 头衔（Trevor 没有正式担任过 PM，只是 PM Intern）
+- "Project Manager" 头衔，**唯一例外**：ChamberUp 页面可写 "Project Manager & Product Owner · University of Sydney Capstone"（2026-10-23 Trevor 确认，团队正式任命的真实角色）。工作经历（迪卡侬等）仍只能写 PM Intern，不得泛化成职业头衔
 
 ### 语言切换
 - 英文版 nav 有「中文」链接 → `/zh`
@@ -121,6 +121,7 @@ src/pages/
 ├── zh-darts.astro           # ZH Darts 故事页
 ├── decathlon.astro          # Decathlon 案例页
 ├── mayora.astro             # Mayora 案例页
+├── chamberup.astro / zh-chamberup.astro  # ChamberUp 案例页（视频/截图为占位，见页内 TODO 注释，素材放 public/chamberup/）
 ├── cny-campaign.astro       # CNY Campaign 项目深挖
 ├── decathlon-ux.astro       # Decathlon UX 项目深挖
 ├── making/
