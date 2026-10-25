@@ -88,7 +88,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .surface-viewport {
     height: min(72vh, 780px);
-    overflow: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
     position: relative;
     margin-top: 100px;
     margin-bottom: auto;
@@ -151,7 +152,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   /* Light mode: non-Stories panels — subtle darken */
-  .panel-standard:not([data-panel="stories"]):hover {
+  .panel-standard:not([data-panel="stories"]):not([data-panel="work"]):hover {
     background: #f3f3f3;
   }
 
@@ -160,10 +161,58 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: #2a2a2a !important;
   }
 
+  /* Project panel: oversized word that slides inside the card as it moves across the viewport */
+  @media (min-width: 980px) {
+    .pw {
+      position: absolute;
+      left: 0;
+      bottom: -0.13em;
+      margin: 0;
+      line-height: 1;
+      font-size: 360px;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  /* Project panel: brand blue, darker on hover (also in dark mode) */
+  [data-panel="work"]:hover,
+  :global([data-theme="dark"]) [data-panel="work"]:hover {
+    background: #1A3699 !important;
+  }
+
   /* Dark mode: all panels — subtle brighten, need !important for Stories inline */
   :global([data-theme="dark"]) .panel-standard:hover {
     background: #2a2a2a !important;
     box-shadow: 0 18px 48px rgba(0, 0, 0, 0.30);
+  }
+
+  /* Stories: the "o" is a solid circle in the Projects blue */
+  .so {
+    display: inline-block;
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    background: #1E40AF;
+    margin: 0 0.02em;
+  }
+
+  /* Dark mode: Projects card brightens on hover, Stories card becomes light grey */
+  :global([data-theme="dark"]) .panel-standard[data-panel="work"]:hover {
+    background: #2D52CC !important;
+  }
+
+  :global([data-theme="dark"]) .panel-standard[data-panel="stories"] {
+    background: #D4D4D8 !important;
+    border-color: #D4D4D8 !important;
+  }
+
+  :global([data-theme="dark"]) .panel-standard[data-panel="stories"]:hover {
+    background: #E4E4E7 !important;
+  }
+
+  :global([data-theme="dark"]) .panel-standard[data-panel="stories"] h2 {
+    color: #18181B !important;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -315,13 +364,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .hero-text {
     font-family: 'Geist', 'Helvetica Neue', helvetica, arial, sans-serif;
-    font-size: clamp(72px, 11.7vw, 168px);
+    font-size: clamp(56px, 9.2vw, 132px);
     font-weight: 500;
-    line-height: 1.1;
+    line-height: 1;
+    letter-spacing: -0.02em;
     color: #111;
     position: relative;
     z-index: 2;
     margin-left: 34px;
+  }
+
+  .hero-name {
+    align-self: flex-end;
+    margin-right: clamp(28px, 3.9vw, 56px);
   }
 
   :global([data-theme="dark"]) .hero-text {
@@ -580,22 +635,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <!-- Hero panel -->
       <article class="panel panel-hero entry-hero" data-panel="hero" style="display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:0">
         <div class="entry-hero-scale">
-          <div class="hero-text" style="padding:clamp(32px,8vw,120px)">
-            <span class="entry-line" style="margin-left:-0.3em"><span>Hi I'm</span></span>
-            <span class="entry-line" style="margin-left:0.1em"><span>Trevor</span></span>
+          <div class="hero-text" style="width:100%;height:100%;box-sizing:border-box;margin:0;padding:0 0 0 clamp(28px,3.9vw,56px);display:flex;flex-direction:column;justify-content:center">
+            <span class="entry-line"><span>Welcome to</span></span>
+            <span class="entry-line" style="margin-left:0.18em"><span>my site.</span></span>
+            <span class="entry-line hero-name"><span>I’m Trevor.</span></span>
           </div>
         </div>
         <div class="entry-accent-a"></div>
       </article>
 
       <!-- Project panel — bottom-left, cropped left -->
-      <a class="panel panel-standard entry-panel" data-panel="work" href="/work" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-start;padding:0 0 8px 0">
-        <h2 style="margin-left:-0.08em">PROJECT</h2>
+      <a class="panel panel-standard entry-panel" data-panel="work" href="/work" data-transition="page" style="position:relative;overflow-x:clip;overflow-y:visible;text-decoration:none;color:inherit;background:#1E40AF;border-color:#1E40AF;padding:0">
+        <h2 class="pw" id="pw-word" style="color:#ffffff">Projects</h2>
       </a>
 
       <!-- Stories panel — dark bg, bottom-right, white text -->
-      <a class="panel panel-standard entry-panel" data-panel="stories" href="/stories" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-end;align-items:flex-end;background:#1c1c1c;border-color:#333;padding:0 0 8px 0">
-        <h2 style="color:#f5f5f4;margin-right:-0.04em;text-align:right;width:100%">STORIES</h2>
+      <a class="panel panel-standard entry-panel" data-panel="stories" href="/stories" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-start;align-items:flex-end;background:#1c1c1c;border-color:#333;padding:8px 0 0 0">
+        <h2 style="color:#f5f5f4;margin-right:-0.12em;text-align:right;width:100%;font-size:clamp(140px,19vw,260px)" aria-label="Stories">St<span class="so" aria-hidden="true"></span>ries</h2>
       </a>
 
       <!-- Info panel -->
@@ -612,6 +668,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <div class="info-overlay" id="info-overlay" aria-hidden="true">
   <div class="info-sheet" style="position:relative">
     <button class="info-close" onclick="closeInfo()" aria-label="Close info">&times;</button>
+    <div style="display:flex;flex-direction:column;gap:44px">
     <div>
       <div class="info-col-label">Education</div>
       <div class="info-col-body">
@@ -623,18 +680,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
     <div>
-      <div class="info-col-label">Contact &amp; Social</div>
-      <div class="info-col-body">
-        <a href="mailto:trevor.tw.huang@outlook.com">trevor.tw.huang@outlook.com</a><br>
-        <a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener">LinkedIn</a>
-        &nbsp;·&nbsp;
-        <a href="https://www.instagram.com/t.huang17/" target="_blank" rel="noopener">Instagram</a><br>
-        <a href="https://x.com/H3art128943" target="_blank" rel="noopener">X</a>
-        &nbsp;·&nbsp;
-        <a href="https://www.xiaohongshu.com/user/profile/6150a3e2000000001f03501f" target="_blank" rel="noopener">Xiaohongshu</a>
-      </div>
-    </div>
-    <div style="grid-column:1/-1">
       <div class="info-col-label">Experience</div>
       <div class="info-col-body">
         <strong>Decathlon</strong> <span style="color:var(--fg-3);font-size:14px">· E-commerce Technology PM Intern · 2025–2026</span><br>
@@ -643,11 +688,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <strong>Tianfeng Securities</strong> <span style="color:var(--fg-3);font-size:14px">· Industry Research Intern · 2022</span>
       </div>
     </div>
-    <div style="grid-column:1/-1">
-      <div class="info-col-label">Toolkit</div>
+    </div>
+    <div>
+      <div class="info-col-label">Contact &amp; Social</div>
       <div class="info-col-body">
-        Python · SQL · Tableau · Excel · Jira · Feishu · MS Project<br>
-        Agile Methodologies
+        <a href="mailto:trevor.tw.huang@outlook.com">trevor.tw.huang@outlook.com</a><br>
+        <a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
   </div>
@@ -854,5 +900,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
   }, { threshold: 0.07, rootMargin: '0px 0px -24px 0px' });
   document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+</script>
+
+<script is:inline>
+  // ── Project word parallax ──
+  (function () {
+    var panel = document.querySelector('[data-panel="work"]');
+    var word = document.getElementById('pw-word');
+    if (!panel || !word) return;
+    var desktop = window.matchMedia('(min-width: 980px)');
+    var lastX = null, lastFs = null;
+    function frame() {
+      if (desktop.matches) {
+        var r = panel.getBoundingClientRect();
+        var fs = Math.round(panel.offsetHeight * 0.8);
+        if (fs !== lastFs) { word.style.fontSize = fs + 'px'; lastFs = fs; }
+        var vw = window.innerWidth;
+        var t = Math.min(1, Math.max(0, (vw * 0.88 - r.left) / (vw * 0.83)));
+        var x = -t * Math.max(0, word.scrollWidth - panel.clientWidth);
+        if (x !== lastX) { word.style.transform = 'translate3d(' + x.toFixed(1) + 'px,0,0)'; lastX = x; }
+      } else if (lastX !== null) {
+        word.style.fontSize = ''; word.style.transform = ''; lastX = lastFs = null;
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
 </script>
 </BaseLayout>

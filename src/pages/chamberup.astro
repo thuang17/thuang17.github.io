@@ -253,13 +253,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .pj .pill { font-family:var(--f-body); font-weight:600; font-size:17px; color:var(--fg); text-decoration:none; border:1.5px solid var(--pj-subtle); border-radius:999px; padding:12px 24px; transition:color .2s,border-color .2s; }
   .pj .pill:hover { color:var(--accent); border-color:var(--accent); }
   .pj .phone { margin:0; position:relative; z-index:46; }
-  .pj .phone video { display:block; width:100%; aspect-ratio:590/1374; border-radius:34px; border:1px solid var(--border); background:#0B1A33; box-shadow:0 30px 70px rgba(28,25,23,.18); }
+  .pj .phone video { display:block; width:100%; aspect-ratio:590/1374; border-radius:34px; border:1px solid var(--border); background:#fff; box-shadow:0 30px 70px rgba(28,25,23,.18); clip-path:inset(1px round 33px); }
   .pj .phone figcaption { font-family:var(--f-body); font-size:15px; color:var(--pj-subtle); margin-top:12px; text-align:center; }
   .pj .stats { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--pj-line); border-bottom:1px solid var(--pj-line); margin:90px 0 0; position:relative; z-index:46; }
   .pj .stat { padding:38px 0 38px 30px; border-left:1px solid var(--pj-line); }
   .pj .stat:first-child { padding-left:0; border-left:0; }
   .pj .stat b { display:block; font-family:var(--f-display); font-weight:600; font-size:68px; line-height:1; letter-spacing:-0.03em; color:var(--fg); }
   .pj .stat span { display:block; font-family:var(--f-body); font-size:19px; line-height:1.4; color:var(--pj-muted); margin-top:14px; max-width:200px; }
+  .pj .stat span.one { max-width:none; white-space:nowrap; }
   .pj .rail-block { padding:130px 0 40px; }
   .pj h2 { font-family:var(--f-display); font-weight:700; font-size:58px; line-height:1.06; letter-spacing:-0.025em; margin:0; color:var(--fg); }
   .pj .shots { display:grid; grid-template-columns:repeat(5,1fr); gap:20px; margin-top:44px; position:relative; z-index:46; }
@@ -283,7 +284,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   @media (max-width:1000px) {
     .pj .hero { grid-template-columns:1fr; gap:48px; padding-top:84px; } .pj .phone { max-width:280px; }
     .pj h1 { font-size:56px; } .pj h2 { font-size:42px; } .pj .lede { font-size:23px; }
-    .pj .stats { grid-template-columns:1fr 1fr; } .pj .stat:nth-child(3) { padding-left:0; border-left:0; } .pj .stat:nth-child(n+3) { border-top:1px solid var(--pj-line); }
+    .pj .stats { grid-template-columns:1fr 1fr; } .pj .stat span.one { white-space:normal; } .pj .stat:nth-child(3) { padding-left:0; border-left:0; } .pj .stat:nth-child(n+3) { border-top:1px solid var(--pj-line); }
     .pj .shots { grid-template-columns:repeat(3,1fr); } .pj .sec { grid-template-columns:1fr; gap:28px; padding:80px 0; }
     .pj .quote blockquote { font-size:28px; padding-left:24px; } .pj .c { width:calc(100% - 48px); }
   }
@@ -360,7 +361,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="c hero">
     <div class="rv">
       <p class="crumb"><a href="/work">Project</a> / ChamberUp</p>
-      <div class="idrow"><img src="/chamberup/icon.png" alt="ChamberUp app icon"><div><b>ChamberUp</b><span>Case study · Project Manager &amp; Product Owner</span></div></div>
+      <div class="idrow"><img src="/chamberup/icon.png" alt="ChamberUp app icon"><div><b>ChamberUp</b><span>Case · Project Manager &amp; Product Owner</span></div></div>
       <h1>Live on the <span class="nw">App Store</span> Australia.</h1>
       <p class="lede">Member app for the Sydney CBD Chamber of Commerce.</p>
       <div class="pills"><a class="pill solid" href="#story">Key decisions ↓</a></div>
@@ -368,7 +369,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
     <figure class="phone rv"><video src="/chamberup/demo.mp4" poster="/chamberup/poster.jpg" controls controlsList="nodownload noremoteplayback" disablePictureInPicture disableRemotePlayback muted loop playsinline preload="metadata" oncontextmenu="return false"></video><figcaption>Demo video</figcaption></figure>
   </section>
-  <section class="c"><div class="stats rv"><div class="stat"><b>24/24</b><span>pilot attendees used the app</span></div><div class="stat"><b>7</b><span>team members</span></div><div class="stat"><b>9</b><span>weeks, project duration</span></div></div></section>
+  <section class="c"><div class="stats rv"><div class="stat"><b>24/24</b><span>pilot attendees used the app</span></div><div class="stat"><b>7</b><span>team members</span></div><div class="stat"><b>9</b><span class="one">weeks, from brief to App Store</span></div></div></section>
   <section class="c rail-block rv"><h2>Product screens</h2><div class="shots"><figure style="margin:0"><figcaption>Check in</figcaption><button class="zoom" type="button" data-i="0" aria-label="Enlarge: Check in"><img src="/chamberup/shot-1.jpg" alt="Checking in with a venue code and earning points"></button></figure><figure style="margin:0"><figcaption>Venue map</figcaption><button class="zoom" type="button" data-i="1" aria-label="Enlarge: Venue map"><img src="/chamberup/shot-2.jpg" alt="Venue map with a selected venue"></button></figure><figure style="margin:0"><figcaption>Members</figcaption><button class="zoom" type="button" data-i="2" aria-label="Enlarge: Members"><img src="/chamberup/shot-3.jpg" alt="Member directory"></button></figure><figure style="margin:0"><figcaption>Invitation</figcaption><button class="zoom" type="button" data-i="3" aria-label="Enlarge: Invitation"><img src="/chamberup/shot-4.jpg" alt="Invitation detail"></button></figure><figure style="margin:0"><figcaption>Staff dashboard</figcaption><button class="zoom" type="button" data-i="4" aria-label="Enlarge: Staff dashboard"><img src="/chamberup/shot-5.jpg" alt="Staff dashboard"></button></figure></div><p class="note">The app is listed on the Australian <span class="nw">App Store</span> only.</p></section>
   <section id="story" class="c"><div class="sec rv"><div><h2>Key decisions.</h2></div><div class="t"><div class="item"><h3>Platform</h3><p>The team evaluated five platforms (Glide, Lovable, Replit, Claude Code and Codex) and selected Replit, the only one with an officially guided route to <span class="nw">App Store</span> publishing.</p></div><div class="item"><h3>Requirements</h3><p>Requirements were defined from scratch together with the sponsor and organised into 10 modules, delivered over four sprints.</p></div><div class="item"><h3>Quality gate</h3><p>An independent tester signed off every feature before it was considered complete. The pre-release check ran 49 API tests and 65 app tests, and all passed.</p></div><div class="item"><h3>Privacy</h3><p>Contact details are hidden by default and become visible only after a meeting is accepted, a rule enforced on the server. Reporting, blocking and in-app account deletion are built in.</p></div></div></div></section>
   <section class="c closing rv"><div class="pills"><a class="pill solid" href="https://chamberup.com.au" target="_blank" rel="noopener">Official website ↗</a><a class="pill" href="/work">Back to projects ›</a></div></section>
@@ -390,6 +391,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <div class="info-overlay" id="infoOverlay" aria-hidden="true">
   <div class="info-sheet" style="position:relative">
     <button class="info-close" aria-label="Close info">&times;</button>
+    <div style="display:flex;flex-direction:column;gap:44px">
     <div>
       <div class="info-col-label">Education</div>
       <div class="info-col-body">
@@ -401,18 +403,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
     <div>
-      <div class="info-col-label">Contact &amp; Social</div>
-      <div class="info-col-body">
-        <a href="mailto:trevor.tw.huang@outlook.com">trevor.tw.huang@outlook.com</a><br>
-        <a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener">LinkedIn</a>
-        &nbsp;·&nbsp;
-        <a href="https://www.instagram.com/t.huang17/" target="_blank" rel="noopener">Instagram</a><br>
-        <a href="https://x.com/H3art128943" target="_blank" rel="noopener">X</a>
-        &nbsp;·&nbsp;
-        <a href="https://www.xiaohongshu.com/user/profile/6150a3e2000000001f03501f" target="_blank" rel="noopener">Xiaohongshu</a>
-      </div>
-    </div>
-    <div style="grid-column:1/-1">
       <div class="info-col-label">Experience</div>
       <div class="info-col-body">
         <strong>Decathlon</strong> <span style="color:var(--fg-3);font-size:14px">· E-commerce Technology PM Intern · 2025–2026</span><br>
@@ -421,11 +411,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <strong>Tianfeng Securities</strong> <span style="color:var(--fg-3);font-size:14px">· Industry Research Intern · 2022</span>
       </div>
     </div>
-    <div style="grid-column:1/-1">
-      <div class="info-col-label">Toolkit</div>
+    </div>
+    <div>
+      <div class="info-col-label">Contact &amp; Social</div>
       <div class="info-col-body">
-        Python · SQL · Tableau · Excel · Jira · Feishu · MS Project<br>
-        Agile Methodologies
+        <a href="mailto:trevor.tw.huang@outlook.com">trevor.tw.huang@outlook.com</a><br>
+        <a href="https://linkedin.com/in/trevor0h17/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
   </div>
@@ -541,4 +532,18 @@ items.forEach(function(b,i){b.addEventListener('click',function(){open(i);});});
 lb.querySelector('.lb-x').addEventListener('click',close);lb.querySelector('.lb-prev').addEventListener('click',function(e){e.stopPropagation();show(cur-1);});lb.querySelector('.lb-next').addEventListener('click',function(e){e.stopPropagation();show(cur+1);});
 lb.addEventListener('click',function(e){if(e.target===lb)close();});
 document.addEventListener('keydown',function(e){if(lb.hidden)return;if(e.key==='Escape')close();if(e.key==='ArrowLeft')show(cur-1);if(e.key==='ArrowRight')show(cur+1);});})();</script>
+
+<script is:inline>
+  // Demo video: native controls appear only while the pointer is over it (always on for touch)
+  (function () {
+    var v = document.querySelector('.phone video');
+    if (!v) return;
+    if (matchMedia('(hover: none)').matches) { v.controls = true; return; }
+    v.controls = false;
+    v.addEventListener('mouseenter', function () { v.controls = true; });
+    v.addEventListener('mouseleave', function () { v.controls = false; });
+    v.addEventListener('focus', function () { v.controls = true; });
+    v.addEventListener('blur', function () { v.controls = false; });
+  })();
+</script>
 </BaseLayout>
