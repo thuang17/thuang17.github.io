@@ -323,6 +323,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   html[lang="zh"] .pj h1 { font-size:52px; line-height:1.12; letter-spacing:-0.01em; }
   @media (max-width:1000px) { html[lang="zh"] .pj h1 { font-size:44px; } }
   .pj .links a { white-space:nowrap; }
+  .pj .site { margin-top:44px; border-radius:16px; border:1px solid var(--border); overflow:hidden; box-shadow:0 14px 34px rgba(28,25,23,.12); position:relative; z-index:46; background:#fff; }
+  .pj .site .bar { display:flex; align-items:center; gap:8px; height:42px; padding:0 18px; background:#F3F3F2; border-bottom:1px solid var(--border); }
+  .pj .site .bar i { width:11px; height:11px; border-radius:50%; background:#D6D3D1; flex-shrink:0; }
+  .pj .site .bar span { margin-left:14px; font-family:var(--f-mono); font-size:13px; color:#78716C; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .pj .site .bar .open { margin-left:auto; font-family:var(--f-body); font-size:14px; font-weight:600; color:#57534E; text-decoration:none; white-space:nowrap; }
+  .pj .site .bar .open:hover { color:var(--accent); }
+  .pj .site .view { position:relative; overflow:hidden; aspect-ratio:3600/2250; }
+  .pj .site .track { display:flex; height:100%; transition:transform .5s cubic-bezier(.22,1,.36,1); will-change:transform; }
+  .pj .site .track img { display:block; flex:0 0 100%; width:100%; height:100%; object-fit:cover; user-select:none; -webkit-user-drag:none; }
+  .pj .site .nav { all:unset; box-sizing:border-box; position:absolute; top:50%; width:46px; height:46px; margin-top:-23px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.92); color:#1C1917; border:1px solid rgba(28,25,23,.12); box-shadow:0 6px 18px rgba(28,25,23,.18); cursor:pointer; transition:opacity .2s ease, transform .2s ease; }
+  .pj .site .nav.prev { left:16px; } .pj .site .nav.next { right:16px; }
+  .pj .site .nav:hover:not(:disabled) { transform:scale(1.07); }
+  .pj .site .nav:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+  .pj .site .nav:disabled { opacity:.28; cursor:not-allowed; box-shadow:none; }
+  .pj .sitenote { font-family:var(--f-body); font-size:17px; color:var(--pj-muted); margin:18px 0 0; position:relative; z-index:46; }
+  .pj .sitenote span { font-family:var(--f-mono); font-size:14px; color:var(--pj-strong); margin-right:14px; }
+  @media (max-width:760px) { .pj .site .nav { width:38px; height:38px; margin-top:-19px; } .pj .site .nav.prev { left:8px; } .pj .site .nav.next { right:8px; } .pj .site .bar .open { display:none; } }
   .pj .shots button.zoom { all:unset; display:block; width:100%; cursor:zoom-in; border-radius:18px; transition:transform .25s ease; }
   .pj .shots button.zoom:hover { transform:translateY(-4px); }
   .pj .shots button.zoom:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
@@ -371,6 +388,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </section>
   <section class="c"><div class="stats rv"><div class="stat"><b>24/24</b><span>pilot attendees used the app</span></div><div class="stat"><b>7</b><span>team members</span></div><div class="stat"><b>9</b><span class="one">weeks, from brief to App Store</span></div></div></section>
   <section class="c rail-block rv"><h2>Product screens</h2><div class="shots"><figure style="margin:0"><figcaption>Check in</figcaption><button class="zoom" type="button" data-i="0" aria-label="Enlarge: Check in"><img src="/chamberup/shot-1.jpg" alt="Checking in with a venue code and earning points"></button></figure><figure style="margin:0"><figcaption>Venue map</figcaption><button class="zoom" type="button" data-i="1" aria-label="Enlarge: Venue map"><img src="/chamberup/shot-2.jpg" alt="Venue map with a selected venue"></button></figure><figure style="margin:0"><figcaption>Members</figcaption><button class="zoom" type="button" data-i="2" aria-label="Enlarge: Members"><img src="/chamberup/shot-3.jpg" alt="Member directory"></button></figure><figure style="margin:0"><figcaption>Invitation</figcaption><button class="zoom" type="button" data-i="3" aria-label="Enlarge: Invitation"><img src="/chamberup/shot-4.jpg" alt="Invitation detail"></button></figure><figure style="margin:0"><figcaption>Staff dashboard</figcaption><button class="zoom" type="button" data-i="4" aria-label="Enlarge: Staff dashboard"><img src="/chamberup/shot-5.jpg" alt="Staff dashboard"></button></figure></div><p class="note">The app is listed on the Australian <span class="nw">App Store</span> only.</p></section>
+  <section class="c rail-block rv"><h2>Public website</h2><div class="site" id="site" aria-roledescription="carousel" aria-label="Public website screenshots"><div class="bar"><i></i><i></i><i></i><span id="site-url">chamberup.com.au</span><a class="open" id="site-open" href="https://chamberup.com.au" target="_blank" rel="noopener" aria-label="Open this page">Open ↗</a></div><div class="view"><div class="track" id="site-track"><img src="/chamberup/site-1.jpg" data-url="chamberup.com.au" alt="Home page of the ChamberUp public website: introduction and why it matters" width="3600" height="2250" loading="eager" draggable="false"><img src="/chamberup/site-2.jpg" data-url="chamberup.com.au" alt="Home page: how members, venues and the Chamber benefit" width="3600" height="2250" loading="lazy" draggable="false"><img src="/chamberup/site-3.jpg" data-url="chamberup.com.au/members" alt="Members page: what members can do in the app" width="3600" height="2250" loading="lazy" draggable="false"><img src="/chamberup/site-4.jpg" data-url="chamberup.com.au/venues" alt="Venues page: the five partner venues" width="3600" height="2250" loading="lazy" draggable="false"></div><button class="nav prev" id="site-prev" type="button" aria-label="Previous screenshot" disabled><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="nav next" id="site-next" type="button" aria-label="Next screenshot"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div><p class="sitenote"><span id="site-count">1 / 4</span> The public site for members and partner venues, with the app download link.</p></section>
   <section id="story" class="c"><div class="sec rv"><div><h2>Key decisions.</h2></div><div class="t"><div class="item"><h3>Platform</h3><p>The team evaluated five platforms (Glide, Lovable, Replit, Claude Code and Codex) and selected Replit, the only one with an officially guided route to <span class="nw">App Store</span> publishing.</p></div><div class="item"><h3>Requirements</h3><p>Requirements were defined from scratch together with the sponsor and organised into 10 modules, delivered over four sprints.</p></div><div class="item"><h3>Quality gate</h3><p>An independent tester signed off every feature before it was considered complete. The pre-release check ran 49 API tests and 65 app tests, and all passed.</p></div><div class="item"><h3>Privacy</h3><p>Contact details are hidden by default and become visible only after a meeting is accepted, a rule enforced on the server. Reporting, blocking and in-app account deletion are built in.</p></div></div></div></section>
   <section class="c closing rv"><div class="pills"><a class="pill solid" href="https://chamberup.com.au" target="_blank" rel="noopener">Official website ↗</a><a class="pill" href="/work">Back to projects ›</a></div></section>
 </main>
@@ -544,6 +562,47 @@ document.addEventListener('keydown',function(e){if(lb.hidden)return;if(e.key==='
     v.addEventListener('mouseleave', function () { v.controls = false; });
     v.addEventListener('focus', function () { v.controls = true; });
     v.addEventListener('blur', function () { v.controls = false; });
+  })();
+</script>
+
+<script is:inline>
+  // Public website screenshots: arrow carousel, disabled arrow at each end
+  (function () {
+    var root = document.getElementById('site');
+    if (!root) return;
+    var track = document.getElementById('site-track');
+    var imgs = track.querySelectorAll('img');
+    var prev = document.getElementById('site-prev');
+    var next = document.getElementById('site-next');
+    var url = document.getElementById('site-url');
+    var open = document.getElementById('site-open');
+    var count = document.getElementById('site-count');
+    var n = imgs.length, i = 0;
+    function go(k) {
+      i = Math.max(0, Math.min(n - 1, k));
+      track.style.transform = 'translateX(' + (-i * 100) + '%)';
+      prev.disabled = i === 0;
+      next.disabled = i === n - 1;
+      var u = imgs[i].getAttribute('data-url');
+      url.textContent = u;
+      open.href = 'https://' + u;
+      count.textContent = (i + 1) + ' / ' + n;
+    }
+    prev.addEventListener('click', function () { go(i - 1); });
+    next.addEventListener('click', function () { go(i + 1); });
+    root.setAttribute('tabindex', '0');
+    root.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { go(i - 1); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { go(i + 1); e.preventDefault(); }
+    });
+    var x0 = null;
+    root.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    root.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 50) go(i + (dx < 0 ? 1 : -1));
+    });
+    go(0);
   })();
 </script>
 </BaseLayout>
