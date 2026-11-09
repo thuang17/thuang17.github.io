@@ -69,6 +69,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     transition:background .2s ease, transform .2s ease;
   }
   .send:hover{ background:#6D28D9; transform:translateY(-1px); }
+  .tsbox{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:50; }
   .send:disabled{ opacity:.45; cursor:not-allowed; transform:none; }
   .hint{ font-family:var(--f-body); font-size:14px; line-height:1.5; color:var(--fg-3); }
 
@@ -236,6 +237,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     return row;
   }
 
+  // Cloudflare Turnstile: shows a small check only when Cloudflare is unsure about the visitor
+  const SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITEKEY;
+  let tsScript;
+  function humanToken() {
+    if (!SITE_KEY) return Promise.resolve('');
+    tsScript ||= new Promise((ok, fail) => {
+      const s = document.createElement('script');
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      s.onload = ok; s.onerror = fail;
+      document.head.append(s);
+    });
+    return tsScript.then(() => new Promise((resolve, reject) => {
+      const box = el('div', 'tsbox');
+      document.body.append(box);
+      const done = (fn) => (v) => { box.remove(); fn(v); };
+      window.turnstile.render(box, {
+        sitekey: SITE_KEY,
+        appearance: 'interaction-only',
+        callback: done(resolve),
+        'error-callback': done(() => reject(new Error('turnstile'))),
+        'timeout-callback': done(() => reject(new Error('turnstile'))),
+      });
+    }));
+  }
+
   async function api(path, options) {
     const res = await fetch(API + path, options);
     let data = {};
@@ -264,7 +290,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         if (!body) return;
         go.disabled = true;
         try {
-          const r = await api('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nickname: nick.value.trim() || post.nickname, body, token, parent_id: post.id }) });
+          const turnstile = await humanToken();
+          const r = await api('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nickname: nick.value.trim() || post.nickname, body, token, parent_id: post.id, turnstile }) });
           if (r.status === 201) { await load(true); return; }
           note.textContent = r.status === 429 ? 'Too many messages, please try again later.' : (r.data.error || 'Something went wrong.');
         } catch { note.textContent = 'Could not reach the server.'; }
@@ -326,7 +353,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     send.disabled = true;
     okmsg.hidden = true; okmsg.classList.remove('errmsg');
     try {
-      const r = await api('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nickname: nick.value.trim(), body: text.value.trim(), token }) });
+      const turnstile = await humanToken();
+      const r = await api('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nickname: nick.value.trim(), body: text.value.trim(), token, turnstile }) });
       if (r.status === 201) {
         try { localStorage.setItem('gb_nick', nick.value.trim()); } catch {}
         text.value = '';

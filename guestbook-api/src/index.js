@@ -117,6 +117,19 @@ async function notifyOwner(env, post) {
   }
 }
 
+// Cloudflare Turnstile human check. Skipped when no secret is configured (local dev).
+async function humanOk(env, token, ip) {
+  if (!env.TURNSTILE_SECRET) return true;
+  if (typeof token !== 'string' || !token || token.length > 2048) return false;
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: token, remoteip: ip }),
+    });
+    return !!(await res.json()).success;
+  } catch { return false; }
+}
+
 async function createPost(request, env) {
   let input;
   try { input = await request.json(); } catch { return [{ error: 'Invalid JSON' }, 400]; }
@@ -133,6 +146,7 @@ async function createPost(request, env) {
   const tokenHash = await sha256(`${env.HASH_SALT}:token:${token}`);
   const ip = request.headers.get('CF-Connecting-IP') || 'local';
   const ipHash = await sha256(`${env.HASH_SALT}:ip:${ip}`);
+  if (!(await humanOk(env, input.turnstile, ip))) return [{ error: 'Human check failed, please try again' }, 403];
 
   const recent = await env.DB.prepare(
     `SELECT COUNT(*) AS n FROM posts WHERE ip_hash = ? AND created_at > strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-1 hour')`,
