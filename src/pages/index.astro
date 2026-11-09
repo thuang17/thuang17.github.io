@@ -152,7 +152,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   /* Light mode: non-Stories panels — subtle darken */
-  .panel-standard:not([data-panel="stories"]):not([data-panel="work"]):hover {
+  .panel-standard:not([data-panel="stories"]):not([data-panel="work"]):not([data-panel="guestbook"]):hover {
     background: #f3f3f3;
   }
 
@@ -197,7 +197,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin: 0 0.02em;
   }
 
+  /* Guestbook panel: brand purple, slightly deeper on hover (lighter in dark mode) */
+  [data-panel="guestbook"]:hover {
+    background: #6D28D9 !important;
+  }
+
   /* Dark mode: Projects card brightens on hover, Stories card becomes light grey */
+  :global([data-theme="dark"]) .panel-standard[data-panel="guestbook"]:hover {
+    background: #8B5CF6 !important;
+  }
+
   :global([data-theme="dark"]) .panel-standard[data-panel="work"]:hover {
     background: #2D52CC !important;
   }
@@ -658,6 +667,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <article class="panel panel-standard entry-panel" data-panel="info" onclick="openInfo()" style="display:flex;justify-content:flex-end;align-items:flex-end;overflow:hidden;padding:0 0 0 0">
         <span style="font-family:'Geist','Helvetica Neue',helvetica,arial,sans-serif;font-size:clamp(240px,32vw,500px);font-weight:600;color:var(--fg);line-height:0.9;transform:translateX(0.32em);margin-bottom:-0.05em">Info</span>
       </article>
+
+      <!-- Guestbook panel — brand purple, top-left, white text -->
+      <a class="panel panel-standard entry-panel" data-panel="guestbook" href="/guestbook" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-start;align-items:flex-start;background:#7C3AED;border-color:#7C3AED;padding:8px 0 0 0">
+        <h2 style="color:#ffffff;margin-left:-0.04em">Say hi</h2>
+      </a>
 
     </div>
     </div>

@@ -5,9 +5,10 @@ export interface Props {
   title: string;
   description?: string;
   lang?: string;
+  noindex?: boolean;
 }
 
-const { title, description, lang = 'en' } = Astro.props;
+const { title, description, lang = 'en', noindex = false } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -19,6 +20,7 @@ const { title, description, lang = 'en' } = Astro.props;
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description || title} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
 
   <!-- Theme script: runs before paint to prevent flash -->
   <script is:inline>

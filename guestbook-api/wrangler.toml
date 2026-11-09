@@ -1,0 +1,15 @@
+name = "trevor-guestbook"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+# Origins allowed to call the API from a browser (comma separated)
+ALLOWED_ORIGINS = "https://thuang17.github.io,http://localhost:4321,http://127.0.0.1:4321"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "guestbook"
+database_id = "3b8132f1-ced2-47e7-8604-e0928b168d3d"
+migrations_dir = "migrations"

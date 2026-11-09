@@ -1,0 +1,350 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Say hi — Trevor Huang"
+  description="Leave a message for Trevor Huang."
+>
+
+<style is:global>
+  /* ── TOPBAR (same as the other sub-pages) ───────── */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:24px 32px; pointer-events:none;
+  }
+  .topbar > *{pointer-events:auto}
+  .back-link{
+    font-size:13px; font-weight:500; color:var(--fg-2);
+    font-family:var(--f-body); text-decoration:none; transition:color var(--t);
+  }
+  .back-link:hover{color:var(--fg)}
+  .tbtn{
+    display:flex; align-items:center; justify-content:center;
+    border:none; background:transparent; color:var(--fg-2); padding:4px; transition:color var(--t);
+  }
+  .tbtn:hover{color:var(--fg);background:transparent;border:none}
+
+  /* ── LAYOUT ─────────────────────────────────────── */
+  main{
+    max-width:1120px; margin:0 auto; padding:132px 32px 120px;
+    display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:88px; align-items:start;
+  }
+  .intro{ position:sticky; top:110px; }
+  .eyebrow{
+    font-family:var(--f-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--fg-3); margin:0 0 22px;
+  }
+  h1{
+    font-family:var(--f-display); font-weight:700; font-size:clamp(56px,7vw,92px);
+    line-height:1; letter-spacing:-0.035em; margin:0; color:var(--fg);
+  }
+  .lede{
+    font-family:var(--f-body); font-size:19px; line-height:1.6; color:var(--fg-2);
+    margin:26px 0 40px; max-width:420px;
+  }
+
+  /* ── FORM ───────────────────────────────────────── */
+  form{ display:flex; flex-direction:column; gap:14px; max-width:440px; }
+  label{ font-family:var(--f-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-3); }
+  .field{ display:flex; flex-direction:column; gap:8px; }
+  input, textarea{
+    font-family:var(--f-body); font-size:16px; line-height:1.5; color:var(--fg);
+    background:#f9f9f9; border:1px solid var(--border); border-radius:14px;
+    padding:14px 16px; width:100%; box-sizing:border-box; resize:vertical;
+    transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  textarea{ min-height:150px; }
+  [data-theme="dark"] input, [data-theme="dark"] textarea{ background:#1c1c1c; }
+  input::placeholder, textarea::placeholder{ color:var(--fg-3); }
+  input:focus, textarea:focus{
+    outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(124,58,237,.16);
+  }
+  .count{ align-self:flex-end; font-family:var(--f-mono); font-size:12px; color:var(--fg-3); margin-top:-4px; }
+  .actions{ display:flex; align-items:center; gap:18px; margin-top:6px; }
+  .send{
+    font-family:var(--f-body); font-size:16px; font-weight:600; color:#fff; background:var(--accent);
+    border:0; border-radius:999px; padding:14px 30px; cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .send:hover{ background:#6D28D9; transform:translateY(-1px); }
+  .send:disabled{ opacity:.45; cursor:not-allowed; transform:none; }
+  .hint{ font-family:var(--f-body); font-size:14px; line-height:1.5; color:var(--fg-3); }
+
+  /* ── WALL ───────────────────────────────────────── */
+  .wall-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding-bottom:18px; border-bottom:1px solid var(--border); margin-bottom:8px;
+  }
+  .wall-head h2{ font-family:var(--f-display); font-weight:700; font-size:26px; letter-spacing:-0.02em; margin:0; color:var(--fg); }
+  .wall-head span{ font-family:var(--f-mono); font-size:12px; letter-spacing:.06em; color:var(--fg-3); }
+  .msg{ padding:30px 0; border-bottom:1px solid var(--border); }
+  .meta{ display:flex; align-items:baseline; gap:12px; margin-bottom:10px; }
+  .nick{ font-family:var(--f-body); font-size:17px; font-weight:700; color:var(--fg); }
+  .when{ font-family:var(--f-mono); font-size:12px; color:var(--fg-3); }
+  .tag{
+    font-family:var(--f-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+    padding:3px 9px; border-radius:999px; background:var(--bg-sub); color:var(--fg-2); border:1px solid var(--border);
+  }
+  .body{ font-family:var(--f-body); font-size:18px; line-height:1.65; color:var(--fg); margin:0; white-space:pre-wrap; overflow-wrap:anywhere; }
+  .reply{
+    margin:22px 0 0 0; padding:2px 0 2px 22px; border-left:2px solid var(--accent);
+  }
+  .reply .nick{ color:var(--accent); }
+  .reply.visitor{ border-left-color:var(--border); }
+  .reply.visitor .nick{ color:var(--fg); }
+  .reply .body{ color:var(--fg-2); }
+  .more{
+    font-family:var(--f-body); font-size:14px; font-weight:600; color:var(--fg-2);
+    background:none; border:0; padding:0; margin-top:18px; cursor:pointer;
+  }
+  .more:hover{ color:var(--accent); }
+  .pending{ opacity:.72; }
+
+  .state{ font-family:var(--f-body); font-size:16px; color:var(--fg-3); padding:30px 0; margin:0; }
+  .okmsg{ font-family:var(--f-body); font-size:15px; line-height:1.5; color:var(--accent); margin:4px 0 0; }
+  .errmsg{ color:#B91C1C; }
+  [data-theme="dark"] .errmsg{ color:#F87171; }
+  .replyform{ margin-top:18px; display:flex; flex-direction:column; gap:10px; max-width:520px; }
+  .replyform textarea{ min-height:90px; }
+  .replyform .row{ display:flex; gap:14px; align-items:center; }
+  .replyform .send{ padding:10px 22px; font-size:15px; }
+  .linkbtn{ font-family:var(--f-body); font-size:14px; font-weight:600; color:var(--fg-3); background:none; border:0; padding:0; cursor:pointer; }
+  .linkbtn:hover{ color:var(--fg); }
+  .more[hidden]{ display:none; }
+
+  /* ── MOBILE ─────────────────────────────────────── */
+  @media(max-width:900px){
+    main{ grid-template-columns:1fr; gap:64px; padding:104px 20px 88px; }
+    .intro{ position:static; }
+    .topbar{ padding:18px 20px; }
+  }
+</style>
+
+<header class="topbar">
+  <a href="/" class="back-link">Home</a>
+  <button class="tbtn" id="tbtn" aria-label="Toggle theme">
+    <svg id="i-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    <svg id="i-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</header>
+
+<main>
+  <section class="intro">
+    <p class="eyebrow">Guestbook</p>
+    <h1>Say hi.</h1>
+    <p class="lede">Leave a note about a project, a game, or anything else. I read every message and reply here.</p>
+
+    <form id="form" autocomplete="off" novalidate>
+      <div class="field">
+        <label for="nick">Name</label>
+        <input id="nick" name="nickname" type="text" maxlength="30" placeholder="Your name or a nickname" required>
+      </div>
+      <div class="field">
+        <label for="text">Message</label>
+        <textarea id="text" name="body" maxlength="1000" placeholder="What would you like to say?" required></textarea>
+      </div>
+      <span class="count" id="count">0 / 1000</span>
+      <div class="actions">
+        <button class="send" id="send" type="submit" disabled>Send message</button>
+        <span class="hint" id="hint">Messages appear once approved.</span>
+      </div>
+      <p class="okmsg" id="okmsg" role="status" hidden></p>
+    </form>
+  </section>
+
+  <section class="wall" aria-label="Messages">
+    <div class="wall-head"><h2>Messages</h2><span id="shown"></span></div>
+    <div id="list" aria-live="polite"><p class="state">Loading messages…</p></div>
+    <button class="more" id="loadmore" type="button" hidden>Load more</button>
+  </section>
+</main>
+
+<script>
+  const html = document.documentElement;
+  const btn = document.getElementById('tbtn');
+  const sun = document.getElementById('i-sun');
+  const moon = document.getElementById('i-moon');
+  function setTheme(t) {
+    html.setAttribute('data-theme', t);
+    sun.style.display = t === 'dark' ? 'none' : 'block';
+    moon.style.display = t === 'dark' ? 'block' : 'none';
+  }
+  setTheme(html.getAttribute('data-theme'));
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', next);
+    setTheme(next);
+  });
+
+  // ── Guestbook ──
+  const API = (import.meta.env.PUBLIC_GUESTBOOK_API || 'http://127.0.0.1:8787').replace(/\/$/, '');
+  const nick = document.getElementById('nick');
+  const text = document.getElementById('text');
+  const count = document.getElementById('count');
+  const send = document.getElementById('send');
+  const form = document.getElementById('form');
+  const okmsg = document.getElementById('okmsg');
+  const list = document.getElementById('list');
+  const shown = document.getElementById('shown');
+  const loadMore = document.getElementById('loadmore');
+
+  // A random browser token identifies the visitor to the server (only its hash is stored)
+  function getToken() {
+    try {
+      let t = localStorage.getItem('gb_token');
+      if (!t) {
+        t = [...crypto.getRandomValues(new Uint8Array(32))].map((b) => b.toString(16).padStart(2, '0')).join('');
+        localStorage.setItem('gb_token', t);
+      }
+      return t;
+    } catch {
+      if (!window.__gbToken) window.__gbToken = [...crypto.getRandomValues(new Uint8Array(32))].map((b) => b.toString(16).padStart(2, '0')).join('');
+      return window.__gbToken;
+    }
+  }
+  const token = getToken();
+  try { nick.value = localStorage.getItem('gb_nick') || ''; } catch {}
+
+  function ago(iso) {
+    const secs = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+    if (secs < 60) return 'just now';
+    const units = [[60, 'minute'], [3600, 'hour'], [86400, 'day'], [604800, 'week'], [2629800, 'month'], [31557600, 'year']];
+    let label = 'just now';
+    for (let i = 0; i < units.length; i++) {
+      const [size, name] = units[i];
+      if (secs >= size) {
+        const n = Math.floor(secs / size);
+        label = n + ' ' + name + (n === 1 ? '' : 's') + ' ago';
+      }
+    }
+    return label;
+  }
+
+  function el(tag, cls, content) {
+    const node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (content != null) node.textContent = content; // always text, never HTML
+    return node;
+  }
+
+  function metaRow(name, when, pending) {
+    const row = el('div', 'meta');
+    row.append(el('span', 'nick', name), el('span', 'when', ago(when)));
+    if (pending) row.append(el('span', 'tag', 'Awaiting approval'));
+    return row;
+  }
+
+  async function api(path, options) {
+    const res = await fetch(API + path, options);
+    let data = {};
+    try { data = await res.json(); } catch {}
+    return { status: res.status, data };
+  }
+
+  function replyBox(post, wrap) {
+    const btn = el('button', 'more', 'Reply');
+    btn.type = 'button';
+    btn.addEventListener('click', () => {
+      btn.hidden = true;
+      const f = el('form', 'replyform');
+      const ta = el('textarea');
+      ta.maxLength = 1000; ta.placeholder = 'Write a reply…';
+      const row = el('div', 'row');
+      const go = el('button', 'send', 'Send reply'); go.type = 'submit';
+      const cancel = el('button', 'linkbtn', 'Cancel'); cancel.type = 'button';
+      const note = el('span', 'hint', '');
+      row.append(go, cancel, note);
+      f.append(ta, row);
+      cancel.addEventListener('click', () => { f.remove(); btn.hidden = false; });
+      f.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const body = ta.value.trim();
+        if (!body) return;
+        go.disabled = true;
+        try {
+          const r = await api('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nickname: nick.value.trim() || post.nickname, body, token, parent_id: post.id }) });
+          if (r.status === 201) { await load(true); return; }
+          note.textContent = r.status === 429 ? 'Too many messages, please try again later.' : (r.data.error || 'Something went wrong.');
+        } catch { note.textContent = 'Could not reach the server.'; }
+        go.disabled = false;
+      });
+      wrap.append(f);
+      ta.focus();
+    });
+    return btn;
+  }
+
+  function render(posts, append) {
+    if (!append) list.textContent = '';
+    if (!posts.length && !append) { list.append(el('p', 'state', 'No messages yet. Be the first to say hi.')); return; }
+    for (const post of posts) {
+      const art = el('article', 'msg' + (post.pending ? ' pending' : ''));
+      art.append(metaRow(post.nickname, post.created_at, post.pending), el('p', 'body', post.body));
+      for (const r of post.replies) {
+        const rep = el('div', r.author === 'owner' ? 'reply' : 'reply visitor');
+        rep.append(metaRow(r.nickname, r.created_at, r.pending), el('p', 'body', r.body));
+        art.append(rep);
+      }
+      // The original visitor can keep the conversation going once the owner has replied
+      if (post.mine && !post.pending && post.replies.some((r) => r.author === 'owner')) art.append(replyBox(post, art));
+      list.append(art);
+    }
+  }
+
+  let offset = 0;
+  async function load(reset) {
+    if (reset) offset = 0;
+    try {
+      const r = await api('/api/posts?offset=' + offset, { headers: { 'X-Visitor-Token': token } });
+      if (r.status !== 200) throw new Error('bad status');
+      render(r.data.posts, offset > 0);
+      offset += r.data.posts.length;
+      const approved = list.querySelectorAll('article:not(.pending)').length;
+      shown.textContent = approved ? approved + ' shown' : '';
+      loadMore.hidden = !r.data.hasMore;
+    } catch {
+      list.textContent = '';
+      list.append(el('p', 'state errmsg', 'Messages could not be loaded right now. Please try again later.'));
+      loadMore.hidden = true;
+    }
+  }
+  loadMore.addEventListener('click', () => load(false));
+
+  function sync() {
+    count.textContent = text.value.length + ' / 1000';
+    send.disabled = !(nick.value.trim() && text.value.trim());
+  }
+  nick.addEventListener('input', sync);
+  text.addEventListener('input', sync);
+  sync();
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (send.disabled) return;
+    send.disabled = true;
+    okmsg.hidden = true; okmsg.classList.remove('errmsg');
+    try {
+      const r = await api('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nickname: nick.value.trim(), body: text.value.trim(), token }) });
+      if (r.status === 201) {
+        try { localStorage.setItem('gb_nick', nick.value.trim()); } catch {}
+        text.value = '';
+        okmsg.textContent = 'Thanks, your message will appear once it\u2019s approved.';
+        okmsg.hidden = false;
+        await load(true);
+      } else {
+        okmsg.textContent = r.status === 429 ? 'You are sending messages too quickly. Please try again later.' : (r.data.error || 'Something went wrong. Please try again.');
+        okmsg.classList.add('errmsg'); okmsg.hidden = false;
+      }
+    } catch {
+      okmsg.textContent = 'Could not reach the server. Please try again later.';
+      okmsg.classList.add('errmsg'); okmsg.hidden = false;
+    }
+    sync();
+  });
+
+  load(true);
+</script>
+
+</BaseLayout>
