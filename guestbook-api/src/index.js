@@ -89,6 +89,34 @@ async function listPublic(request, env, url) {
   return { posts, hasMore };
 }
 
+const MAX_EMAILS_PER_HOUR = 20; // global cap so a flood of spam cannot flood the owner's inbox
+
+// Emails the owner when a visitor posts. Never throws: a failed email must not fail the post.
+async function notifyOwner(env, post) {
+  try {
+    if (!env.RESEND_API_KEY || !env.NOTIFY_EMAIL) return;
+    const recent = await env.DB.prepare(
+      `SELECT COUNT(*) AS n FROM posts WHERE author = 'visitor' AND created_at > strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-1 hour')`,
+    ).first();
+    if (recent.n > MAX_EMAILS_PER_HOUR) return;
+    const oneLine = (t) => t.replace(/[\r\n]+/g, ' ').slice(0, 60);
+    const kind = post.parentId ? 'reply in a thread' : 'new message';
+    const res = await fetch(env.RESEND_API_URL || 'https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Guestbook <onboarding@resend.dev>',
+        to: [env.NOTIFY_EMAIL],
+        subject: `Guestbook: ${kind} from ${oneLine(post.nickname)}`,
+        text: `${post.nickname} wrote:\n\n${post.body}\n\nReview and reply: ${env.ADMIN_URL || ''}\n`,
+      }),
+    });
+    if (!res.ok) console.error('notify failed', res.status, await res.text());
+  } catch (err) {
+    console.error('notify error', err);
+  }
+}
+
 async function createPost(request, env) {
   let input;
   try { input = await request.json(); } catch { return [{ error: 'Invalid JSON' }, 400]; }
@@ -121,7 +149,7 @@ async function createPost(request, env) {
   const res = await env.DB.prepare(
     `INSERT INTO posts (parent_id, author, nickname, body, status, token_hash, ip_hash) VALUES (?, 'visitor', ?, ?, 'pending', ?, ?)`,
   ).bind(parentId, nickname, body, tokenHash, ipHash).run();
-  return [{ id: res.meta.last_row_id, status: 'pending' }, 201];
+  return [{ id: res.meta.last_row_id, status: 'pending' }, 201, { nickname, body, parentId }];
 }
 
 async function admin(request, env, url, method) {
@@ -171,7 +199,7 @@ async function admin(request, env, url, method) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const method = request.method;
     if (method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders(request, env) });
@@ -185,7 +213,8 @@ export default {
       }
       if (url.pathname === '/api/posts' && method === 'GET') return json(await listPublic(request, env, url), 200, request, env);
       if (url.pathname === '/api/posts' && method === 'POST') {
-        const [data, status] = await createPost(request, env);
+        const [data, status, post] = await createPost(request, env);
+        if (status === 201) ctx.waitUntil(notifyOwner(env, post));
         return json(data, status, request, env);
       }
       return json({ error: 'Not found' }, 404, request, env);

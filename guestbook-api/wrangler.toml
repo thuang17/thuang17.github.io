@@ -6,6 +6,7 @@ preview_urls = false
 
 [vars]
 # Origins allowed to call the API from a browser (comma separated)
+ADMIN_URL = "https://thuang17.github.io/guestbook-admin/"
 ALLOWED_ORIGINS = "https://thuang17.github.io,http://localhost:4321,http://127.0.0.1:4321"
 
 [[d1_databases]]
