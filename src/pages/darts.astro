@@ -321,6 +321,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       requestAnimationFrame(update);
     }, { passive: true });
 
+    // Mouse wheel / trackpad scrolls the gallery sideways, same feel as the homepage
+    var vel = 0, moving = false;
+    function glide() {
+      track.scrollLeft += vel;
+      vel *= 0.9;
+      if (Math.abs(vel) < 0.08) {
+        vel = 0; moving = false;
+        track.style.scrollSnapType = '';
+        update(); goTo(current);   // settle on the nearest photo
+        return;
+      }
+      requestAnimationFrame(glide);
+    }
+    window.addEventListener('wheel', function(e) {
+      if (window.innerWidth <= 600) return;
+      if (navOverlay.classList.contains('open') || infoOverlay.classList.contains('open')) return;
+      var d = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (!d) return;
+      if (e.deltaMode === 1) d *= 16;
+      e.preventDefault();
+      track.style.scrollSnapType = 'none';   // snapping would fight the glide
+      vel = Math.max(-120, Math.min(120, vel + d * 0.16));
+      if (!moving) { moving = true; requestAnimationFrame(glide); }
+    }, { passive: false });
+
     // Arrow key navigation
     document.addEventListener('keydown', function(e) {
       if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
