@@ -156,6 +156,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: #f3f3f3;
   }
 
+  /* Guestbook card: white in light mode, the normal dark panel in dark mode (no coloured edge either way) */
+  .panel-standard[data-panel="guestbook"] {
+    background: #ffffff;
+    border-color: #ffffff;
+  }
+  :global([data-theme="dark"]) .panel-standard[data-panel="guestbook"] {
+    background: #1c1c1c;
+    border-color: var(--border);
+  }
+
   /* Stories panel hover: need !important to override inline style */
   [data-panel="stories"]:hover {
     background: #2a2a2a !important;
@@ -197,16 +207,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin: 0 0.02em;
   }
 
-  /* Guestbook panel: brand purple, slightly deeper on hover (lighter in dark mode) */
-  [data-panel="guestbook"]:hover {
-    background: #6D28D9 !important;
-  }
-
   /* Dark mode: Projects card brightens on hover, Stories card becomes light grey */
-  :global([data-theme="dark"]) .panel-standard[data-panel="guestbook"]:hover {
-    background: #8B5CF6 !important;
-  }
-
   :global([data-theme="dark"]) .panel-standard[data-panel="work"]:hover {
     background: #2D52CC !important;
   }
@@ -668,9 +669,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <span style="font-family:'Geist','Helvetica Neue',helvetica,arial,sans-serif;font-size:clamp(240px,32vw,500px);font-weight:600;color:var(--fg);line-height:0.9;transform:translateX(0.32em);margin-bottom:-0.05em">Info</span>
       </article>
 
-      <!-- Guestbook panel — brand purple, top-left, white text -->
-      <a class="panel panel-standard entry-panel" data-panel="guestbook" href="/guestbook" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-start;align-items:flex-start;background:#7C3AED;border-color:#7C3AED;padding:8px 0 0 0">
-        <h2 style="color:#ffffff;margin-left:-0.04em">Say hi</h2>
+      <!-- Guestbook panel: brand purple, a field of dots that swell under the cursor (no text) -->
+      <a class="panel panel-standard entry-panel" data-panel="guestbook" href="/guestbook" data-transition="page" aria-label="Guestbook" style="position:relative;text-decoration:none;color:inherit;padding:0">
+        <canvas id="gb-dots" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
       </a>
 
     </div>
@@ -712,6 +713,71 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </div>
 </div>
+
+<script>
+  // Guestbook card: a field of bars that twist to point at the cursor (idea from a reference, drawn in the brand colours)
+  const gbCanvas = document.getElementById('gb-dots') as HTMLCanvasElement | null;
+  if (gbCanvas) {
+    const card = gbCanvas.parentElement as HTMLElement;
+    const ctx = gbCanvas.getContext('2d')!;
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let W = 0, H = 0, S = 0, cells: { x: number; y: number }[] = [];
+    let mx = 0, my = 0, tx = 0, ty = 0, power = 0, target = 0, visible = true, running = false;
+    const smooth = (a: number, b: number, x: number) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    const fit = () => {
+      // layout size, not the on-screen size: the whole surface is scaled by a CSS transform while scrolling
+      W = card.offsetWidth; H = card.offsetHeight;
+      gbCanvas.width = W * dpr; gbCanvas.height = H * dpr;
+      const cols = Math.max(6, Math.round(W / 56));
+      S = W / cols;
+      const rows = Math.max(4, Math.round(H / S));
+      cells = [];
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) cells.push({ x: (c + 0.5) * S, y: (r + 0.5) * (H / rows) });
+      tx = mx = W / 2; ty = my = H / 2;
+      draw();
+    };
+    const draw = () => {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark' ? '#8B5CF6' : '#7C3AED';
+      const ch = H / Math.max(1, Math.round(H / S)), pad = 3;
+      for (const c of cells) {
+        const dx = mx - c.x, dy = my - c.y, d = Math.hypot(dx, dy) || 1;
+        // direction: straight up and down when idle, turning to face the cursor as it arrives
+        let ux = (dx / d) * power, uy = 1 - power + (dy / d) * power;
+        const ul = Math.hypot(ux, uy) || 1; ux /= ul; uy /= ul;
+        // half width: widest when the bar lines up with the grid, thinnest on diagonals and near the cursor
+        const axis = Math.abs(ux * ux - uy * uy);
+        const full = S * (0.04 + 0.46 * axis * axis * smooth(0, W * 0.35, d));
+        const hw = 1.5 + (full - 1.5) * power;
+        ctx.save();
+        ctx.beginPath(); ctx.rect(c.x - S / 2 + pad / 2, c.y - ch / 2 + pad / 2, S - pad, ch - pad); ctx.clip();
+        ctx.translate(c.x, c.y); ctx.rotate(Math.atan2(uy, ux));
+        ctx.fillRect(-S * 1.5, -hw, S * 3, hw * 2);
+        ctx.restore();
+      }
+    };
+    const loop = () => {
+      mx += (tx - mx) * 0.14; my += (ty - my) * 0.14; power += (target - power) * 0.08;
+      draw();
+      // stop drawing once everything has settled back, and while the card is off screen
+      if (visible && (target > 0 || power > 0.002)) requestAnimationFrame(loop); else running = false;
+    };
+    const wake = () => { if (!running && !still) { running = true; requestAnimationFrame(loop); } };
+    card.addEventListener('pointermove', (e) => {
+      // convert screen pixels to layout pixels so the bars line up with the pointer at any scale
+      const b = card.getBoundingClientRect();
+      tx = (e.clientX - b.left) * (W / b.width); ty = (e.clientY - b.top) * (H / b.height); target = 1; wake();
+    });
+    card.addEventListener('pointerleave', () => { target = 0; wake(); });
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) wake(); }).observe(card);
+    new ResizeObserver(fit).observe(card);
+    // repaint right away when the theme is toggled, even if the card is idle
+    new MutationObserver(() => draw()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    fit();
+  }
+</script>
 
 <script is:inline>
   // ── Theme ──
