@@ -129,6 +129,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: #1c1c1c;
   }
 
+  /* Small caption above each card (the hero card has none) */
+  .panel-wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+  }
+  .panel-wrap > .panel {
+    flex: 1 1 auto;
+  }
+  .panel-label {
+    height: 0;
+    position: relative;
+    top: -42px;
+    padding-left: 4px;
+    font-family: 'Geist', 'Helvetica Neue', helvetica, arial, sans-serif;
+    font-size: 24px;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--fg-3);
+    pointer-events: none;
+  }
+
   .panel-hero {
     padding: 48px 48px 40px;
     display: grid;
@@ -655,24 +677,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </article>
 
       <!-- Project panel — bottom-left, cropped left -->
+      <div class="panel-wrap">
+        <span class="panel-label entry-panel" aria-hidden="true">Projects</span>
       <a class="panel panel-standard entry-panel" data-panel="work" href="/work" data-transition="page" style="position:relative;overflow-x:clip;overflow-y:visible;text-decoration:none;color:inherit;background:#1E40AF;border-color:#1E40AF;padding:0">
         <h2 class="pw" id="pw-word" style="color:#ffffff">Projects</h2>
       </a>
+      </div>
 
       <!-- Stories panel — dark bg, bottom-right, white text -->
+      <div class="panel-wrap">
+        <span class="panel-label entry-panel" aria-hidden="true">Stories</span>
       <a class="panel panel-standard entry-panel" data-panel="stories" href="/stories" data-transition="page" style="text-decoration:none;color:inherit;justify-content:flex-start;align-items:flex-end;background:#1c1c1c;border-color:#333;padding:8px 0 0 0">
         <h2 style="color:#f5f5f4;margin-right:-0.12em;text-align:right;width:100%;font-size:clamp(140px,19vw,260px)" aria-label="Stories">St<span class="so" aria-hidden="true"></span>ries</h2>
       </a>
+      </div>
 
       <!-- Info panel -->
+      <div class="panel-wrap">
+        <span class="panel-label entry-panel" aria-hidden="true">Information</span>
       <article class="panel panel-standard entry-panel" data-panel="info" onclick="openInfo()" style="display:flex;justify-content:flex-end;align-items:flex-end;overflow:hidden;padding:0 0 0 0">
         <span style="font-family:'Geist','Helvetica Neue',helvetica,arial,sans-serif;font-size:clamp(240px,32vw,500px);font-weight:600;color:var(--fg);line-height:0.9;transform:translateX(0.32em);margin-bottom:-0.05em">Info</span>
       </article>
+      </div>
 
       <!-- Guestbook panel: brand purple, a field of dots that swell under the cursor (no text) -->
+      <div class="panel-wrap">
+        <span class="panel-label entry-panel" aria-hidden="true">Guestbook</span>
       <a class="panel panel-standard entry-panel" data-panel="guestbook" href="/guestbook" data-transition="page" aria-label="Guestbook" style="position:relative;text-decoration:none;color:inherit;padding:0">
         <canvas id="gb-dots" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
       </a>
+      </div>
 
     </div>
     </div>
