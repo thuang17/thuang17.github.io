@@ -24,7 +24,7 @@ const corsHeaders = (request, env) => {
   const origin = request.headers.get('Origin') || '';
   const allowed = (env.ALLOWED_ORIGINS || '').split(',').map((s) => s.trim());
   const headers = {
-    'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Visitor-Token',
     'Access-Control-Max-Age': '86400',
     Vary: 'Origin',
@@ -166,6 +166,35 @@ async function createPost(request, env) {
   return [{ id: res.meta.last_row_id, status: 'pending' }, 201, { nickname, body, parentId }];
 }
 
+// A visitor manages only their own messages, proven by the hash of their browser token.
+// Edit: pending messages only (text only, stays pending). Delete: pending or approved.
+async function ownPost(request, env, id) {
+  const token = request.headers.get('X-Visitor-Token') || '';
+  if (!/^[0-9a-f]{32,128}$/.test(token)) return [null, [{ error: 'Missing visitor token' }, 400]];
+  const row = await env.DB.prepare(`SELECT id, token_hash, status, author FROM posts WHERE id = ?`).bind(id).first();
+  const tokenHash = await sha256(`${env.HASH_SALT}:token:${token}`);
+  if (!row || row.author !== 'visitor' || !row.token_hash || row.token_hash !== tokenHash) return [null, [{ error: 'Not found' }, 404]];
+  return [row, null];
+}
+
+async function editOwn(request, env, id) {
+  const [row, err] = await ownPost(request, env, id);
+  if (err) return err;
+  if (row.status !== 'pending') return [{ error: 'Only messages awaiting approval can be edited' }, 403];
+  const input = await request.json().catch(() => ({}));
+  const body = clean(input.body);
+  if (!body || body.length > MAX_BODY) return [{ error: `Message must be 1-${MAX_BODY} characters` }, 400];
+  await env.DB.prepare(`UPDATE posts SET body = ? WHERE id = ? AND status = 'pending'`).bind(body, id).run();
+  return [{ ok: true }, 200];
+}
+
+async function deleteOwn(request, env, id) {
+  const [row, err] = await ownPost(request, env, id);
+  if (err) return err;
+  await env.DB.prepare(`DELETE FROM posts WHERE id = ?`).bind(id).run(); // replies go with it (ON DELETE CASCADE)
+  return [{ ok: true }, 200];
+}
+
 async function admin(request, env, url, method) {
   const path = url.pathname.replace(/^\/api\/admin/, '');
 
@@ -229,6 +258,11 @@ export default {
       if (url.pathname === '/api/posts' && method === 'POST') {
         const [data, status, post] = await createPost(request, env);
         if (status === 201) ctx.waitUntil(notifyOwner(env, post));
+        return json(data, status, request, env);
+      }
+      const own = url.pathname.match(/^\/api\/posts\/(\d+)$/);
+      if (own && (method === 'PATCH' || method === 'DELETE')) {
+        const [data, status] = await (method === 'PATCH' ? editOwn : deleteOwn)(request, env, Number(own[1]));
         return json(data, status, request, env);
       }
       return json({ error: 'Not found' }, 404, request, env);

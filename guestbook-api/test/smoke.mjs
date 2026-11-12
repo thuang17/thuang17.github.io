@@ -68,6 +68,25 @@ check('visitor sees own pending reply', threadOwn.replies.some((r) => r.id === f
 const xss = await call('POST', '/api/posts', { body: { nickname: '<b>x</b>', body: '<script>alert(1)</script>', token: tokenB } });
 check('html accepted as plain text', xss.status === 201);
 
+// 7b. Visitors manage their own messages: edit while pending, delete any time, never anyone else's
+const tokenC = randomToken();
+const mine = await call('POST', '/api/posts', { body: { nickname: 'Visitor C', body: 'first draft', token: tokenC } });
+const mid = mine.data.id;
+check('author can edit pending message', (await call('PATCH', `/api/posts/${mid}`, { token: tokenC, body: { body: 'second draft' } })).status === 200);
+check('edit applied and still pending', (await call('GET', '/api/posts', { token: tokenC })).data.posts.some((p) => p.id === mid && p.body === 'second draft' && p.pending));
+check('other visitor cannot edit', (await call('PATCH', `/api/posts/${mid}`, { token: tokenB, body: { body: 'hijack' } })).status === 404);
+check('edit without token rejected', (await call('PATCH', `/api/posts/${mid}`, { body: { body: 'x' } })).status === 400);
+check('empty edit rejected', (await call('PATCH', `/api/posts/${mid}`, { token: tokenC, body: { body: '  ' } })).status === 400);
+check('approved message cannot be edited', (await call('PATCH', `/api/posts/${id}`, { token: tokenA, body: { body: 'rewrite' } })).status === 403);
+check('other visitor cannot delete', (await call('DELETE', `/api/posts/${mid}`, { token: tokenB })).status === 404);
+check('author can delete pending message', (await call('DELETE', `/api/posts/${mid}`, { token: tokenC })).status === 200);
+check('deleted message is gone', !(await call('GET', '/api/posts', { token: tokenC })).data.posts.some((p) => p.id === mid));
+check('owner reply cannot be deleted by a visitor', (await call('DELETE', `/api/posts/${reply.data.id}`, { token: tokenA })).status === 404);
+const tokenD = randomToken();
+const appr = await call('POST', '/api/posts', { body: { nickname: 'Visitor D', body: 'to be approved', token: tokenD } });
+await call('POST', `/api/admin/posts/${appr.data.id}/status`, { admin: ADMIN, body: { status: 'approved' } });
+check('author can delete approved message', (await call('DELETE', `/api/posts/${appr.data.id}`, { token: tokenD })).status === 200);
+
 // 8. Reject + delete
 check('reject ok', (await call('POST', `/api/admin/posts/${xss.data.id}/status`, { admin: ADMIN, body: { status: 'rejected' } })).status === 200);
 check('delete ok', (await call('DELETE', `/api/admin/posts/${id}`, { admin: ADMIN })).status === 200);

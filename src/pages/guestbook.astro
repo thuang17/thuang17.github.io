@@ -45,28 +45,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin:26px 0 40px; max-width:420px;
   }
 
-  /* ── FORM ───────────────────────────────────────── */
-  form{ display:flex; flex-direction:column; gap:14px; max-width:440px; }
-  label{ font-family:var(--f-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-3); }
-  .field{ display:flex; flex-direction:column; gap:8px; }
-  input, textarea{
-    font-family:var(--f-body); font-size:16px; line-height:1.5; color:var(--fg);
-    background:#f9f9f9; border:1px solid var(--border); border-radius:14px;
-    padding:14px 16px; width:100%; box-sizing:border-box; resize:vertical;
-    transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
-  }
-  textarea{ min-height:150px; }
-  [data-theme="dark"] input, [data-theme="dark"] textarea{ background:#1c1c1c; }
-  input::placeholder, textarea::placeholder{ color:var(--fg-3); }
-  input:focus, textarea:focus{
-    outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(124,58,237,.16);
-  }
-  .count{ align-self:flex-end; font-family:var(--f-mono); font-size:12px; color:var(--fg-3); margin-top:-4px; }
-  .actions{ display:flex; align-items:center; gap:18px; margin-top:6px; }
+  /* ── NOTE (the form is a note you write on) ─────── */
+  :root{ --paper:#FFFFFF; --paper-edge:rgba(28,25,23,.08); --paper-shadow:0 18px 40px rgba(28,25,23,.12),0 2px 6px rgba(28,25,23,.06); }
+  [data-theme="dark"]{ --paper:#222226; --paper-edge:rgba(255,255,255,.08); --paper-shadow:0 18px 40px rgba(0,0,0,.45),0 2px 6px rgba(0,0,0,.3); }
+  #bars{ display:block; width:100%; max-width:440px; height:44px; margin:0 0 10px; }
+  form#form{ position:relative; max-width:440px; background:var(--paper); border:1px solid var(--paper-edge); border-radius:18px;
+    box-shadow:var(--paper-shadow); padding:26px 26px 20px; transform:rotate(-1.6deg);
+    transition:transform .5s cubic-bezier(.22,1,.36,1); }
+  form#form:focus-within{ transform:rotate(0) translateY(-2px); }
+  #text{ all:unset; display:block; width:100%; min-height:170px; box-sizing:border-box; font-family:var(--f-body); font-size:19px; line-height:1.6; color:var(--fg); white-space:pre-wrap; overflow-wrap:anywhere; }
+  #text::placeholder{ color:var(--fg-3); }
+  .sig{ display:flex; align-items:baseline; gap:10px; border-top:1px dashed var(--border); margin-top:14px; padding-top:12px; }
+  .sig label{ font-family:var(--f-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-3); }
+  #nick{ all:unset; flex:1; min-width:0; font-family:var(--f-display); font-weight:700; font-size:17px; letter-spacing:-.01em; color:var(--fg); }
+  #nick::placeholder{ color:var(--fg-3); font-family:var(--f-body); font-weight:400; }
+  .count{ font-family:var(--f-mono); font-size:12px; color:var(--fg-3); }
+  .actions{ display:flex; align-items:center; gap:18px; margin-top:26px; max-width:440px; }
   .send{
     font-family:var(--f-body); font-size:16px; font-weight:600; color:#fff; background:var(--accent);
     border:0; border-radius:999px; padding:14px 30px; cursor:pointer;
-    transition:background .2s ease, transform .2s ease;
+    transition:background .2s ease, transform .2s ease, opacity .2s ease;
   }
   .send:hover{ background:#6D28D9; transform:translateY(-1px); }
   .tsbox{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:50; }
@@ -74,50 +72,57 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .hint{ font-family:var(--f-body); font-size:14px; line-height:1.5; color:var(--fg-3); }
 
   /* ── WALL ───────────────────────────────────────── */
-  .wall-head{
-    display:flex; align-items:baseline; justify-content:space-between;
-    padding-bottom:18px; border-bottom:1px solid var(--border); margin-bottom:8px;
-  }
+  .wall-head{ display:flex; align-items:baseline; justify-content:space-between; padding-bottom:18px; margin-bottom:26px; }
   .wall-head h2{ font-family:var(--f-display); font-weight:700; font-size:26px; letter-spacing:-0.02em; margin:0; color:var(--fg); }
   .wall-head span{ font-family:var(--f-mono); font-size:12px; letter-spacing:.06em; color:var(--fg-3); }
-  .msg{ padding:30px 0; border-bottom:1px solid var(--border); }
-  .meta{ display:flex; align-items:baseline; gap:12px; margin-bottom:10px; }
-  .nick{ font-family:var(--f-body); font-size:17px; font-weight:700; color:var(--fg); }
-  .when{ font-family:var(--f-mono); font-size:12px; color:var(--fg-3); }
-  .tag{
-    font-family:var(--f-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
-    padding:3px 9px; border-radius:999px; background:var(--bg-sub); color:var(--fg-2); border:1px solid var(--border);
-  }
-  .body{ font-family:var(--f-body); font-size:18px; line-height:1.65; color:var(--fg); margin:0; white-space:pre-wrap; overflow-wrap:anywhere; }
-  .reply{
-    margin:22px 0 0 0; padding:2px 0 2px 22px; border-left:2px solid var(--accent);
-  }
-  .reply .nick{ color:var(--accent); }
+  .cards{ columns:2; column-gap:22px; }
+  .msg{ break-inside:avoid; margin:0 0 22px; background:var(--paper); border:1px solid var(--paper-edge); border-radius:16px;
+    box-shadow:var(--paper-shadow); padding:20px 20px 16px; transform:rotate(var(--r,0deg)); transition:transform .4s cubic-bezier(.22,1,.36,1); }
+  .msg:hover{ transform:rotate(0) translateY(-4px); }
+  .msg.pending{ border-color:color-mix(in srgb,var(--accent) 35%,transparent); }
+  .msg.fresh{ animation:land .7s cubic-bezier(.22,1,.36,1); }
+  @keyframes land{ from{ opacity:0; transform:translate(-120px,60px) rotate(-6deg) scale(.9); } to{ opacity:1; } }
+  .body{ font-family:var(--f-body); font-size:17px; line-height:1.6; color:var(--fg); margin:0; white-space:pre-wrap; overflow-wrap:anywhere; }
+  .by{ display:flex; justify-content:space-between; align-items:baseline; margin-top:14px; padding-top:10px; border-top:1px dashed var(--border); }
+  .nick{ font-family:var(--f-display); font-weight:700; font-size:14px; letter-spacing:-.01em; color:var(--fg); }
+  .when{ font-family:var(--f-mono); font-size:11px; color:var(--fg-3); }
+  .only{ display:block; margin-top:10px; font-size:13px; line-height:1.4; color:var(--accent); }
+  .acts{ display:flex; gap:16px; margin-top:10px; font-size:13px; }
+  .acts button{ all:unset; cursor:pointer; font-weight:600; color:var(--fg-2); }
+  .acts button:hover{ color:var(--accent); }
+  .acts .del:hover{ color:#B91C1C; }
+  .acts .ask{ color:var(--fg-2); font-weight:400; }
+  .editbox textarea{ all:unset; display:block; width:100%; min-height:80px; box-sizing:border-box; font-family:var(--f-body); font-size:17px; line-height:1.6; color:var(--fg); border-bottom:1px dashed var(--border); white-space:pre-wrap; overflow-wrap:anywhere; }
+  .reply{ margin:14px 0 0; padding:2px 0 2px 14px; border-left:2px solid var(--accent); }
+  .reply .nick{ display:block; font-family:var(--f-body); font-size:13px; color:var(--accent); margin-bottom:4px; }
   .reply.visitor{ border-left-color:var(--border); }
   .reply.visitor .nick{ color:var(--fg); }
-  .reply .body{ color:var(--fg-2); }
+  .reply .body{ font-size:15px; color:var(--fg-2); }
+  .ghost{ break-inside:avoid; margin:0 0 22px; border:1.5px dashed color-mix(in srgb,var(--fg-3) 55%,transparent); border-radius:16px; padding:20px;
+    min-height:var(--h,110px); box-sizing:border-box; color:var(--fg-3); font-size:15px; transform:rotate(var(--r,0deg)); display:flex; align-items:flex-end; }
   .more{
     font-family:var(--f-body); font-size:14px; font-weight:600; color:var(--fg-2);
-    background:none; border:0; padding:0; margin-top:18px; cursor:pointer;
+    background:none; border:0; padding:0; margin-top:6px; cursor:pointer;
   }
   .more:hover{ color:var(--accent); }
-  .pending{ opacity:.72; }
+  .more[hidden]{ display:none; }
 
-  .state{ font-family:var(--f-body); font-size:16px; color:var(--fg-3); padding:30px 0; margin:0; }
+  .state{ font-family:var(--f-body); font-size:16px; color:var(--fg-3); padding:30px 0; margin:0; column-span:all; }
   .okmsg{ font-family:var(--f-body); font-size:15px; line-height:1.5; color:var(--accent); margin:4px 0 0; }
   .errmsg{ color:#B91C1C; }
   [data-theme="dark"] .errmsg{ color:#F87171; }
-  .replyform{ margin-top:18px; display:flex; flex-direction:column; gap:10px; max-width:520px; }
-  .replyform textarea{ min-height:90px; }
+  .replyform{ margin-top:14px; display:flex; flex-direction:column; gap:10px; }
+  .replyform textarea{ font-family:var(--f-body); font-size:15px; line-height:1.5; color:var(--fg); background:var(--bg-sub); border:1px solid var(--border); border-radius:12px; padding:10px 12px; min-height:80px; resize:vertical; box-sizing:border-box; width:100%; }
   .replyform .row{ display:flex; gap:14px; align-items:center; }
-  .replyform .send{ padding:10px 22px; font-size:15px; }
+  .replyform .send{ padding:8px 18px; font-size:14px; }
   .linkbtn{ font-family:var(--f-body); font-size:14px; font-weight:600; color:var(--fg-3); background:none; border:0; padding:0; cursor:pointer; }
   .linkbtn:hover{ color:var(--fg); }
-  .more[hidden]{ display:none; }
 
   /* ── MOBILE ─────────────────────────────────────── */
+  @media(prefers-reduced-motion:reduce){ form#form,.msg{ transition:none; } .msg.fresh{ animation:none; } }
   @media(max-width:900px){
     main{ grid-template-columns:1fr; gap:64px; padding:104px 20px 88px; }
+    .cards{ columns:1; }
     .intro{ position:static; }
     .topbar{ padding:18px 20px; }
   }
@@ -137,27 +142,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <h1>Say hi.</h1>
     <p class="lede">Leave a note about a project, a game, or anything else. I read every message and reply here.</p>
 
+    <canvas id="bars" aria-hidden="true"></canvas>
     <form id="form" autocomplete="off" novalidate>
-      <div class="field">
-        <label for="nick">Name</label>
+      <textarea id="text" name="body" maxlength="1000" placeholder="What would you like to say?" aria-label="Message" required></textarea>
+      <div class="sig">
+        <label for="nick">From</label>
         <input id="nick" name="nickname" type="text" maxlength="30" placeholder="Your name or a nickname" required>
+        <span class="count" id="count">0 / 1000</span>
       </div>
-      <div class="field">
-        <label for="text">Message</label>
-        <textarea id="text" name="body" maxlength="1000" placeholder="What would you like to say?" required></textarea>
-      </div>
-      <span class="count" id="count">0 / 1000</span>
-      <div class="actions">
-        <button class="send" id="send" type="submit" disabled>Send message</button>
-        <span class="hint" id="hint">Messages appear once approved.</span>
-      </div>
-      <p class="okmsg" id="okmsg" role="status" hidden></p>
     </form>
+    <div class="actions">
+      <button class="send" id="send" type="submit" form="form" disabled>Send message</button>
+      <span class="hint" id="hint">I read every note before it goes up.</span>
+    </div>
+    <p class="okmsg" id="okmsg" role="status" hidden></p>
   </section>
 
   <section class="wall" aria-label="Messages">
     <div class="wall-head"><h2>Messages</h2><span id="shown"></span></div>
-    <div id="list" aria-live="polite"><p class="state">Loading messages…</p></div>
+    <div class="cards" id="list" aria-live="polite"><p class="state">Loading messages…</p></div>
     <button class="more" id="loadmore" type="button" hidden>Load more</button>
   </section>
 </main>
@@ -230,10 +233,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     return node;
   }
 
-  function metaRow(name, when, pending) {
-    const row = el('div', 'meta');
+  function byRow(name, when) {
+    const row = el('div', 'by');
     row.append(el('span', 'nick', name), el('span', 'when', ago(when)));
-    if (pending) row.append(el('span', 'tag', 'Awaiting approval'));
     return row;
   }
 
@@ -303,21 +305,96 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     return btn;
   }
 
+  const ghosts = [['Your note here', -1.2, 140], ['Questions about ChamberUp?', 1.3, 110], ['Or just say hi.', -0.6, 120]];
+
+  // Edit / Delete on your own messages (the server re-checks ownership; this only decides what to show)
+  function actions(post, art, canEdit) {
+    const row = el('div', 'acts');
+    const reset = () => { row.textContent = ''; build(); };
+    const build = () => {
+      if (canEdit) {
+        const ed = el('button', null, 'Edit'); ed.type = 'button';
+        ed.addEventListener('click', () => startEdit(post, art, row));
+        row.append(ed);
+      }
+      const del = el('button', 'del', 'Delete'); del.type = 'button';
+      del.addEventListener('click', () => {
+        row.textContent = '';
+        const yes = el('button', 'del', 'Delete'); yes.type = 'button';
+        const no = el('button', null, 'Cancel'); no.type = 'button';
+        row.append(el('span', 'ask', 'Delete this note?'), yes, no);
+        no.addEventListener('click', reset);
+        yes.addEventListener('click', async () => {
+          yes.disabled = true;
+          try {
+            const r = await api('/api/posts/' + post.id, { method: 'DELETE', headers: { 'X-Visitor-Token': token } });
+            if (r.status === 200 || r.status === 404) { await load(true); return; }
+          } catch {}
+          row.textContent = ''; row.append(el('span', 'ask errmsg', 'Could not delete. Please try again.'));
+        });
+      });
+      row.append(del);
+    };
+    build();
+    return row;
+  }
+
+  function startEdit(post, art, row) {
+    const body = art.querySelector(':scope > .body');
+    const box = el('div', 'editbox');
+    const ta = el('textarea'); ta.maxLength = 1000; ta.value = post.body;
+    const bar = el('div', 'acts');
+    const save = el('button', null, 'Save'); save.type = 'button';
+    const cancel = el('button', null, 'Cancel'); cancel.type = 'button';
+    const note = el('span', 'ask errmsg', '');
+    bar.append(save, cancel, note);
+    box.append(ta, bar);
+    body.replaceWith(box); row.hidden = true; ta.focus();
+    const back = () => { box.replaceWith(body); row.hidden = false; };
+    cancel.addEventListener('click', back);
+    save.addEventListener('click', async () => {
+      const next = ta.value.trim();
+      if (!next) return;
+      save.disabled = true;
+      try {
+        const r = await api('/api/posts/' + post.id, { method: 'PATCH', headers: { 'Content-Type': 'application/json', 'X-Visitor-Token': token }, body: JSON.stringify({ body: next }) });
+        if (r.status === 200) { await load(true); return; }
+        note.textContent = r.data.error || 'Could not save.';
+      } catch { note.textContent = 'Could not reach the server.'; }
+      save.disabled = false;
+    });
+  }
+
+  let freshId = null;
   function render(posts, append) {
     if (!append) list.textContent = '';
-    if (!posts.length && !append) { list.append(el('p', 'state', 'No messages yet. Be the first to say hi.')); return; }
+    if (!posts.length && !append) {
+      for (const [t, r, h] of ghosts) {
+        const g = el('div', 'ghost', t);
+        g.style.setProperty('--r', r + 'deg'); g.style.setProperty('--h', h + 'px');
+        list.append(g);
+      }
+      return;
+    }
     for (const post of posts) {
-      const art = el('article', 'msg' + (post.pending ? ' pending' : ''));
-      art.append(metaRow(post.nickname, post.created_at, post.pending), el('p', 'body', post.body));
+      const art = el('article', 'msg' + (post.pending ? ' pending' : '') + (post.id === freshId ? ' fresh' : ''));
+      // a small stable tilt per message so the wall looks hand-placed but never jumps between loads
+      art.style.setProperty('--r', (((post.id * 37) % 31) / 10 - 1.5).toFixed(1) + 'deg');
+      art.append(el('p', 'body', post.body), byRow(post.nickname, post.created_at));
+      if (post.pending) art.append(el('span', 'only', 'Only you can see this until I approve it.'));
       for (const r of post.replies) {
         const rep = el('div', r.author === 'owner' ? 'reply' : 'reply visitor');
-        rep.append(metaRow(r.nickname, r.created_at, r.pending), el('p', 'body', r.body));
+        rep.append(el('span', 'nick', r.nickname), el('p', 'body', r.body));
+        if (r.pending) rep.append(el('span', 'only', 'Only you can see this until I approve it.'));
         art.append(rep);
       }
+      // Your own messages: edit while pending, delete any time
+      if (post.mine) art.append(actions(post, art, post.pending));
       // The original visitor can keep the conversation going once the owner has replied
       if (post.mine && !post.pending && post.replies.some((r) => r.author === 'owner')) art.append(replyBox(post, art));
       list.append(art);
     }
+    freshId = null;
   }
 
   let offset = 0;
@@ -329,7 +406,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       render(r.data.posts, offset > 0);
       offset += r.data.posts.length;
       const approved = list.querySelectorAll('article:not(.pending)').length;
-      shown.textContent = approved ? approved + ' shown' : '';
+      shown.textContent = approved + (r.data.hasMore ? ' shown' : approved === 1 ? ' message' : ' messages');
       loadMore.hidden = !r.data.hasMore;
     } catch {
       list.textContent = '';
@@ -343,8 +420,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     count.textContent = text.value.length + ' / 1000';
     send.disabled = !(nick.value.trim() && text.value.trim());
   }
-  nick.addEventListener('input', sync);
-  text.addEventListener('input', sync);
+  nick.addEventListener('input', () => { sync(); pulse(.6); });
+  text.addEventListener('input', () => { sync(); pulse(1); });
   sync();
 
   form.addEventListener('submit', async (e) => {
@@ -358,8 +435,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       if (r.status === 201) {
         try { localStorage.setItem('gb_nick', nick.value.trim()); } catch {}
         text.value = '';
-        okmsg.textContent = 'Thanks, your message will appear once it\u2019s approved.';
-        okmsg.hidden = false;
+        pulse(3);
+        freshId = r.data.id;
         await load(true);
       } else {
         okmsg.textContent = r.status === 429 ? 'You are sending messages too quickly. Please try again later.' : (r.data.error || 'Something went wrong. Please try again.');
@@ -371,6 +448,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
     sync();
   });
+
+  // Bar strip above the note: drifts gently, jumps while you type (echoes the card on the home page)
+  const cv = document.getElementById('bars');
+  const cx = cv.getContext('2d');
+  let bw = 0, bh = 0, power = 0, phase = 0, running = true;
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function sizeBars() {
+    const d = devicePixelRatio || 1, b = cv.getBoundingClientRect();
+    bw = b.width; bh = b.height; cv.width = bw * d; cv.height = bh * d; cx.setTransform(d, 0, 0, d, 0, 0);
+  }
+  function pulse(v) { power = Math.min(3, power + v); }
+  function drawBars() {
+    cx.clearRect(0, 0, bw, bh);
+    const n = Math.floor(bw / 9);
+    cx.fillStyle = html.getAttribute('data-theme') === 'dark' ? '#8B5CF6' : '#7C3AED';
+    for (let i = 0; i < n; i++) {
+      const wave = (Math.sin(i * .35 + phase) * .5 + .5) * .25;
+      const h = bh * (.12 + wave + Math.min(1, power * .3) * (Math.sin(i * .9 + phase * 3) * .5 + .5) * .7);
+      cx.fillRect(i * (bw / n), bh - h, 3, h);
+    }
+  }
+  function frame() {
+    if (!running) return;
+    phase += .03; power *= .94; drawBars(); requestAnimationFrame(frame);
+  }
+  sizeBars(); drawBars();
+  addEventListener('resize', () => { sizeBars(); drawBars(); });
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running && !still) frame(); });
+  if (!still) frame();
+  new MutationObserver(drawBars).observe(html, { attributes: true, attributeFilter: ['data-theme'] });
 
   load(true);
 </script>
