@@ -1,0 +1,438 @@
+{
+ "_note": "Sizes in tiles (1 tile = 32 art px). w = width, h = height. Ratios follow Stardew Valley (player 2 tiles tall). Spring-only set for v1.",
+ "buildings/stories_cut.png": {
+  "w": 7.5
+ },
+ "buildings/glasshouse_cut.png": {
+  "w": 8
+ },
+ "buildings/markethall_cut.png": {
+  "w": 7
+ },
+ "buildings/aboutme_cut.png": {
+  "w": 5.5
+ },
+ "buildings/mill_construction_cut.png": {
+  "w": 6.5
+ },
+ "nature/trees_stages/oak_summer.png": {
+  "h": 5.6
+ },
+ "nature/trees_stages/oak_wide.png": {
+  "h": 5.2
+ },
+ "nature/trees_stages/young.png": {
+  "h": 2.8
+ },
+ "nature/trees_stages/sapling.png": {
+  "h": 1.5
+ },
+ "nature/trees_stages/stump.png": {
+  "h": 1.3
+ },
+ "nature/trees_species/willow.png": {
+  "h": 5.6
+ },
+ "nature/trees_species/birch.png": {
+  "h": 4.8
+ },
+ "nature/trees_species/poplar.png": {
+  "h": 5.4
+ },
+ "nature/trees_species/gnarled.png": {
+  "h": 5.0
+ },
+ "nature/trees_species/palm_a.png": {
+  "h": 5.6
+ },
+ "nature/trees_species/palm_b.png": {
+  "h": 5.2
+ },
+ "nature/trees_species/mushroom.png": {
+  "h": 5.2
+ },
+ "nature/trees_species/magic_teal.png": {
+  "h": 5.8
+ },
+ "nature/trees_evergreen_blossom/spruce.png": {
+  "h": 5.8
+ },
+ "nature/trees_evergreen_blossom/fir_skirt.png": {
+  "h": 5.2
+ },
+ "nature/trees_evergreen_blossom/topiary.png": {
+  "h": 3.4
+ },
+ "nature/trees_evergreen_blossom/blossom_white.png": {
+  "h": 4.5
+ },
+ "nature/trees_evergreen_blossom/blossom_lavender.png": {
+  "h": 4.5
+ },
+ "nature/trees_evergreen_blossom/twin_pair.png": {
+  "h": 4.2
+ },
+ "nature/plants_rocks/bush_round.png": {
+  "w": 1.6
+ },
+ "nature/plants_rocks/bush_hedge.png": {
+  "w": 2.3
+ },
+ "nature/plants_rocks/bush_white.png": {
+  "w": 1.7
+ },
+ "nature/plants_rocks/bush_lavender.png": {
+  "w": 1.7
+ },
+ "nature/plants_rocks/agave_green.png": {
+  "w": 1.5
+ },
+ "nature/plants_rocks/agave_blue.png": {
+  "w": 1.5
+ },
+ "nature/plants_rocks/fern_large.png": {
+  "w": 1.7
+ },
+ "nature/plants_rocks/fern_curled.png": {
+  "w": 1.0
+ },
+ "nature/plants_rocks/boulder_mossy.png": {
+  "w": 2.6
+ },
+ "nature/plants_rocks/rocks_three.png": {
+  "w": 2.2
+ },
+ "nature/plants_rocks/rock_small_a.png": {
+  "w": 1.0
+ },
+ "nature/plants_rocks/rock_small_b.png": {
+  "w": 1.0
+ },
+ "nature/plants_rocks/log_mossy.png": {
+  "w": 2.2
+ },
+ "nature/plants_rocks/mushrooms.png": {
+  "w": 1.1
+ },
+ "nature/plants_rocks/tall_grass_seed.png": {
+  "w": 1.5
+ },
+ "nature/plants_rocks/bramble_yellow.png": {
+  "w": 1.8
+ },
+ "nature/water_plants/reeds_cattail.png": {
+  "h": 2.0
+ },
+ "nature/water_plants/reeds_feather.png": {
+  "h": 1.9
+ },
+ "nature/water_plants/lily_white.png": {
+  "w": 2.2
+ },
+ "nature/water_plants/lily_yellow.png": {
+  "w": 2.2
+ },
+ "nature/water_plants/floating_leaf.png": {
+  "w": 1.9
+ },
+ "nature/water_plants/waterweed_russet.png": {
+  "h": 2.0
+ },
+ "nature/water_plants/water_grass_teal.png": {
+  "w": 1.7
+ },
+ "nature/water_plants/water_iris.png": {
+  "h": 2.0
+ },
+ "props/town_a/well.png": {
+  "w": 2.6
+ },
+ "props/town_a/bench_long.png": {
+  "w": 2.5
+ },
+ "props/town_a/bench_flowerbox.png": {
+  "w": 2.5
+ },
+ "props/town_a/lamp_street.png": {
+  "h": 3.8
+ },
+ "props/town_a/lantern_post.png": {
+  "h": 1.6
+ },
+ "props/town_a/signpost.png": {
+  "h": 2.3
+ },
+ "props/town_a/sign_blank.png": {
+  "w": 3.5
+ },
+ "props/town_a/notice_board.png": {
+  "w": 5.2
+ },
+ "props/town_a/mailbox.png": {
+  "h": 1.9
+ },
+ "props/town_a/barrels.png": {
+  "w": 1.9
+ },
+ "props/town_a/crates_sacks.png": {
+  "w": 2.1
+ },
+ "props/town_a/planter_flowers.png": {
+  "w": 2.1
+ },
+ "props/town_a/hand_cart.png": {
+  "w": 2.2
+ },
+ "props/town_b/fence_h.png": {
+  "w": 1.3
+ },
+ "props/town_b/fence_v.png": {
+  "h": 1.8
+ },
+ "props/town_b/fence_corner.png": {
+  "w": 1.3
+ },
+ "props/town_b/fence_gate.png": {
+  "w": 1.4
+ },
+ "props/town_b/stone_wall.png": {
+  "w": 2.6
+ },
+ "props/town_b/stone_gatepost.png": {
+  "h": 2.0
+ },
+ "props/town_b/stepping_stones.png": {
+  "w": 1.8
+ },
+ "props/town_b/hay_bales.png": {
+  "w": 2.4
+ },
+ "props/town_b/picnic_table.png": {
+  "w": 2.5
+ },
+ "props/town_b/rowboat.png": {
+  "w": 2.8
+ },
+ "props/town_b/pier.png": {
+  "w": 3.8
+ },
+ "props/town_b/fishing_stand.png": {
+  "h": 2.3
+ },
+ "ground/bank_recolored/edge_grass_left.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/edge_grass_top.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/edge_sand_left.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/edge_sand_top.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/grass1.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/grass2.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/pocket_sand_bl.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/pocket_sand_br.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/pocket_sand_tl.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/pocket_sand_tr.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/sand1.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/sand2.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/tip_grass_bl.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/tip_grass_br.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/tip_grass_tl.png": {
+  "tile": true
+ },
+ "ground/bank_recolored/tip_grass_tr.png": {
+  "tile": true
+ },
+ "ground/grass1.png": {
+  "tile": true
+ },
+ "ground/grass2.png": {
+  "tile": true
+ },
+ "ground/grass3.png": {
+  "tile": true
+ },
+ "ground/path/bend_bl.png": {
+  "tile": true
+ },
+ "ground/path/bend_br.png": {
+  "tile": true
+ },
+ "ground/path/bend_tl.png": {
+  "tile": true
+ },
+ "ground/path/bend_tr.png": {
+  "tile": true
+ },
+ "ground/path/end_bottom.png": {
+  "tile": true
+ },
+ "ground/path/end_left.png": {
+  "tile": true
+ },
+ "ground/path/end_right.png": {
+  "tile": true
+ },
+ "ground/path/end_top.png": {
+  "tile": true
+ },
+ "ground/path/grass_plain.png": {
+  "tile": true
+ },
+ "ground/path/path_cross.png": {
+  "tile": true
+ },
+ "ground/path/path_h.png": {
+  "tile": true
+ },
+ "ground/path/path_v.png": {
+  "tile": true
+ },
+ "ground/path/tee_no_bottom.png": {
+  "tile": true
+ },
+ "ground/path/tee_no_left.png": {
+  "tile": true
+ },
+ "ground/path/tee_no_right.png": {
+  "tile": true
+ },
+ "ground/path/tee_no_top.png": {
+  "tile": true
+ },
+ "ground/shore/edge_sand_left.png": {
+  "tile": true
+ },
+ "ground/shore/edge_sand_top.png": {
+  "tile": true
+ },
+ "ground/shore/edge_water_left.png": {
+  "tile": true
+ },
+ "ground/shore/edge_water_top.png": {
+  "tile": true
+ },
+ "ground/shore/pocket_water_bl.png": {
+  "tile": true
+ },
+ "ground/shore/pocket_water_br.png": {
+  "tile": true
+ },
+ "ground/shore/pocket_water_tl.png": {
+  "tile": true
+ },
+ "ground/shore/pocket_water_tr.png": {
+  "tile": true
+ },
+ "ground/shore/sand1.png": {
+  "tile": true
+ },
+ "ground/shore/sand2.png": {
+  "tile": true
+ },
+ "ground/shore/tip_sand_bl.png": {
+  "tile": true
+ },
+ "ground/shore/tip_sand_br.png": {
+  "tile": true
+ },
+ "ground/shore/tip_sand_tl.png": {
+  "tile": true
+ },
+ "ground/shore/tip_sand_tr.png": {
+  "tile": true
+ },
+ "ground/shore/water1.png": {
+  "tile": true
+ },
+ "ground/shore/water2.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/clover.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/dark1.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/dark2.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/dark3.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/dark4.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/dirt1.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/dirt2.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/flowers_lavender.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/flowers_mixed.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/flowers_white.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/flowers_yellow.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/mossrock.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/tall1.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/tall2.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/tall3.png": {
+  "tile": true
+ },
+ "ground/variation_fixed/tall4.png": {
+  "tile": true
+ },
+ "characters/traveller_final/sheet_4dir.png": {
+  "sheet_scale": 0.2
+ },
+ "characters/traveller_final/sheet_idle.png": {
+  "sheet_scale": 0.2
+ },
+ "nature/trees_stages/oak_autumn_orange.png": {
+  "h": 5.6
+ },
+ "nature/trees_stages/oak_autumn_gold.png": {
+  "h": 5.6
+ },
+ "nature/trees_stages/oak_winter_bare.png": {
+  "h": 5.6
+ }
+}

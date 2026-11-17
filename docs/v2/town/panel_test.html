@@ -1,0 +1,153 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Board test (editable)</title>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+15&display=swap" rel="stylesheet">
+<style>
+:root{--frame:48px;--sbs:2;--xs:44px}
+*{box-sizing:border-box;margin:0}html,body{height:100%}
+body{background:#9ab27a url(a/grass1.png);background-size:64px;image-rendering:pixelated;font-family:'Jersey 15',monospace;overflow:hidden}
+.board{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:var(--bw);height:var(--bh);
+ border:var(--frame) solid transparent;border-image:url(ui/panel.png) 16 fill/var(--frame)/0 stretch;image-rendering:pixelated;color:#fbe9c4}
+.in{height:100%;overflow-y:scroll;scrollbar-width:none;padding:var(--pt) var(--pr) var(--pb) var(--pl)}
+.in::-webkit-scrollbar{display:none}
+h1{font-size:calc(var(--fs)*2.1);line-height:1;color:#ffd36e;text-shadow:3px 3px 0 #4B3025;margin-bottom:6px}
+h2{font-size:calc(var(--fs)*1.3);color:#ffe9b0;text-shadow:2px 2px 0 #4B3025;margin:16px 0 4px}
+p{font-size:var(--fs);line-height:1.25;text-shadow:2px 2px 0 #4B3025;margin-bottom:10px}
+.tag{display:inline-block;background:#4B3025;color:#ffd36e;padding:0 10px;margin:4px 6px 0 0;font-size:calc(var(--fs)*.85)}
+/* close button */
+.x{position:absolute;right:var(--xr);top:var(--xt);width:var(--xs);height:var(--xs);background:url(ui/x_normal.png) center/100% 100% no-repeat;image-rendering:pixelated;cursor:pointer;z-index:5;font-size:0}
+.x:hover{background-image:url(ui/x_hover.png)}.x:active{background-image:url(ui/x_pressed.png);transform:translateY(2px)}
+/* scrollbar: sizes are in ART pixels times --sbs */
+.sb{position:absolute;right:var(--sr);top:var(--st);bottom:var(--sbm);width:calc(25px*var(--sbs));display:flex;flex-direction:column;align-items:center;user-select:none;z-index:4}
+.sb .btn{width:calc(25px*var(--sbs));height:calc(25px*var(--sbs));flex:none;background-size:100% 100%;image-rendering:pixelated;cursor:pointer}
+.sb .btn:active{transform:translateY(calc(1px*var(--sbs)))}
+.sb .tr{position:relative;width:calc(17px*var(--sbs));flex:1;margin:calc(2px*var(--sbs)) 0;image-rendering:pixelated;touch-action:none}
+.tr .a,.tr .m,.tr .z{position:absolute;left:0;width:100%;background-size:100% auto}
+.tr .a{top:0;height:calc(6px*var(--sbs));background-image:url(ui/sb_track_top.png);background-repeat:no-repeat}
+.tr .z{bottom:0;height:calc(6px*var(--sbs));background-image:url(ui/sb_track_bot.png);background-repeat:no-repeat}
+.tr .m{top:calc(6px*var(--sbs));bottom:calc(6px*var(--sbs));background-image:url(ui/sb_track_mid.png);background-repeat:repeat-y}
+.th{position:absolute;left:calc(-1.5px*var(--sbs));width:calc(20px*var(--sbs));cursor:grab;image-rendering:pixelated}
+.th .a,.th .m,.th .z,.th .g{position:absolute;left:0;width:100%;background-size:100% auto;background-repeat:no-repeat}
+.th .a{top:0;height:calc(8px*var(--sbs));background-image:url(ui/sb_thumb_top.png)}
+.th .z{bottom:0;height:calc(8px*var(--sbs));background-image:url(ui/sb_thumb_bot.png)}
+.th .m{top:calc(8px*var(--sbs));bottom:calc(8px*var(--sbs));background-image:url(ui/sb_thumb_mid.png);background-repeat:repeat-y}
+.th .g{top:50%;margin-top:calc(-6px*var(--sbs));height:calc(12px*var(--sbs));background-image:url(ui/sb_thumb_grip.png)}
+.th:active{cursor:grabbing}
+/* edit mode */
+body.edit .x,body.edit .sb,body.edit .board::after{outline:2px dashed #ffd36e;outline-offset:2px}
+body.edit .x,body.edit .sb{cursor:move}
+body.edit .board{outline:2px dashed rgba(255,255,255,.6);outline-offset:6px}
+.hnd{position:absolute;width:18px;height:18px;background:#ffd36e;border:2px solid #4B3025;border-radius:3px;display:none;z-index:9}
+body.edit .hnd{display:block}
+#hbw{right:-40px;top:50%;margin-top:-9px;cursor:ew-resize}#hbh{bottom:-40px;left:50%;margin-left:-9px;cursor:ns-resize}
+#hsb{left:50%;bottom:-24px;margin-left:-9px;cursor:ns-resize}
+#hx{left:-24px;bottom:-24px;cursor:nwse-resize}
+#panel{position:fixed;left:12px;top:56px;width:290px;max-height:94vh;overflow:auto;background:rgba(40,28,20,.92);border:2px solid #4B3025;border-radius:8px;color:#f4e9d2;font:13px Arial;padding:10px 12px;z-index:50}
+#panel h3{font-size:14px;margin:8px 0 4px;color:#ffd36e}
+#panel label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:3px 0}
+#panel input[type=range]{width:150px}#panel .v{width:42px;text-align:right;color:#ffe9b0}
+#panel button{background:#6b4a37;color:#f4e9d2;border:1px solid #9a7355;border-radius:5px;padding:4px 9px;font-size:12px;cursor:pointer;margin:6px 4px 0 0}
+#panel .note{font-size:12px;opacity:.85;line-height:1.4;margin-top:6px}
+#top{position:fixed;left:12px;top:12px;z-index:50}
+#top button{background:rgba(40,28,20,.85);color:#fff;border:1px solid #9a7355;border-radius:6px;padding:6px 12px;font:13px Arial;cursor:pointer}
+#st{margin-left:10px;color:#fff;font:12px Arial;background:rgba(40,28,20,.7);padding:4px 8px;border-radius:5px}
+</style></head><body>
+<div id="top"><button id="tog">Edit UI (U)</button><span id="st"></span></div>
+<div id="panel" style="display:none">
+ <div id="ph" style="cursor:move;font-weight:bold;color:#ffd36e;margin-bottom:4px">Drag here to move this panel <button id="pmin" style="float:right;margin:0">hide</button></div>
+ <div id="pbody">
+ <h3>Board</h3>
+ <label>Width % of screen<input type="range" id="bw" min="40" max="98"><span class="v" id="bw_v"></span></label>
+ <label>Height % of screen<input type="range" id="bh" min="30" max="96"><span class="v" id="bh_v"></span></label>
+ <label>Wood frame thickness<input type="range" id="frame" min="16" max="80"><span class="v" id="frame_v"></span></label>
+ <h3>Text area</h3>
+ <label>Font size<input type="range" id="fs" min="16" max="44"><span class="v" id="fs_v"></span></label>
+ <label>Padding left<input type="range" id="pl" min="0" max="120"><span class="v" id="pl_v"></span></label>
+ <label>Padding right<input type="range" id="pr" min="0" max="200"><span class="v" id="pr_v"></span></label>
+ <label>Padding top<input type="range" id="pt" min="0" max="120"><span class="v" id="pt_v"></span></label>
+ <label>Padding bottom<input type="range" id="pb" min="0" max="120"><span class="v" id="pb_v"></span></label>
+ <h3>Scrollbar</h3>
+ <label>Size (x art pixel)<input type="range" id="sbs" min="1" max="4" step="0.25"><span class="v" id="sbs_v"></span></label>
+ <label>From right<input type="range" id="sr" min="-80" max="120"><span class="v" id="sr_v"></span></label>
+ <label>From top<input type="range" id="st2" min="-40" max="160"><span class="v" id="st2_v"></span></label>
+ <label>From bottom<input type="range" id="sbm" min="-40" max="160"><span class="v" id="sbm_v"></span></label>
+ <h3>Close button (X)</h3>
+ <label>Size<input type="range" id="xs" min="20" max="90"><span class="v" id="xs_v"></span></label>
+ <label>From right<input type="range" id="xr" min="-60" max="100"><span class="v" id="xr_v"></span></label>
+ <label>From top<input type="range" id="xt" min="-60" max="100"><span class="v" id="xt_v"></span></label>
+ <div class="note">You can also <b>drag</b> the scrollbar or the X to move them, drag the yellow squares to resize (right edge: width, bottom edge: height, bottom-middle: scrollbar bottom, bottom-left: X size), and use the <b>mouse wheel</b> over the scrollbar or the X to scale them. Changes save automatically.</div>
+ <button id="rst">Reset to default</button><button id="cpy">Show settings</button>
+ <textarea id="out" style="display:none;width:100%;height:120px;margin-top:6px;font:11px monospace"></textarea>
+ </div>
+</div>
+<div class="board" id="board">
+ <div class="hnd" id="hbw" title="Drag: board width"></div><div class="hnd" id="hbh" title="Drag: board height"></div><div class="hnd" id="hsb" title="Drag: scrollbar bottom"></div><div class="hnd" id="hx" title="Drag: X size"></div>
+ <div class="x" id="x" role="button" aria-label="Close" tabindex="0">x</div>
+ <div class="sb" id="sb"><div class="btn" id="up" style="background-image:url(ui/sb_btn_up.png)"></div><div class="tr" id="tr"><div class="a"></div><div class="m"></div><div class="z"></div><div class="th" id="th"><div class="a"></div><div class="m"></div><div class="z"></div><div class="g"></div></div></div><div class="btn" id="dn" style="background-image:url(ui/sb_btn_down.png)"></div></div>
+ <div class="in" id="in">
+<h1>Projects: ChamberUp</h1>
+<span class="tag">Project Manager</span><span class="tag">Product Owner</span><span class="tag">Live on the App Store</span>
+<p>I led a small team to design and ship a networking app for the Sydney CBD Chamber of Commerce. It went from first idea to the Australian App Store in eleven weeks.</p>
+<h2>What it does</h2><p>Members check in at partner venues, earn points, and invite each other to meet in person. Staff see activity on a dashboard.</p>
+<h2>My role</h2><p>Planning, priorities, sponsor communication, and running the build with AI-assisted tools.</p>
+<h2>Why it matters</h2><p>It turns a monthly networking event into something members use all month long.</p>
+<h2>Timeline</h2><p>Week 1: choose the build platform and agree the scope with the sponsor. Week 3: first working login and venue list. Week 6: check-ins, points and the member directory.</p>
+<h2>What I decided</h2><p>Email-code login only, no passwords. Venue codes instead of QR codes. A private review path for the Apple App Store.</p>
+<h2>What I learned</h2><p>Write the rules down before building. Test on a real phone early. Keep the sponsor close, and keep the first version small.</p>
+<h2>Links</h2><p>ChamberUp on the App Store. The privacy policy. The handover guide for the Chamber.</p>
+<h2>Numbers</h2><p>Eleven weeks from first meeting to launch. More than twenty members at the pilot. One live app, five partner venues.</p>
+<h2>Thanks</h2><p>To the Chamber team and my teammates, who made it possible.</p>
+<p>(Placeholder text for layout testing only.)</p>
+ </div>
+</div>
+<script>
+const DEF={bw:78,bh:78,frame:36,fs:26,pl:8,pr:50,pt:10,pb:10,sbs:2,sr:-6,st2:36,sbm:6,xs:44,xr:-10,xt:-10};
+let C=Object.assign({},DEF);
+try{const s=localStorage.getItem('ui_layout');if(s)C=Object.assign(C,JSON.parse(s))}catch(e){}
+const R=document.documentElement.style,$=id=>document.getElementById(id);
+function apply(){R.setProperty('--bw',C.bw+'vw');R.setProperty('--bh',C.bh+'vh');R.setProperty('--frame',C.frame+'px');R.setProperty('--fs',C.fs+'px');
+ R.setProperty('--pl',C.pl+'px');R.setProperty('--pr',C.pr+'px');R.setProperty('--pt',C.pt+'px');R.setProperty('--pb',C.pb+'px');
+ R.setProperty('--sbs',C.sbs);R.setProperty('--sr',C.sr+'px');R.setProperty('--st',C.st2+'px');R.setProperty('--sbm',C.sbm+'px');
+ R.setProperty('--xs',C.xs+'px');R.setProperty('--xr',C.xr+'px');R.setProperty('--xt',C.xt+'px');
+ for(const k in DEF){const i=$(k);if(i){i.value=C[k];$(k+'_v').textContent=C[k]}}sync()}
+let saveT=0;function save(){$('st').textContent='saving...';clearTimeout(saveT);saveT=setTimeout(async()=>{const b=JSON.stringify(C);try{localStorage.setItem('ui_layout',b)}catch(e){}
+ try{const r=await fetch('ui_layout.json',{method:'POST',body:b});$('st').textContent=r.ok?'saved to disk':'saved in browser only'}catch(e){$('st').textContent='saved in browser only'}},300)}
+function set(k,v){C[k]=Math.round(v*100)/100;apply();save()}
+for(const k in DEF){const i=$(k);i.oninput=()=>set(k,parseFloat(i.value))}
+$('rst').onclick=()=>{C=Object.assign({},DEF);apply();save()};
+$('cpy').onclick=()=>{const o=$('out');o.style.display='block';o.value=JSON.stringify(C,null,1);o.select()};
+function setEdit(on){document.body.classList.toggle('edit',on);$('panel').style.display=on?'block':'none';$('tog').textContent=on?'Done (U)':'Edit UI (U)'}
+$('tog').onclick=()=>setEdit(!document.body.classList.contains('edit'));
+addEventListener('keydown',e=>{if(e.target.tagName==='TEXTAREA')return;if(e.key.toLowerCase()==='u')setEdit(!document.body.classList.contains('edit'))});
+// panel drag + hide
+(function(){const p=$('panel'),h=$('ph');let d=null;h.addEventListener('pointerdown',e=>{if(e.target.id==='pmin')return;const r=p.getBoundingClientRect();d={x:e.clientX-r.left,y:e.clientY-r.top};h.setPointerCapture(e.pointerId)});
+h.addEventListener('pointermove',e=>{if(!d)return;p.style.left=(e.clientX-d.x)+'px';p.style.top=(e.clientY-d.y)+'px';p.style.right='auto'});h.addEventListener('pointerup',()=>d=null);
+$('pmin').onclick=()=>{const b=$('pbody');const hide=b.style.display!=='none';b.style.display=hide?'none':'block';$('pmin').textContent=hide?'show':'hide'}})();
+// scroll sync
+const sc=$('in'),tr=$('tr'),th=$('th');
+function sync(){const unit=C.sbs;const minH=28*unit;const vis=sc.clientHeight,all=sc.scrollHeight,tt=tr.clientHeight,ratio=Math.min(1,vis/all);const fits=all<=vis;const hh=Math.max(minH,Math.round(tt*(fits?0.28:ratio)));th.style.height=hh+'px';const mx=all-vis;const p=mx>0?sc.scrollTop/mx:0;th.style.top=Math.round((tt-hh)*p)+'px';$('sb').style.visibility=(mx>0||document.body.classList.contains('edit'))?'visible':'hidden'}
+sc.addEventListener('scroll',sync);addEventListener('resize',sync);new ResizeObserver(sync).observe(sc);new ResizeObserver(sync).observe(tr);document.fonts.ready.then(sync);
+let drag=null;th.addEventListener('pointerdown',e=>{if(document.body.classList.contains('edit'))return;th.setPointerCapture(e.pointerId);drag={y:e.clientY,top:parseFloat(th.style.top)||0}});
+th.addEventListener('pointermove',e=>{if(!drag)return;const tt=tr.clientHeight,hh=th.offsetHeight,mx=sc.scrollHeight-sc.clientHeight;const nt=Math.max(0,Math.min(tt-hh,drag.top+e.clientY-drag.y));sc.scrollTop=(tt-hh)>0?(nt/(tt-hh))*mx:0});
+th.addEventListener('pointerup',()=>drag=null);th.addEventListener('pointercancel',()=>drag=null);
+tr.addEventListener('pointerdown',e=>{if(document.body.classList.contains('edit')||e.target.closest('#th'))return;const r=tr.getBoundingClientRect();const dir=(e.clientY-r.top)<th.offsetTop?-1:1;sc.scrollBy({top:dir*sc.clientHeight*.8,behavior:'smooth'})});
+$('up').onclick=()=>{if(!document.body.classList.contains('edit'))sc.scrollBy({top:-70,behavior:'smooth'})};$('dn').onclick=()=>{if(!document.body.classList.contains('edit'))sc.scrollBy({top:70,behavior:'smooth'})};
+$('x').onclick=()=>{if(!document.body.classList.contains('edit'))alert('Close (placeholder)')};
+// edit: drag elements and handles
+let ed=null;
+function startDrag(e,kind){if(!document.body.classList.contains('edit'))return;e.preventDefault();e.stopPropagation();ed={kind,x:e.clientX,y:e.clientY,C:Object.assign({},C)}}
+$('sb').addEventListener('pointerdown',e=>{if(e.target.closest('.hnd'))return;startDrag(e,'sb')},true);
+$('x').addEventListener('pointerdown',e=>startDrag(e,'x'),true);
+$('hbw').addEventListener('pointerdown',e=>startDrag(e,'bw'));$('hbh').addEventListener('pointerdown',e=>startDrag(e,'bh'));$('hsb').addEventListener('pointerdown',e=>startDrag(e,'sbm'));$('hx').addEventListener('pointerdown',e=>startDrag(e,'xs'));
+addEventListener('pointermove',e=>{if(!ed)return;const dx=e.clientX-ed.x,dy=e.clientY-ed.y,o=ed.C;
+ if(ed.kind==='sb'){C.sr=Math.round(o.sr-dx);C.st2=Math.round(o.st2+dy)}
+ else if(ed.kind==='x'){C.xr=Math.round(o.xr-dx);C.xt=Math.round(o.xt+dy)}
+ else if(ed.kind==='bw'){C.bw=Math.max(40,Math.min(98,Math.round(o.bw+dx*2/innerWidth*100)))}
+ else if(ed.kind==='bh'){C.bh=Math.max(30,Math.min(96,Math.round(o.bh+dy*2/innerHeight*100)))}
+ else if(ed.kind==='sbm'){C.sbm=Math.round(o.sbm-dy)}
+ else if(ed.kind==='xs'){C.xs=Math.max(20,Math.min(90,Math.round(o.xs-dx)))}
+ apply();save()});
+addEventListener('pointerup',()=>{ed=null});
+addEventListener('wheel',e=>{if(!document.body.classList.contains('edit'))return;const t=e.target;
+ if(t.closest&&t.closest('#sb')){e.preventDefault();set('sbs',Math.max(1,Math.min(4,C.sbs+(e.deltaY<0?.25:-.25))))}
+ else if(t.closest&&t.closest('#x')){e.preventDefault();set('xs',Math.max(20,Math.min(90,C.xs+(e.deltaY<0?4:-4))))}},{passive:false});
+(async()=>{try{const r=await fetch('ui_layout.json?'+Date.now());if(r.ok)C=Object.assign(C,await r.json())}catch(e){}apply();$('st').textContent='ready'})();
+</script></body></html>

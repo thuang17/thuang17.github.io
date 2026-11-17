@@ -1,0 +1,15 @@
+{
+ "_comment": "SAMPLE DATA for design only. These are NOT real visitor messages. Never show them on the real site. They are only here so the layout can be tested with short, long, and replied notes.",
+ "notes": [
+  {"id":1,"nickname":"Sample Visitor","body":"A short sample note.","created_at":"2026-11-10T09:00:00Z","replies":[]},
+  {"id":2,"nickname":"Sample With A Longer Nickname","body":"This is a longer sample note so we can see how text wraps inside a small paper note on the board. It goes on for a few lines to test the maximum height of a note and how the layout copes with it.","created_at":"2026-11-12T21:30:00Z","replies":[{"id":3,"nickname":"Trevor","body":"A sample reply from the site owner.","created_at":"2026-11-12T22:10:00Z"}]},
+  {"id":4,"nickname":"Sample","body":"Another sample.","created_at":"2026-11-14T03:15:00Z","replies":[]}
+ ],
+ "api_shape_for_later": {
+  "list": "GET /api/posts?cursor=... returns posts with nickname, body, created_at, replies",
+  "create": "POST /api/posts  {nickname, body, token, parent_id?, turnstile?}  -> 201",
+  "edit_own": "PATCH /api/posts/:id  (header X-Visitor-Token)  {body}",
+  "delete_own": "DELETE /api/posts/:id  (header X-Visitor-Token)",
+  "rules": "Messages are reviewed before they appear. A visitor can edit their own pending message and delete their own message. Max 1000 characters."
+ }
+}

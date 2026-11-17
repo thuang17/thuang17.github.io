@@ -15,3 +15,6 @@ node_modules/
 
 # Superpowers
 .superpowers/
+# Town source: raw and processed art stay local (large, regenerable)
+docs/v2/assets/raw/
+docs/v2/assets/processed/
