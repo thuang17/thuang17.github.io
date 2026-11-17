@@ -6,7 +6,7 @@ Trevor Huang's personal site, live at https://thuang17.github.io. Since 2026-11-
 - `/` and `/town/`: the town, a single-file canvas game. Walk to a building, press E to open a board (Projects/ChamberUp, Favorites, Guestbook, About Me). Narrow screens (under 900px) get a card with four buttons instead of the game.
 - `/#projects`, `/#favorites`, `/#guestbook`, `/#about` open a board directly.
 - `/chamberup`, `/work`, `/darts`, `/stories`, `/guestbook`: tiny redirect pages so old links still land in the right board.
-- `/guestbook-admin`: moderation page (Bearer admin token). Uses `BaseLayout` and `public/fonts`.
+- `/guestbook-admin`: moderation page (Bearer admin token). Standalone page in the town style.
 - `404.astro`: the not-found page.
 
 ## Source of truth for the town
@@ -38,9 +38,7 @@ Trevor Huang's personal site, live at https://thuang17.github.io. Since 2026-11-
 ## Files
 ```
 src/pages/        404, redirect pages, guestbook-admin
-src/layouts/      BaseLayout.astro
-src/styles/       global.css (used by the admin page)
-public/           generated town, index.html, fonts, favicons
+public/           generated town, index.html, favicons
 docs/v2/          town source, tools, assets
 guestbook-api/    Worker + D1
 ```
